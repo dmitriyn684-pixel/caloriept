@@ -349,7 +349,7 @@
         const ch=document.querySelector('.coaches-grid+p');if(ch)ch.innerText=t.coachHint;
         const rt=document.querySelectorAll('.review-text'),ra=document.querySelectorAll('.review-card p');t.reviews.forEach((r,i)=>{if(rt[i])rt[i].innerText=r[0];if(ra[i])ra[i].innerText=r[1];});
         ['calcTitle','genderLbl','maleBtn','femaleBtn','goalLbl','loseBtn','maintainBtn','gainBtn','resultLbl','kcalLbl','protLbl','fatLbl','carbLbl','faqTitle'].forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.innerText=t[id];});
-        for(let i=1;i<=6;i++){const q=document.getElementById('fq'+i),a=document.getElementById('fa'+i);if(q)q.innerText=t.fq[i-1];if(a)a.innerText=t.fa[i-1];}
+        for(let i=1;i<=6;i++){const q=document.getElementById('fq'+i),a=document.getElementById('fa'+i);if(q){const s=q.querySelector('.ft-grad')||q;s.innerText=t.fq[i-1];}if(a)a.innerText=t.fa[i-1];}
         const ct=document.querySelector('.cta-title');if(ct)ct.innerText=t.ctaTitle;
         const cb=document.querySelector('.cta-section .btn-primary');if(cb)cb.innerText=t.ctaBtn;
         const fl=document.querySelectorAll('.footer-links a');t.footer.forEach((f,i)=>{if(fl[i])fl[i].innerText=f;});
