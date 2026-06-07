@@ -348,7 +348,7 @@
         const cn=document.querySelectorAll('.coach-name'),cr=document.querySelectorAll('.coach-role');t.coaches.forEach((c,i)=>{if(cn[i])cn[i].innerText=c[0];if(cr[i])cr[i].innerText=c[1];});
         const ch=document.querySelector('.coaches-grid+p');if(ch)ch.innerText=t.coachHint;
         const rt=document.querySelectorAll('.review-text'),ra=document.querySelectorAll('.review-card p');t.reviews.forEach((r,i)=>{if(rt[i])rt[i].innerText=r[0];if(ra[i])ra[i].innerText=r[1];});
-        ['calcTitle','genderLbl','maleBtn','femaleBtn','goalLbl','loseBtn','maintainBtn','gainBtn','resultLbl','kcalLbl','protLbl','fatLbl','carbLbl','faqTitle'].forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.innerText=t[id];});
+        ['calcTitle','genderLbl','maleBtn','femaleBtn','ageLbl','weightLbl','heightLbl','goalLbl','loseBtn','maintainBtn','gainBtn','resultLbl','kcalLbl','protLbl','fatLbl','carbLbl','faqTitle'].forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.innerText=t[id];});
         for(let i=1;i<=6;i++){const q=document.getElementById('fq'+i),a=document.getElementById('fa'+i);if(q){const s=q.querySelector('.ft-grad')||q;s.innerText=t.fq[i-1];}if(a)a.innerText=t.fa[i-1];}
         const ct=document.querySelector('.cta-title');if(ct)ct.innerText=t.ctaTitle;
         const cb=document.querySelector('.cta-section .btn-primary');if(cb)cb.innerText=t.ctaBtn;
