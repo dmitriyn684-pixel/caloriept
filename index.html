@@ -1,380 +1,946 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CaloriePT AI 2.0 — ИИ-тренер по питанию</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #2D004F; color: #FFFFFF; line-height: 1.5; scroll-behavior: smooth; overflow-x: hidden; position: relative; }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 20% 50%, #FF69B4 0%, #AA22CC 30%, #771199 60%, #3A0066 100%); background-size: 400% 400%; animation: gradientFlow 15s ease infinite; z-index: -2; }
-        body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 32px 32px; z-index: -1; pointer-events: none; }
-        @keyframes gradientFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        .blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; animation: floatBlob 20s infinite alternate ease-in-out; pointer-events: none; }
-        .blob1 { top: -20vh; left: -20vw; width: 80vw; height: 80vw; background: rgba(255,105,180,0.15); animation-duration: 25s; }
-        .blob2 { bottom: -30vh; right: -10vw; width: 70vw; height: 70vw; background: rgba(255,179,71,0.12); animation-duration: 18s; animation-delay: -5s; }
-        .blob3 { top: 40%; left: 30%; width: 60vw; height: 60vw; background: rgba(180,50,255,0.1); filter: blur(100px); animation-duration: 30s; }
-        @keyframes floatBlob { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(5%,5%) scale(1.1); } }
-        .container, .navbar, .section, .footer { position: relative; z-index: 2; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-        .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.7s cubic-bezier(0.2,0.9,0.4,1.1); }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-        .btn-primary { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FFB347, #FF69B4); color: white; font-weight: 700; font-size: 16px; padding: 14px 32px; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: none; }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 15px rgba(255,179,71,0.5); filter: brightness(1.05); }
-        .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.5); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; transition: 0.3s; }
-        .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.9); }
-        .navbar { padding: 20px 0; position: sticky; top: 0; z-index: 100; background: rgba(80,0,120,0.6); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.2); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, #FFFFFF, #FFB347, #FFAAFF); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .nav-menu { display: flex; gap: 40px; align-items: center; }
-        .nav-menu a { color: white; text-decoration: none; font-weight: 500; transition: 0.2s; }
-        .nav-menu a:hover { color: #FFD0FF; }
-        .burger { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
-        .burger span { width: 28px; height: 2px; background: white; border-radius: 2px; }
-        .hero { padding: 80px 0 60px; }
-        .hero-grid { display: flex; align-items: stretch; gap: 60px; flex-wrap: wrap; }
-        .hero-content { flex: 1; min-width: 300px; }
-        .hero-title { font-size: 52px; font-weight: 800; line-height: 1.2; margin-bottom: 24px; background: linear-gradient(135deg, #FFFFFF, #FFB347, #FFAAFF); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .counter-animation { margin: 30px 0 20px; }
-        .counter-animation span#calCounter { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #FFB347, #FFAAFF); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .counter-label { font-size: 24px; font-weight: 600; color: rgba(255,255,255,0.9); margin-left: 8px; }
-        .hero-image { flex: 1; display: flex; justify-content: center; height: 600px; }
-        .hero-image img { width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
-        .hero-image img:hover { transform: scale(1.02); }
-        .section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .section-title { font-size: 42px; font-weight: 700; text-align: center; margin-bottom: 60px; background: linear-gradient(135deg, #FFFFFF, #FFB347, #FFAAFF); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 30px; }
-        .grid-3 { display: grid; gap: 30px; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
-        .reviews-grid { display: grid; gap: 30px; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
-        .feature-card, .review-card, .faq-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border-radius: 28px; padding: 32px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-        .feature-card:hover, .review-card:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 35px rgba(0,0,0,0.3), 0 0 15px rgba(255,179,71,0.3); }
-        .feature-icon { font-size: 48px; margin-bottom: 16px; filter: drop-shadow(0 0 6px rgba(255,255,255,0.4)); }
-        .feature-card h3 { font-size: 20px; margin-bottom: 10px; }
-        .feature-card p { color: rgba(255,255,255,0.8); line-height: 1.45; }
-        /* Телефоны */
-        .phones-section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .phones-container { display: flex; justify-content: center; align-items: center; gap: 60px; flex-wrap: wrap; margin-top: 20px; }
-        .phone { position: relative; width: 260px; background: rgba(20,20,30,0.7); backdrop-filter: blur(8px); border-radius: 48px; padding: 12px 8px; box-shadow: 0 30px 40px -20px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.2); transition: all 0.3s ease; }
-        .phone:hover { transform: translateY(-8px); box-shadow: 0 40px 50px -20px black, 0 0 0 2px rgba(255,200,255,0.6), 0 0 20px rgba(255,100,255,0.4); }
-        .phone-notch { background: #000; width: 110px; height: 28px; border-radius: 20px; margin: 0 auto 12px; }
-        .phone-screen { border-radius: 40px; overflow: hidden; aspect-ratio: 9/19; width: 100%; }
-        .phone-screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .phone-home { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; margin: 12px auto 6px; }
-        .phone-caption { text-align: center; margin-top: 8px; font-size: 14px; color: rgba(255,255,255,0.7); }
-        /* Тренеры */
-        .coaches-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 40px; }
-        .coach-card { text-align: center; cursor: pointer; transition: transform 0.2s; }
-        .coach-card:hover { transform: scale(1.05); }
-        .coach-avatar { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 48px; border: 3px solid rgba(255,255,255,0.5); box-shadow: 0 0 0 4px rgba(255,255,255,0.1); overflow: hidden; transition: 0.2s; }
-        .coach-card:hover .coach-avatar { border-color: #FFB347; box-shadow: 0 0 0 4px rgba(255,179,71,0.3); }
-        .coach-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-        .coach-name { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-        .coach-role { color: rgba(255,255,255,0.7); font-size: 14px; }
-        .review-card .stars { color: #FFD966; margin: 12px 0 8px; font-size: 18px; }
-        .review-text { color: rgba(255,255,255,0.85); line-height: 1.5; }
-        .faq-card { cursor: pointer; margin-bottom: 16px; }
-        .faq-question { font-weight: 700; font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
-        .faq-icon { font-size: 24px; transition: transform 0.2s ease; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; color: rgba(255,255,255,0.8); }
-        .faq-card.open .faq-answer { max-height: 200px; margin-top: 16px; }
-        .faq-card.open .faq-icon { transform: rotate(45deg); }
-        .cta-section { text-align: center; padding: 80px 0; position: relative; z-index: 2; }
-        .cta-title { font-size: 44px; font-weight: 700; margin-bottom: 30px; background: linear-gradient(135deg, #FFFFFF, #FFB347, #FFAAFF); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .footer { padding: 40px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
-        .footer-links { display: flex; justify-content: center; gap: 30px; margin: 20px 0; flex-wrap: wrap; }
-        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; }
-        .footer-links a:hover { color: #FFB347; }
-        @media (max-width: 860px) {
-            .nav-menu { position: fixed; top: 76px; left: -100%; width: 100%; background: rgba(80,0,120,0.95); backdrop-filter: blur(16px); flex-direction: column; padding: 40px; transition: left 0.3s; gap: 28px; }
-            .nav-menu.active { left: 0; }
-            .burger { display: flex; }
-            .hero-title { font-size: 36px; }
-            .section-title { font-size: 32px; }
-            .hero-grid { flex-direction: column; text-align: center; }
-            .hero-image img { max-width: 90%; }
-            .phone { width: 200px; }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaloriePT AI 2.0 — ИИ-диетолог в Telegram</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
 
-        .hero-girl-section{display:block;}
-        @media(max-width:768px){.hero-girl-section{display:none;}.hero-image{display:none;}}
-        .food-particle{position:fixed;bottom:-60px;pointer-events:none;z-index:9999;animation:floatUp linear infinite;}
-        @keyframes floatUp{0%{transform:translateY(0) rotate(0deg);opacity:0.3;}70%{opacity:0.5;}100%{transform:translateY(-110vh) rotate(360deg);opacity:0;}}
-        .typed-cursor{display:inline-block;width:3px;height:1em;background:linear-gradient(135deg,#fff,#FFB347);animation:blinkC 0.8s infinite;margin-left:2px;vertical-align:text-bottom;}
-        @keyframes blinkC{0%,100%{opacity:1}50%{opacity:0}}
-        .faq-grid-2col{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
-        .faq-flip{perspective:1000px;min-height:160px;cursor:pointer;}
-        .faq-flip-inner{position:relative;width:100%;height:160px;transition:transform 0.6s;transform-style:preserve-3d;}
-        .faq-flip:hover .faq-flip-inner,.faq-flip.flipped .faq-flip-inner{transform:rotateY(180deg);}
-        .faq-front,.faq-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:20px;display:flex;align-items:center;justify-content:center;text-align:center;}
-        .faq-front{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);font-weight:700;font-size:16px;backdrop-filter:blur(10px);}
-        .ft-grad{background:linear-gradient(135deg,#FFB347,#FFAAFF);-webkit-background-clip:text;background-clip:text;color:transparent !important;-webkit-text-fill-color:transparent !important;}
-        .faq-back{transform:rotateY(180deg);background:linear-gradient(135deg,#FFFFFF,#FFB347,#FFAAFF);color:#2D004F;font-size:14px;line-height:1.5;}
-        .calculator-glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border-radius:32px;padding:40px;border:1px solid rgba(255,255,255,0.2);max-width:900px;margin:0 auto;}
-        .calc-row{display:flex;flex-wrap:wrap;gap:30px;margin-bottom:28px;}
-        .calc-col{flex:1;min-width:180px;}
-        .calc-label{display:block;margin-bottom:10px;font-weight:600;}
-        .gender-buttons,.goal-buttons{display:flex;gap:10px;flex-wrap:wrap;}
-        .gender-btn,.goal-btn{background:transparent;border:1px solid rgba(255,255,255,0.5);color:white;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:500;transition:0.2s;}
-        .gender-btn.active,.goal-btn.active{background:white;color:#880099;border-color:white;}
-        input[type=range]{width:100%;margin:10px 0;-webkit-appearance:none;background:rgba(255,255,255,0.2);height:4px;border-radius:5px;}
-        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:white;cursor:pointer;}
-        .calc-value{background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:20px;margin-left:8px;}
-        .calc-result{text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.2);}
-        .result-calories{font-size:48px;font-weight:800;background:linear-gradient(135deg,#fff,#FFB347);-webkit-background-clip:text;background-clip:text;color:transparent;margin:12px 0;}
-        .result-macros{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px;}
-        .macro-item{background:rgba(255,255,255,0.1);border-radius:40px;padding:8px 20px;font-weight:600;}
-        @media(max-width:768px){.faq-grid-2col{grid-template-columns:1fr;}.calculator-glass{padding:20px;}.calc-row{flex-direction:column;gap:16px;}}
-    </style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:       #0C1018;
+    --bg2:      #111620;
+    --bg3:      #161C28;
+    --gold:     #C9A96E;
+    --gold-lt:  #E2C99A;
+    --white:    #F0EDE8;
+    --muted:    #7A8399;
+    --green:    #4ECDC4;
+    --border:   rgba(201,169,110,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 60px;
+    background: rgba(12,16,24,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 600; letter-spacing: 0.05em;
+    color: var(--white); text-decoration: none;
+  }
+  .nav-cta {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 10px 22px; border: 1px solid var(--gold);
+    color: var(--gold); text-decoration: none; transition: all 0.25s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 140px 60px 120px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&q=80&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(1.15) contrast(1.1) saturate(1.2);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(12,16,24,0.75) 0%, rgba(12,16,24,0.45) 50%, rgba(12,16,24,0.65) 100%);
+  }
+  /* Сетка как фон */
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: linear-gradient(var(--gold) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 28px;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 7vw, 90px);
+    font-weight: 300; line-height: 1.05;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .hero-title em {
+    font-style: italic; color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 16px; color: var(--muted); max-width: 500px;
+    margin: 28px 0 52px; line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--gold);
+    color: var(--bg);
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; font-weight: 500;
+    transition: all 0.25s;
+  }
+  .btn-primary:hover { background: var(--gold-lt); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-block;
+    padding: 16px 40px;
+    border: 1px solid rgba(240,237,232,0.25);
+    color: var(--white);
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn-ghost:hover { border-color: var(--white); }
+  .scroll-hint {
+    position: absolute; bottom: 40px; left: 60px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 12px;
+  }
+  .scroll-hint::before {
+    content: ''; display: block; width: 1px; height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--muted));
+  }
+
+  /* ── STATS ── */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    padding: 52px 40px;
+    border-right: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; font-weight: 300;
+    color: var(--gold); line-height: 1;
+    margin-bottom: 10px;
+  }
+  .stat-label {
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── SECTION HEADER ── */
+  .section { padding: 120px 60px; }
+  .section-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px; text-align: center;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 300; text-align: center; line-height: 1.15;
+    margin-bottom: 80px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── FEATURES ── */
+  .features { background: var(--bg2); }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .feature {
+    background: var(--bg2);
+    padding: 52px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .feature::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .feature:hover::before { transform: translateX(0); }
+  .feature:hover { background: var(--bg3); }
+  .feature-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300;
+    color: var(--gold); line-height: 1;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .feature-icon { display: none; }
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    margin-bottom: 14px; color: var(--white);
+  }
+  .feature-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
+
+  /* ── SPLIT SECTION ── */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .split-visual {
+    background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 560px; padding: 60px;
+    position: relative; overflow: hidden;
+  }
+  .split-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(12,16,24,0.65);
+  }
+  .phone-mockup {
+    width: 240px; background: #1A2035;
+    border-radius: 36px; padding: 20px 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    position: relative; z-index: 2;
+  }
+  .phone-screen {
+    background: #0C1018; border-radius: 24px;
+    padding: 20px 16px; min-height: 420px;
+  }
+  .chat-msg {
+    margin-bottom: 12px; font-size: 12px; line-height: 1.5;
+  }
+  .chat-msg.bot {
+    background: #1E2A40; border-radius: 12px 12px 12px 2px;
+    padding: 10px 14px; color: var(--white); max-width: 85%;
+  }
+  .chat-msg.user {
+    background: rgba(201,169,110,0.2); border-radius: 12px 12px 2px 12px;
+    padding: 10px 14px; color: var(--gold-lt);
+    max-width: 85%; margin-left: auto;
+  }
+  .chat-gold { color: var(--gold); font-weight: 500; }
+  .split-content {
+    padding: 80px 72px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .split-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+  }
+  .split-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px; font-weight: 300; line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  .split-title em { font-style: italic; color: var(--gold); }
+  .split-text { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 40px; }
+  .split-link {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    border-bottom: 1px solid rgba(201,169,110,0.3); padding-bottom: 4px;
+    display: inline-flex; align-items: center; gap: 10px; width: fit-content;
+    transition: gap 0.2s;
+  }
+  .split-link:hover { gap: 18px; }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--bg); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border: 1px solid var(--border); }
+  .step {
+    padding: 52px 40px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .step:last-child { border-right: none; }
+  .step::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .step:hover::before { opacity: 1; }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 300;
+    color: var(--border); line-height: 1;
+    margin-bottom: 28px;
+  }
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; margin-bottom: 12px; color: var(--white);
+  }
+  .step-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* ── MONETIZE ── */
+  .monetize { background: var(--bg2); }
+  .monetize-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border); }
+  .mono-card {
+    background: var(--bg2); padding: 52px 48px;
+    text-align: center;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .mono-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .mono-card:hover::before { transform: translateX(0); }
+  .mono-card:hover { background: var(--bg3); }
+  .mono-emoji { display: none; }
+  .mono-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300;
+    color: var(--gold); line-height: 1;
+    margin-bottom: 20px; display: block;
+  }
+  .mono-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; margin-bottom: 12px; color: var(--white);
+  }
+  .mono-text { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .mono-badge {
+    display: inline-block; padding: 4px 12px;
+    border: 1px solid rgba(201,169,110,0.3);
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 140px 60px;
+    text-align: center;
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,169,110,0.07) 0%, transparent 70%);
+  }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 5vw, 72px);
+    font-weight: 300; line-height: 1.1;
+    margin-bottom: 20px; position: relative;
+  }
+  .cta-title em { font-style: italic; color: var(--gold); }
+  .cta-sub {
+    font-size: 15px; color: var(--muted); margin-bottom: 52px;
+    position: relative;
+  }
+  .cta-buttons { display: flex; gap: 16px; justify-content: center;
+    flex-wrap: wrap; position: relative; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 44px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg2);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; color: var(--white);
+  }
+  .footer-links { display: flex; gap: 32px; list-style: none; }
+  .footer-links a {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy { font-size: 11px; color: var(--muted); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-content { animation: fadeUp 0.9s ease both; }
+  .hero-eyebrow { animation-delay: 0.1s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .scroll-hint { left: 24px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-right: 1px solid var(--border); }
+    .stat:nth-child(2n) { border-right: none; }
+    .section { padding: 80px 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .split { grid-template-columns: 1fr; }
+    .split-visual { min-height: 380px; }
+    .split-content { padding: 52px 24px; }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .step:nth-child(2n) { border-right: none; }
+    .monetize-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
 </head>
 <body>
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">CaloriePT AI 2.0</div>
-            <button id="langBtn" onclick="toggleLang()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);border-radius:40px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;color:white;margin-right:10px">EN</button>
-        <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
-            <div class="nav-menu" id="navMenu">
-                <a href="#features" id="nav1">Возможности</a>
-                <a href="#coaches" id="nav2">Тренеры</a>
-                <a href="#reviews" id="nav3">Отзывы</a>
-                <a href="#calculator" id="nav4">Калькулятор</a>
-            <a href="#faq" id="nav5">FAQ</a>
-                <a href="https://t.me/Calorie_counter_rf_bot" target="_blank" class="btn-outline" style="padding:8px 20px">Открыть бота</a>
-            </div>
-        </div>
-    </nav>
-    <main>
-        <!-- ГЕРОЙ -->
-        <section class="hero">
-            <div class="container hero-grid">
-                <div class="hero-content fade-up">
-                    <h1 class="hero-title" id="heroTitle">Познакомьтесь с CaloriePT AI 2.0</h1>
-                    <p style="font-size:18px;margin-bottom:20px;color:rgba(255,255,255,0.85)" id="heroSub">Отслеживайте свои калории с помощью одной фотографии</p>
-                    <p style="margin-bottom:32px;color:rgba(255,255,255,0.8)" id="heroDesc">CaloriePT AI — помощник на базе ИИ для удобного отслеживания калорий. Сделайте фото, отсканируйте штрихкод или опишите приём пищи и получите мгновенную информацию о калориях и питательных веществах.</p>
-                    <div class="counter-animation">
-                        <span id="calCounter">0</span><span class="counter-label" id="kcalLabel"> ккал</span>
-                        <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px" id="counterLabel">средняя дневная норма</p>
-                    </div>
-                    <a href="https://t.me/Calorie_counter_rf_bot" class="btn-primary" id="heroBtn">Начать бесплатно</a>
-                    <div style="margin-top:30px;color:rgba(255,255,255,0.8)" id="heroStats">⭐ 4.9 рейтинг • 1000+ пользователей</div>
-                </div>
-                <div class="hero-image fade-up">
-                    <img src="hero_girl.webp" alt="CaloriePT AI" style="width:100%;max-width:none;height:100%;object-fit:fill;border-radius:24px;box-shadow:0 30px 60px rgba(0,0,0,0.4);">
-                </div>
-            </div>
-        </section>
 
-        <!-- ЧТО ВКЛЮЧАЕТ -->
-    <section id="features" class="section">
-            <div class="container">
-                <h2 class="section-title fade-up" id="secTitle1">Что включает в себя CaloriePT AI 2.0?</h2>
-                <div class="grid-5">
-                    <div class="feature-card fade-up"><div class="feature-icon">📸</div><h3>Анализ фото еды</h3><p>Сделайте фото — ИИ определяет калории, белки, жиры, углеводы.</p></div>
-                    <div class="feature-card fade-up"><div class="feature-icon">📚</div><h3>База 1+ млн продуктов</h3><p>Поиск по названию, бренду или штрих-коду.</p></div>
-                    <div class="feature-card fade-up"><div class="feature-icon">📈</div><h3>Отслеживание прогресса</h3><p>Персональные рекомендации для ваших целей.</p></div>
-                    <div class="feature-card fade-up"><div class="feature-icon">🥘</div><h3>Рецепты из холодильника</h3><p>Фото продуктов — бот составит блюда с пошаговым приготовлением.</p></div>
-                    <div class="feature-card fade-up"><div class="feature-icon">👨‍💼</div><h3>Личный тренер</h3><p>Нутрициолог и ваш тренер следят за питанием онлайн и корректируют рацион.</p></div>
-                </div>
-            </div>
-        </section>
+<!-- NAV -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="#features">Возможности</a></li>
+    <li><a href="#how">Как работает</a></li>
+    <li><a href="#partners">Партнёрам</a></li>
+  </ul>
+  <a class="nav-logo" href="#">CaloriePT AI 2.0</a>
+  <a class="nav-cta" href="https://t.me/Calorie_counter_rf_bot" target="_blank">Попробовать</a>
+</nav>
 
-        <!-- ТЕЛЕФОНЫ -->
-        <section class="phones-section">
-            <div class="container">
-                <h2 class="section-title fade-up" id="secTitle2">Как это работает</h2>
-                <div class="phones-container fade-up">
-                    <div class="phone">
-                        <div class="phone-notch"></div>
-                        <div class="phone-screen">
-                            <img src="hero_phone.webp" alt="CaloriePT AI 2.0">
-                        </div>
-                        <div class="phone-home"></div>
-                        <div class="phone-caption">Сфотографируй еду</div>
-                    </div>
-                    <div class="phone">
-                        <div class="phone-notch"></div>
-                        <div class="phone-screen">
-                            <img src="img-2.jpg" alt="Ответ бота">
-                        </div>
-                        <div class="phone-home"></div>
-                        <div class="phone-caption">Бот рассчитает КБЖУ</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Питание · Здоровье · Результат</p>
+    <h1 class="hero-title">
+      Ешь осознанно.<br>
+      <em>Живи лучше.</em>
+    </h1>
+    <p class="hero-sub">
+      ИИ-диетолог прямо в Telegram. Фотографируй еду — получай КБЖУ, 
+      персональный план и поддержку 24/7. Без приложений. Без подписок. Бесплатно.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://t.me/Calorie_counter_rf_bot" target="_blank">Начать бесплатно</a>
+      <a class="btn-ghost" href="#how">Как это работает</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Прокрути вниз</div>
+</section>
 
-        <!-- ПОЧЕМУ МЫ -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title fade-up" id="secTitle3">Почему выбирают CaloriePT AI?</h2>
-                <div class="grid-3">
-                    <div class="feature-card fade-up"><div class="feature-icon">⏱️</div><h3>Освободите своё время</h3><p>Автоматический расчёт калорий. Никаких ручных таблиц.</p></div>
-                    <div class="feature-card fade-up"><div class="feature-icon">🤝</div><h3>Интеграция с фитнесом</h3><p>Синхронизация с трекерами активности.</p></div>
-                    <div class="feature-card fade-up"><div class="feature-icon">🏆</div><h3>Достижение целей</h3><p>Точный расчёт КБЖУ для похудения или набора массы.</p></div>
-                </div>
-            </div>
-        </section>
+<!-- STATS -->
+<div class="stats" id="stats-section">
+  <div class="stat">
+    <div class="stat-num" data-target="10" data-suffix=" сек">0 сек</div>
+    <div class="stat-label">Анализ фото еды</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-target="26" data-suffix="+">0+</div>
+    <div class="stat-label">Пользователей с первой недели</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-static="0₽">0₽</div>
+    <div class="stat-label">Стоимость входа</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-target="24" data-suffix="/7">0/7</div>
+    <div class="stat-label">Поддержка ИИ-диетолога</div>
+  </div>
+</div>
 
-        <!-- ТРЕНЕРЫ -->
-        <section id="coaches" class="section">
-            <div class="container">
-                <h2 class="section-title fade-up" id="secTitle4">Наши эксперты-тренеры</h2>
-                <div class="coaches-grid">
-                    <div class="coach-card fade-up" onclick="window.open('https://t.me/Calorie_counter_rf_bot','_blank')">
-                        <div class="coach-avatar"><img src="img-3.jpg" alt="Анна С."></div>
-                        <div class="coach-name">Анна С.</div>
-                        <div class="coach-role">Диетолог, стаж 3 года</div>
-                    </div>
-                    <div class="coach-card fade-up" onclick="window.open('https://t.me/Calorie_counter_rf_bot','_blank')">
-                        <div class="coach-avatar"><img src="img-4.jpg" alt="Максим Д." style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
-                        <div class="coach-name">Максим Д.</div>
-                        <div class="coach-role">Фитнес-тренер</div>
-                    </div>
-                    <div class="coach-card fade-up" onclick="window.open('https://t.me/Calorie_counter_rf_bot','_blank')">
-                        <div class="coach-avatar"><img src="img-5.jpg" alt="Елена В." style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
-                        <div class="coach-name">Елена В.</div>
-                        <div class="coach-role">Фитнес-тренер, эксперт по питанию</div>
-                    </div>
-                </div>
-                <p style="text-align:center;margin-top:30px;color:rgba(255,255,255,0.6)">Нажмите на тренера — откроется чат в Telegram</p>
-            </div>
-        </section>
-
-        <!-- ОТЗЫВЫ -->
-        <section id="reviews" class="section">
-            <div class="container">
-                <h2 class="section-title fade-up" id="secTitle5">Отзывы пользователей</h2>
-                <div class="reviews-grid">
-                    <div class="review-card fade-up"><div class="stars">★★★★★</div><div class="review-text">"Сэкономил кучу времени. Сфоткал еду — бот всё посчитал. За месяц −3 кг!"</div><p style="margin-top:12px;color:rgba(255,255,255,0.6)">— Дмитрий, 34 года</p></div>
-                    <div class="review-card fade-up"><div class="stars">★★★★★</div><div class="review-text">"Фото холодильника → рецепты. Теперь не надо думать что приготовить!"</div><p style="margin-top:12px;color:rgba(255,255,255,0.6)">— Елена, 27 лет</p></div>
-                    <div class="review-card fade-up"><div class="stars">★★★★☆</div><div class="review-text">"ИИ-тренер помогает не срываться. Жду трекер шагов, но уже круто."</div><p style="margin-top:12px;color:rgba(255,255,255,0.6)">— Михаил, 41 год</p></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ -->
-
-        <!-- CTA -->
-    
-    <section id="calculator" class="section">
-        <div class="container">
-            <h2 class="section-title fade-up" id="calcTitle">Калькулятор нормы калорий</h2>
-            <div class="calculator-glass fade-up">
-                <div class="calc-row">
-                    <div class="calc-col"><span class="calc-label" id="genderLbl">Пол</span><div class="gender-buttons"><button class="gender-btn active" data-gender="male" id="maleBtn">Мужчина</button><button class="gender-btn" data-gender="female" id="femaleBtn">Женщина</button></div></div>
-                    <div class="calc-col"><span class="calc-label"><span id="ageLbl">Возраст</span> <span class="calc-value" id="ageVal">30</span></span><input type="range" id="ageSlider" min="15" max="80" value="30"></div>
-                </div>
-                <div class="calc-row">
-                    <div class="calc-col"><span class="calc-label"><span id="weightLbl">Вес (кг)</span> <span class="calc-value" id="weightVal">70</span></span><input type="range" id="weightSlider" min="40" max="150" value="70"></div>
-                    <div class="calc-col"><span class="calc-label"><span id="heightLbl">Рост (см)</span> <span class="calc-value" id="heightVal">170</span></span><input type="range" id="heightSlider" min="140" max="220" value="170"></div>
-                </div>
-                <div class="calc-row">
-                    <div class="calc-col"><span class="calc-label" id="goalLbl">Цель</span><div class="goal-buttons"><button class="goal-btn" data-goal="lose" id="loseBtn">Похудение</button><button class="goal-btn active" data-goal="maintain" id="maintainBtn">Поддержание</button><button class="goal-btn" data-goal="gain" id="gainBtn">Набор массы</button></div></div>
-                </div>
-                <div class="calc-result">
-                    <div style="color:rgba(255,255,255,0.7);font-weight:600" id="resultLbl">Ваша дневная норма</div>
-                    <div class="result-calories"><span id="calResult">2100</span> <span id="kcalLbl">ккал</span></div>
-                    <div class="result-macros">
-                        <div class="macro-item">🥩 <span id="protLbl">Белки</span>: <span id="protResult">126</span> г</div>
-                        <div class="macro-item">🧈 <span id="fatLbl">Жиры</span>: <span id="fatResult">58</span> г</div>
-                        <div class="macro-item">🍚 <span id="carbLbl">Углеводы</span>: <span id="carbResult">263</span> г</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="faq" class="section">
-        <div class="container">
-            <h2 class="section-title fade-up" id="faqTitle">Часто задаваемые вопросы</h2>
-            <div class="faq-grid-2col">
-                <div class="faq-flip fade-up"><div class="faq-flip-inner"><div class="faq-front" id="fq1"><span class="ft-grad">💡 Это бесплатно?</span></div><div class="faq-back" id="fa1">Да, базовая версия бесплатна.</div></div></div>
-                <div class="faq-flip fade-up"><div class="faq-flip-inner"><div class="faq-front" id="fq2"><span class="ft-grad">🤖 Как точно определяются калории?</span></div><div class="faq-back" id="fa2">ИИ анализирует блюда с точностью 90-95%.</div></div></div>
-                <div class="faq-flip fade-up"><div class="faq-flip-inner"><div class="faq-front" id="fq3"><span class="ft-grad">📶 Работает без интернета?</span></div><div class="faq-back" id="fa3">Для распознавания нужен интернет.</div></div></div>
-                <div class="faq-flip fade-up"><div class="faq-flip-inner"><div class="faq-front" id="fq4"><span class="ft-grad">💪 Подходит для набора массы?</span></div><div class="faq-back" id="fa4">Да. Выберите цель — бот скорректирует рекомендации.</div></div></div>
-                <div class="faq-flip fade-up"><div class="faq-flip-inner"><div class="faq-front" id="fq5"><span class="ft-grad">🚀 Как начать?</span></div><div class="faq-back" id="fa5">Нажмите «Начать бесплатно» — перейдёте в Telegram.</div></div></div>
-                <div class="faq-flip fade-up"><div class="faq-flip-inner"><div class="faq-front" id="fq6"><span class="ft-grad">🔒 Безопасны ли мои данные?</span></div><div class="faq-back" id="fa6">Да, мы используем шифрование.</div></div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-            <div class="container">
-                <h2 class="cta-title fade-up">Начни контролировать питание прямо сейчас</h2>
-                <a href="https://t.me/Calorie_counter_rf_bot" class="btn-primary fade-up" style="font-size:22px;padding:16px 44px">Открыть CaloriePT AI 2.0</a>
-            </div>
-        </section>
-    </main>
-    <footer class="footer">
-        <div class="container">
-            <div class="logo" style="font-size:22px;margin-bottom:16px">CaloriePT AI 2.0</div>
-            <div class="footer-links">
-                <a href="#">Политика конфиденциальности</a>
-                <a href="#">Контакты</a>
-                <a href="https://t.me/Calorie_counter_rf_bot">Поддержка</a>
-            </div>
-            <p style="color:rgba(255,255,255,0.5)">© 2026 CaloriePT AI 2.0. Все права защищены.</p>
-        </div>
-    </footer>
-    <script>
-        let count = 0;
-        const target = 1847;
-        const el = document.getElementById('calCounter');
-        const iv = setInterval(() => { count += 12; if(count >= target) { el.textContent = target; clearInterval(iv); } else { el.textContent = count; } }, 60);
-
-        document.querySelectorAll('.faq-card').forEach(card => card.addEventListener('click', () => { const o = card.classList.contains('open'); document.querySelectorAll('.faq-card').forEach(c => c.classList.remove('open')); if(!o) card.classList.add('open'); }));
-    
-    function typeIt(txt){const s=document.getElementById('tSpan');if(!s)return;s.textContent='';let i=0;(function n(){if(i<txt.length){s.textContent+=txt[i++];setTimeout(n,50);}})();}
-    const LT={ru:{btn:'EN',heroText:'Познакомьтесь с CaloriePT AI 2.0',nav:['Возможности','Тренеры','Отзывы','Калькулятор','FAQ','Открыть бота'],heroSub:'Отслеживайте свои калории с помощью одной фотографии',heroDesc:'CaloriePT AI — помощник на базе ИИ для удобного отслеживания калорий.',heroBtn:'Начать бесплатно',heroStats:'⭐ 4.9 рейтинг • 1000+ пользователей',phoneCap1:'Сфотографируйте еду',phoneCap2:'Бот рассчитает КБЖУ',secTitles:['Что включает в себя CaloriePT AI 2.0?','Как это работает','Почему выбирают CaloriePT AI?','Наши эксперты-тренеры','Отзывы пользователей'],features:[['Анализ фото еды','Сделайте фото — ИИ определяет калории, белки, жиры, углеводы.'],['База 1+ млн продуктов','Поиск по названию, бренду или штрих-коду.'],['Отслеживание прогресса','Персональные рекомендации для ваших целей.'],['Рецепты из холодильника','Фото продуктов — бот составит блюда с пошаговым приготовлением.'],['Личный тренер','Нутрициолог и ваш тренер следят за питанием онлайн.']],why:[['Освободите своё время','Автоматический расчёт калорий. Никаких ручных таблиц.'],['Интеграция с фитнесом','Синхронизация с трекерами активности.'],['Достижение целей','Точный расчёт КБЖУ для похудения или набора массы.']],coaches:[['Анна С.','Диетолог, стаж 3 года'],['Максим Д.','Фитнес-тренер'],['Елена В.','Фитнес-тренер, эксперт по питанию']],coachHint:'Нажмите на тренера — откроется чат в Telegram',reviews:[['"Сэкономил кучу времени. Сфоткал еду — бот всё посчитал. За месяц −3 кг!"','— Дмитрий, 34 года'],['"Фото холодильника → рецепты. Теперь не надо думать что приготовить!"','— Елена, 27 лет'],['"ИИ-тренер помогает не срываться. Жду трекер шагов, но уже круто."','— Михаил, 41 год']],calcTitle:'Калькулятор нормы калорий',genderLbl:'Пол',maleBtn:'Мужчина',femaleBtn:'Женщина',ageLbl:'Возраст',weightLbl:'Вес (кг)',heightLbl:'Рост (см)',goalLbl:'Цель',loseBtn:'Похудение',maintainBtn:'Поддержание',gainBtn:'Набор массы',resultLbl:'Ваша дневная норма',kcalLbl:'ккал',protLbl:'Белки',fatLbl:'Жиры',carbLbl:'Углеводы',faqTitle:'Часто задаваемые вопросы',fq:['💡 Это бесплатно?','🤖 Как точно определяются калории?','📶 Работает без интернета?','💪 Подходит для набора массы?','🚀 Как начать?','🔒 Безопасны ли мои данные?'],fa:['Да, базовая версия бесплатна.','ИИ анализирует блюда с точностью 90-95%.','Для распознавания нужен интернет.','Да. Выберите цель — бот скорректирует рекомендации.','Нажмите «Начать бесплатно» — перейдёте в Telegram.','Да, мы используем шифрование.'],ctaTitle:'Начни контролировать питание прямо сейчас',ctaBtn:'Открыть CaloriePT AI 2.0',footer:['Политика конфиденциальности','Контакты','Поддержка'],footerCopy:'© 2026 CaloriePT AI 2.0. Все права защищены.'},en:{btn:'RU',heroText:'Meet CaloriePT AI 2.0',nav:['Features','Coaches','Reviews','Calculator','FAQ','Open bot'],heroSub:'Track your calories with a single photo',heroDesc:'CaloriePT AI is an AI-powered app for effortless calorie tracking.',heroBtn:'Start for free',heroStats:'⭐ 4.9 rating • 1000+ users',phoneCap1:'Take a photo of food',phoneCap2:'Bot calculates macros',secTitles:["What's inside CaloriePT AI 2.0?",'How it works','Why choose CaloriePT AI?','Our expert coaches','User reviews'],features:[['Food photo analysis','Snap a picture — AI detects calories, protein, fat, carbs.'],['1M+ food database','Search by name, brand, or barcode.'],['Progress tracking + AI tips','Personalized recommendations for your goals.'],['Fridge recipes','Photo of ingredients — bot suggests step-by-step recipes.'],['Personal trainer','Your nutritionist monitors your diet online.']],why:[['Save your time','Automatic calorie counting. No more manual tables.'],['Fitness app integration','Sync with your favorite activity trackers.'],['Achieve your goals','Precise macros for weight loss or muscle gain.']],coaches:[['Anna S.','Dietitian, 3 years exp.'],['Maxim D.','Fitness trainer'],['Elena V.','Fitness trainer, nutrition expert']],coachHint:'Tap on a coach — opens Telegram chat',reviews:[['"Huge time saver. Took a photo — bot counted everything. Lost 3 kg in a month!"','— Dmitry, 34'],['"Fridge photo → recipes. No more thinking what to cook. Super convenient."','— Elena, 27'],['"AI trainer keeps me on track. Waiting for step tracker, but already great."','— Mikhail, 41']],calcTitle:'Calorie calculator',genderLbl:'Gender',maleBtn:'Male',femaleBtn:'Female',ageLbl:'Age',weightLbl:'Weight (kg)',heightLbl:'Height (cm)',goalLbl:'Goal',loseBtn:'Lose weight',maintainBtn:'Maintain',gainBtn:'Gain muscle',resultLbl:'Your daily intake',kcalLbl:'kcal',protLbl:'Protein',fatLbl:'Fat',carbLbl:'Carbs',faqTitle:'Frequently asked questions',fq:['💡 Is it free?','🤖 How accurate is calorie detection?','📶 Does it work offline?','💪 Can I use for muscle gain?','🚀 How to start?','🔒 Is my data safe?'],fa:['Yes, basic version is free.','AI analyzes food with 90-95% accuracy.','Recognition requires internet.','Yes. Select goal — bot adjusts recommendations.','Click Start for free — Telegram in 30 sec.','Yes, we use encryption.'],ctaTitle:'Start controlling your nutrition now',ctaBtn:'Open CaloriePT AI 2.0',footer:['Privacy policy','Contacts','Support'],footerCopy:'© 2026 CaloriePT AI 2.0. All rights reserved.'}};
-    let cL='ru';
-    function toggleLang(){cL=cL==='ru'?'en':'ru';applyLT();}
-    function applyLT(){
-        const t=LT[cL];
-        document.getElementById('langBtn').innerText=t.btn;
-        typeIt(t.heroText);
-        ['nav1','nav2','nav3','nav4','nav5'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.innerText=t.nav[i];});
-        const ob=document.querySelector('.nav-menu .btn-outline');if(ob)ob.innerText=t.nav[5];
-        ['heroSub','heroDesc','heroBtn','heroStats'].forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.innerText=t[id];});
-        const cl=document.getElementById('counterLabel');if(cl)cl.innerText=cL==='ru'?'средняя дневная норма':'average daily norm';
-        const kl=document.getElementById('kcalLabel');if(kl)kl.innerText=cL==='ru'?' ккал':' kcal';
-        const caps=document.querySelectorAll('.phone-caption');if(caps[0])caps[0].innerText=t.phoneCap1;if(caps[1])caps[1].innerText=t.phoneCap2;
-        const secMap={1:'sec1',2:'sec2',3:'sec3',4:'sec4',5:'sec5'};
-        const secTexts=[t.secTitles[0],t.secTitles[1] || (cL==='ru'?'Как это работает':'How it works'),t.secTitles[2],t.secTitles[3],t.secTitles[4]];
-        [1,2,3,4,5].forEach((n,i)=>{const el=document.getElementById('secTitle'+n);if(el&&secTexts[i])el.innerText=secTexts[i];});
-        const fc=document.querySelectorAll('.grid-5 .feature-card');t.features.forEach((f,i)=>{if(fc[i]){const h=fc[i].querySelector('h3'),p=fc[i].querySelector('p');if(h)h.innerText=f[0];if(p)p.innerText=f[1];}});
-        const wc=document.querySelectorAll('.grid-3 .feature-card');t.why.forEach((w,i)=>{if(wc[i]){const h=wc[i].querySelector('h3'),p=wc[i].querySelector('p');if(h)h.innerText=w[0];if(p)p.innerText=w[1];}});
-        const cn=document.querySelectorAll('.coach-name'),cr=document.querySelectorAll('.coach-role');t.coaches.forEach((c,i)=>{if(cn[i])cn[i].innerText=c[0];if(cr[i])cr[i].innerText=c[1];});
-        const ch=document.querySelector('.coaches-grid+p');if(ch)ch.innerText=t.coachHint;
-        const rt=document.querySelectorAll('.review-text'),ra=document.querySelectorAll('.review-card p');t.reviews.forEach((r,i)=>{if(rt[i])rt[i].innerText=r[0];if(ra[i])ra[i].innerText=r[1];});
-        ['calcTitle','genderLbl','maleBtn','femaleBtn','ageLbl','weightLbl','heightLbl','goalLbl','loseBtn','maintainBtn','gainBtn','resultLbl','kcalLbl','protLbl','fatLbl','carbLbl','faqTitle'].forEach(id=>{const el=document.getElementById(id);if(el&&t[id])el.innerText=t[id];});
-        for(let i=1;i<=6;i++){const q=document.getElementById('fq'+i),a=document.getElementById('fa'+i);if(q){const s=q.querySelector('.ft-grad')||q;s.innerText=t.fq[i-1];}if(a)a.innerText=t.fa[i-1];}
-        const ct=document.querySelector('.cta-title');if(ct)ct.innerText=t.ctaTitle;
-        const cb=document.querySelector('.cta-section .btn-primary');if(cb)cb.innerText=t.ctaBtn;
-        const fl=document.querySelectorAll('.footer-links a');t.footer.forEach((f,i)=>{if(fl[i])fl[i].innerText=f;});
-        const fc2=document.querySelector('.footer>.container>p');if(fc2)fc2.innerText=t.footerCopy;
+<script>
+function animateCounter(el) {
+  const staticVal = el.dataset.static;
+  if (staticVal !== undefined) { el.textContent = staticVal; return; }
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1800;
+  const start = performance.now();
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+    const current = Math.round(ease * target);
+    el.textContent = current + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.stat-num').forEach(animateCounter);
+      statsObserver.unobserve(entry.target);
     }
-    let cG='male',cGoal='maintain';
-    function calcUp(){const age=+document.getElementById('ageSlider').value,w=+document.getElementById('weightSlider').value,h=+document.getElementById('heightSlider').value;document.getElementById('ageVal').innerText=age;document.getElementById('weightVal').innerText=w;document.getElementById('heightVal').innerText=h;let bmr=cG==='male'?10*w+6.25*h-5*age+5:10*w+6.25*h-5*age-161;let tdee=bmr*1.55;if(cGoal==='lose')tdee*=0.8;if(cGoal==='gain')tdee*=1.15;const cal=Math.round(tdee);document.getElementById('calResult').innerText=cal;document.getElementById('protResult').innerText=Math.round(w*1.8);document.getElementById('fatResult').innerText=Math.round(cal*0.25/9);document.getElementById('carbResult').innerText=Math.round((cal-w*1.8*4-cal*0.25)/4);}
-    document.querySelectorAll('.gender-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.gender-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');cG=b.dataset.gender;calcUp();}));
-    document.querySelectorAll('.goal-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.goal-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');cGoal=b.dataset.goal;calcUp();}));
-    ['ageSlider','weightSlider','heightSlider'].forEach(id=>document.getElementById(id).addEventListener('input',calcUp));
-    calcUp();
-    document.querySelectorAll('.faq-flip').forEach(f=>f.addEventListener('click',()=>{if(window.innerWidth<=768)f.classList.toggle('flipped');}));
-    const ems=['🍎','🥑','🥕','🍇','🥦','🍓','🏋️','💪','🔥','🥗','🍌','🧁','🍊'];
-    function mkP(){const p=document.createElement('div');p.className='food-particle';p.textContent=ems[Math.floor(Math.random()*ems.length)];p.style.fontSize=(16+Math.random()*20)+'px';p.style.left=(Math.random()*98)+'%';p.style.animationDuration=(7+Math.random()*10)+'s';p.style.opacity=0.2+Math.random()*0.3;document.body.appendChild(p);setTimeout(()=>p.remove(),22000);}
-    [5,15,25,35,45,55,65,75,85,95].forEach((l,i)=>setTimeout(()=>{const p=document.createElement('div');p.className='food-particle';p.textContent=ems[Math.floor(Math.random()*ems.length)];p.style.fontSize=(18+Math.random()*16)+'px';p.style.left=l+'%';p.style.animationDuration=(8+Math.random()*8)+'s';p.style.animationDelay=(i*0.6)+'s';p.style.opacity=0.25+Math.random()*0.3;document.body.appendChild(p);setTimeout(()=>p.remove(),22000);},i*200));
-    setInterval(mkP,2000);
-    const heroEl=document.getElementById('heroTitle');
-    if(heroEl){const orig=heroEl.innerText.trim();heroEl.innerHTML='<span id="tSpan" style="background:linear-gradient(135deg,#FFFFFF,#FFB347);-webkit-background-clip:text;background-clip:text;color:transparent;"></span><span class="typed-cursor"></span>';}
-    const burger=document.getElementById('burgerBtn'),navMenu=document.getElementById('navMenu');
-    if(burger)burger.addEventListener('click',()=>navMenu.classList.toggle('active'));
-    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t){t.scrollIntoView({behavior:'smooth'});navMenu.classList.remove('active');}}));
-    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
-    document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-    window.addEventListener('DOMContentLoaded',()=>applyLT());
+  });
+}, { threshold: 0.3 });
+document.addEventListener('DOMContentLoaded', () => {
+  const section = document.getElementById('stats-section');
+  if (section) statsObserver.observe(section);
+});
+</script>
 
-    </script>
+<!-- FEATURES -->
+<section class="section features" id="features">
+  <p class="section-eyebrow">Возможности</p>
+  <h2 class="section-title">Создан для тех, кто <em>хочет результат</em></h2>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feature-num">01</div>
+      <div class="feature-icon">📸</div>
+      <h3 class="feature-title">Анализ фото еды</h3>
+      <p class="feature-text">Сфотографируй тарелку — ИИ на базе Gemini Vision мгновенно распознаёт блюда и считает КБЖУ. Никакого ручного ввода.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">02</div>
+      <div class="feature-icon">🎯</div>
+      <h3 class="feature-title">Персональный план</h3>
+      <p class="feature-text">Параметры тела, цель (похудеть / набрать / сохранить) и образ жизни — бот составляет индивидуальный план питания.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">03</div>
+      <div class="feature-icon">📊</div>
+      <h3 class="feature-title">Дневник питания</h3>
+      <p class="feature-text">Все приёмы пищи в одном месте. Статистика, динамика, стрики. Визуализация прогресса без скучных таблиц.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">04</div>
+      <div class="feature-icon">👨‍⚕️</div>
+      <h3 class="feature-title">Каталог специалистов</h3>
+      <p class="feature-text">Диетологи, нутрициологи, тренеры и врачи — найди нужного специалиста прямо в боте и запишись на консультацию.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">05</div>
+      <div class="feature-icon">🔗</div>
+      <h3 class="feature-title">Реферальная программа</h3>
+      <p class="feature-text">Пригласи 3 друзей — получи безлимит. 10 друзей — эксклюзивный купон на скидку в боте стилиста. Расти вместе.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">06</div>
+      <div class="feature-icon">🌟</div>
+      <h3 class="feature-title">Экосистема DimkoFF</h3>
+      <p class="feature-text">CaloriePT AI 2.0 — вход в экосистему из 4 ботов: стилист, психолог, коуч. Один аккаунт, единая среда роста.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SPLIT — ПОЛНОШИРИННАЯ СЕКЦИЯ С ФОТО -->
+<style>
+@keyframes borderDraw {
+  0%   { clip-path: inset(0 100% 100% 0); }
+  25%  { clip-path: inset(0 0 100% 0); }
+  50%  { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+.section-frame {
+  position:absolute;inset:16px;
+  border:1px solid rgba(201,169,110,0.5);
+  pointer-events:none;
+  opacity:0;
+  transition: opacity 0.3s;
+}
+.section-frame.visible {
+  opacity:1;
+  animation: borderDraw 1.2s ease forwards;
+}
+.section-frame::before {
+  content:'';position:absolute;inset:-1px;
+  border:1px solid rgba(201,169,110,0.15);
+}
+</style>
+
+<section id="tech-section" style="position:relative;overflow:hidden;min-height:600px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <!-- Фото на всю ширину -->
+  <div style="position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80&auto=format&fit=crop');
+    background-size:cover;background-position:center;">
+  </div>
+  <!-- Тёмный оверлей — справа темнее для читаемости -->
+  <div style="position:absolute;inset:0;
+    background:linear-gradient(90deg, rgba(12,16,24,0.3) 0%, rgba(12,16,24,0.85) 55%, rgba(12,16,24,0.92) 100%);"></div>
+
+  <!-- Анимированная рамка -->
+  <div class="section-frame" id="tech-frame"></div>
+
+  <!-- Контент -->
+  <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;min-height:600px;">
+    <!-- Левая часть — пустая, фото видно -->
+    <div></div>
+
+    <!-- Правая часть — текст с тёмной подложкой для читаемости -->
+    <div style="display:flex;align-items:center;padding:80px 72px 80px 40px;">
+      <div>
+        <p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;">CaloriePT AI 2.0</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;line-height:1.2;color:#fff;margin-bottom:32px;text-shadow:0 2px 20px rgba(0,0,0,0.8);">
+          Персональный диетолог<br>в твоём <em style="font-style:italic;color:var(--gold);">телефоне</em>
+        </h2>
+
+        <div style="display:flex;flex-direction:column;gap:18px;margin-bottom:40px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
+            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
+              <strong style="color:#fff;">Считает КБЖУ по фото</strong> — сфотографируй тарелку, бот сам определит состав и калории
+            </p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
+            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
+              <strong style="color:#fff;">Рецепты из холодильника</strong> — фото остатков еды, и бот составит меню на день или неделю
+            </p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
+            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
+              <strong style="color:#fff;">Норма калорий под твою цель</strong> — похудеть, набрать или держать форму
+            </p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
+            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
+              <strong style="color:#fff;">Полная статистика</strong> — калории, белки, жиры, углеводы за день, неделю, месяц
+            </p>
+          </div>
+        </div>
+
+        <a style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+          color:var(--gold);text-decoration:none;
+          border-bottom:1px solid rgba(201,169,110,0.5);padding-bottom:4px;
+          display:inline-flex;align-items:center;gap:10px;"
+          href="https://t.me/Calorie_counter_rf_bot" target="_blank">
+          Попробовать бесплатно →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const techObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById('tech-frame').classList.add('visible');
+      techObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('tech-section');
+  if (el) techObserver.observe(el);
+});
+</script>
+
+<!-- HOW IT WORKS -->
+<section class="section how" id="how">
+  <p class="section-eyebrow">Как это работает</p>
+  <h2 class="section-title">Четыре шага до <em>результата</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3 class="step-title">Открой бота</h3>
+      <p class="step-text">Перейди в @Calorie_counter_rf_bot и нажми Старт. Никаких загрузок, регистраций и паролей.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3 class="step-title">Заполни профиль</h3>
+      <p class="step-text">Рост, вес, цель. 2 минуты — и бот знает всё необходимое для персонального плана.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3 class="step-title">Фотографируй еду</h3>
+      <p class="step-text">Отправляй фото любого блюда — дневник заполняется автоматически. ИИ видит даже сложные рецепты.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3 class="step-title">Следи за прогрессом</h3>
+      <p class="step-text">Статистика, стрики, рекомендации от ИИ. Каждый день — шаг к цели.</p>
+    </div>
+  </div>
+</section>
+
+<!-- БОТЫ ЭКОСИСТЕМЫ -->
+<section class="section" style="background:var(--bg);" id="partners">
+  <p class="section-eyebrow">Экосистема DimkoFF</p>
+  <h2 class="section-title">Больше чем <em>диетолог</em></h2>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+
+    <!-- PsyMind AI -->
+    <a href="https://t.me/psy_mind_rf_bot" target="_blank" style="text-decoration:none;">
+      <div class="eco-card" id="eco1">
+        <div class="eco-frame"></div>
+        <p class="eco-tag">Психология</p>
+        <h3 class="eco-title">PsyMind AI</h3>
+        <p class="eco-sub">ИИ-психолог, который всегда рядом</p>
+        <p class="eco-text">
+          Тревога, стресс, выгорание, проблемы в отношениях — PsyMind AI работает по методам когнитивно-поведенческой терапии (CBT) и терапии принятия (ACT). Определяет тип привязанности, помогает разобраться в себе и найти опору.
+        </p>
+        <ul class="eco-list">
+          <li>Диагностика эмоционального состояния</li>
+          <li>Техники CBT и ACT в формате диалога</li>
+          <li>Кризисная поддержка 24/7</li>
+          <li>Анонимно — без записи и ожиданий</li>
+        </ul>
+        <div class="eco-cta">Открыть PsyMind AI →</div>
+      </div>
+    </a>
+
+    <!-- Stylist AI -->
+    <a href="https://t.me/stylist_dimkoff_bot" target="_blank" style="text-decoration:none;">
+      <div class="eco-card" id="eco2">
+        <div class="eco-frame"></div>
+        <p class="eco-tag">Стиль</p>
+        <h3 class="eco-title">Stylist AI</h3>
+        <p class="eco-sub">Персональный стилист за 0 рублей</p>
+        <p class="eco-text">
+          Анализирует цветотип по 12-сезонной системе и корейской методике, определяет тип фигуры по Кибби. Составляет персональную палитру с HEX-кодами и капсульный гардероб со ссылками на Wildberries и Lamoda.
+        </p>
+        <ul class="eco-list">
+          <li>Цветотип и персональная палитра</li>
+          <li>Тип фигуры по 13 архетипам Кибби</li>
+          <li>Капсульный гардероб под бюджет</li>
+          <li>Ссылки на вещи в магазинах</li>
+        </ul>
+        <div class="eco-cta">Открыть Stylist AI →</div>
+      </div>
+    </a>
+
+    <!-- PulseAI Coach -->
+    <a href="https://t.me/PulseAICoach_bot" target="_blank" style="text-decoration:none;">
+      <div class="eco-card" id="eco3">
+        <div class="eco-frame"></div>
+        <p class="eco-tag">Коучинг</p>
+        <h3 class="eco-title">PulseAI Coach</h3>
+        <p class="eco-sub">Тренер по достижению целей</p>
+        <p class="eco-text">
+          Помогает ставить цели по методу SMART, выстраивать дисциплину и трекать привычки. Режимы: карьерный рост, work-life balance, бизнес-коучинг, борьба с выгоранием. Персональный план на основе психотипа.
+        </p>
+        <ul class="eco-list">
+          <li>SMART-цели и декомпозиция задач</li>
+          <li>Трекер привычек и стриков</li>
+          <li>Карьерный рост и переговоры</li>
+          <li>Борьба с выгоранием и прокрастинацией</li>
+        </ul>
+        <div class="eco-cta">Открыть PulseAI Coach →</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<style>
+.eco-card {
+  position: relative;
+  background: var(--bg2);
+  padding: 44px 40px 52px;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  border: 1px solid transparent;
+}
+.eco-card:hover {
+  background: var(--bg3);
+  transform: translateY(-4px);
+  border-color: rgba(201,169,110,0.4);
+}
+.eco-frame {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  border: 2px solid var(--gold);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.1s, transform 0.4s ease;
+}
+.eco-card:hover .eco-frame {
+  opacity: 1;
+  transform: scaleX(1);
+}
+/* Подсветка снизу при hover */
+.eco-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.eco-card:hover::after { transform: scaleX(1); }
+
+.eco-tag {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.eco-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 400; color: var(--white);
+  margin-bottom: 8px;
+}
+.eco-sub {
+  font-size: 13px; color: var(--muted); margin-bottom: 20px;
+  font-style: italic;
+}
+.eco-text {
+  font-size: 13px; color: #9AA5B8; line-height: 1.75;
+  margin-bottom: 24px;
+}
+.eco-list {
+  list-style: none; margin-bottom: 32px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.eco-list li {
+  font-size: 12px; color: var(--muted);
+  padding-left: 18px; position: relative;
+}
+.eco-list li::before {
+  content: '→'; position: absolute; left: 0;
+  color: var(--gold); font-size: 11px;
+}
+.eco-cta {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(201,169,110,0.3);
+  display: inline-block; padding-bottom: 4px;
+}
+</style>
+
+<!-- ПАРТНЁРЫ -->
+<section class="section" style="background:var(--bg2);padding-top:100px;padding-bottom:100px;">
+  <p class="section-eyebrow">Партнёрам</p>
+  <h2 class="section-title">Зарабатывайте вместе <em>с нами</em></h2>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);">
+
+    <div class="partner-card">
+      <div class="partner-frame"></div>
+      <span class="partner-num">01</span>
+      <h3 class="partner-title">Диетологи и нутрициологи</h3>
+      <p class="partner-text">Разместите профиль в каталоге специалистов. Получайте клиентов с тёплой аудиторией, уже заинтересованной в питании.</p>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-frame"></div>
+      <span class="partner-num">02</span>
+      <h3 class="partner-title">Фитнес-клубы и тренеры</h3>
+      <p class="partner-text">Нативная реклама внутри бота для вашей целевой аудитории. Платите только за реальных клиентов.</p>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-frame"></div>
+      <span class="partner-num">03</span>
+      <h3 class="partner-title">Магазины спортпитания</h3>
+      <p class="partner-text">Умные рекомендации протеина, витаминов и добавок на основе целей пользователя. Прямые ссылки на ваши продукты.</p>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-frame"></div>
+      <span class="partner-num">04</span>
+      <h3 class="partner-title">Продуктовые магазины</h3>
+      <p class="partner-text">Персональные списки покупок со ссылками на ваш каталог. Интеграция с планом питания пользователя.</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.partner-card {
+  background: var(--bg2);
+  padding: 52px 48px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.partner-card:hover { background: var(--bg3); }
+.partner-frame {
+  position: absolute; inset: 0;
+  border: 2px solid var(--gold);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.1s, transform 0.45s ease;
+  pointer-events: none;
+}
+.partner-card:hover .partner-frame { opacity:1; transform: scaleX(1); }
+.partner-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.45s ease;
+}
+.partner-card:hover::after { transform: scaleX(1); }
+.partner-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 300;
+  color: var(--gold); line-height: 1;
+  margin-bottom: 20px; display: block;
+}
+.partner-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; margin-bottom: 14px; color: var(--white);
+}
+.partner-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
+</style>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title">Готов начать<br><em>правильно питаться?</em></h2>
+  <p class="cta-sub">Присоединяйся бесплатно. Без кредитной карты. Без обязательств.</p>
+  <div class="cta-buttons">
+    <a class="btn-primary" href="https://t.me/Calorie_counter_rf_bot" target="_blank">Открыть в Telegram</a>
+    <a class="btn-ghost" href="https://t.me/psy_mind_rf_bot" target="_blank">PsyMind AI</a>
+    <a class="btn-ghost" href="https://t.me/stylist_dimkoff_bot" target="_blank">Stylist AI</a>
+    <a class="btn-ghost" href="https://t.me/PulseAICoach_bot" target="_blank">PulseAI Coach</a>
+  </div>
+  <div style="margin-top:48px;">
+    <a href="https://t.me/VasyVenskiy" target="_blank" style="
+      display:inline-flex;align-items:center;gap:12px;
+      padding:16px 44px;
+      border:1px solid rgba(201,169,110,0.4);
+      color:var(--gold);
+      font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+      text-decoration:none;
+      transition:all 0.25s;
+      position:relative;
+    " onmouseover="this.style.background='rgba(201,169,110,0.08)';this.style.borderColor='rgba(201,169,110,0.8)'"
+       onmouseout="this.style.background='transparent';this.style.borderColor='rgba(201,169,110,0.4)'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+      Связаться со Студией DimkoFF
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Студия DimkoFF</div>
+  <ul class="footer-links">
+    <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank">CaloriePT AI 2.0</a></li>
+    <li><a href="https://t.me/psy_mind_rf_bot" target="_blank">PsyMind AI</a></li>
+    <li><a href="https://t.me/stylist_dimkoff_bot" target="_blank">Stylist AI</a></li>
+    <li><a href="https://t.me/PulseAICoach_bot" target="_blank">PulseAI Coach</a></li>
+    <li><a href="#">DimkoFF.ru</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Студия DimkoFF. Все права защищены.</div>
+</footer>
+
 </body>
 </html>
