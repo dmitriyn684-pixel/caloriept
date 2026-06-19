@@ -35,13 +35,15 @@
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     padding: 22px 60px;
     background: rgba(12,16,24,0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links { display: flex; gap: 40px; list-style: none; justify-content: flex-start; }
   .nav-links a {
     font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--muted); text-decoration: none; transition: color 0.2s;
@@ -51,11 +53,13 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 26px; font-weight: 600; letter-spacing: 0.05em;
     color: var(--white); text-decoration: none;
+    text-align: center;
   }
   .nav-cta {
     font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
     padding: 10px 22px; border: 1px solid var(--gold);
     color: var(--gold); text-decoration: none; transition: all 0.25s;
+    justify-self: flex-end;
   }
   .nav-cta:hover { background: var(--gold); color: var(--bg); }
 
