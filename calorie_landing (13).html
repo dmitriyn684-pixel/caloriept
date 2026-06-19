@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaloriePT AI 2.0 — ИИ-диетолог в Telegram</title>
+<title>Calorie Coach — ИИ-диетолог в Telegram</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
 
@@ -62,21 +62,19 @@
   /* ── HERO ── */
   .hero {
     position: relative; min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 140px 60px 120px;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 140px 60px 80px;
     overflow: hidden;
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&q=80&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    filter: brightness(1.15) contrast(1.1) saturate(1.2);
+    background: linear-gradient(135deg, #0C1018 0%, #1A2035 50%, #0C1018 100%);
   }
   .hero-bg::after {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(12,16,24,0.75) 0%, rgba(12,16,24,0.45) 50%, rgba(12,16,24,0.65) 100%);
+    background: radial-gradient(ellipse 70% 60% at 75% 50%, rgba(78,205,196,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 20% 80%, rgba(201,169,110,0.08) 0%, transparent 60%);
   }
   /* Сетка как фон */
   .hero-grid {
@@ -181,48 +179,34 @@
   .feature {
     background: var(--bg2);
     padding: 52px 44px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
     transition: background 0.3s;
   }
-  .feature::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
-  }
-  .feature:hover::before { transform: translateX(0); }
   .feature:hover { background: var(--bg3); }
   .feature-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 48px; font-weight: 300;
-    color: var(--gold); line-height: 1;
-    margin-bottom: 20px;
-    display: block;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 32px;
   }
-  .feature-icon { display: none; }
+  .feature-icon {
+    width: 52px; height: 52px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 28px;
+  }
   .feature-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 400;
-    margin-bottom: 14px; color: var(--white);
+    font-size: 24px; font-weight: 400;
+    margin-bottom: 16px; color: var(--white);
   }
-  .feature-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
+  .feature-text { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
   /* ── SPLIT SECTION ── */
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
   .split-visual {
-    background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80&auto=format&fit=crop');
-    background-size: cover; background-position: center;
+    background: var(--bg3);
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     min-height: 560px; padding: 60px;
     position: relative; overflow: hidden;
-  }
-  .split-visual::before {
-    content: ''; position: absolute; inset: 0;
-    background: rgba(12,16,24,0.65);
   }
   .phone-mockup {
     width: 240px; background: #1A2035;
@@ -306,30 +290,14 @@
   .monetize-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
     background: var(--border); border: 1px solid var(--border); }
   .mono-card {
-    background: var(--bg2); padding: 52px 48px;
-    text-align: center;
-    position: relative; overflow: hidden;
+    background: var(--bg2); padding: 44px 48px;
     transition: background 0.3s;
   }
-  .mono-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
-  }
-  .mono-card:hover::before { transform: translateX(0); }
   .mono-card:hover { background: var(--bg3); }
-  .mono-emoji { display: none; }
-  .mono-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 48px; font-weight: 300;
-    color: var(--gold); line-height: 1;
-    margin-bottom: 20px; display: block;
-  }
+  .mono-emoji { font-size: 28px; margin-bottom: 20px; display: block; }
   .mono-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; margin-bottom: 12px; color: var(--white);
+    font-size: 22px; margin-bottom: 10px; color: var(--white);
   }
   .mono-text { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
   .mono-badge {
@@ -422,7 +390,7 @@
     <li><a href="#how">Как работает</a></li>
     <li><a href="#partners">Партнёрам</a></li>
   </ul>
-  <a class="nav-logo" href="#">CaloriePT AI 2.0</a>
+  <a class="nav-logo" href="#">Calorie Coach</a>
   <a class="nav-cta" href="https://t.me/Calorie_counter_rf_bot" target="_blank">Попробовать</a>
 </nav>
 
@@ -449,56 +417,24 @@
 </section>
 
 <!-- STATS -->
-<div class="stats" id="stats-section">
+<div class="stats">
   <div class="stat">
-    <div class="stat-num" data-target="10" data-suffix=" сек">0 сек</div>
+    <div class="stat-num">10 сек</div>
     <div class="stat-label">Анализ фото еды</div>
   </div>
   <div class="stat">
-    <div class="stat-num" data-target="26" data-suffix="+">0+</div>
+    <div class="stat-num">26+</div>
     <div class="stat-label">Пользователей с первой недели</div>
   </div>
   <div class="stat">
-    <div class="stat-num" data-static="0₽">0₽</div>
+    <div class="stat-num">0₽</div>
     <div class="stat-label">Стоимость входа</div>
   </div>
   <div class="stat">
-    <div class="stat-num" data-target="24" data-suffix="/7">0/7</div>
+    <div class="stat-num">24/7</div>
     <div class="stat-label">Поддержка ИИ-диетолога</div>
   </div>
 </div>
-
-<script>
-function animateCounter(el) {
-  const staticVal = el.dataset.static;
-  if (staticVal !== undefined) { el.textContent = staticVal; return; }
-  const target = parseInt(el.dataset.target);
-  const suffix = el.dataset.suffix || '';
-  const duration = 1800;
-  const start = performance.now();
-  function update(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-    const current = Math.round(ease * target);
-    el.textContent = current + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-  }
-  requestAnimationFrame(update);
-}
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.querySelectorAll('.stat-num').forEach(animateCounter);
-      statsObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.3 });
-document.addEventListener('DOMContentLoaded', () => {
-  const section = document.getElementById('stats-section');
-  if (section) statsObserver.observe(section);
-});
-</script>
 
 <!-- FEATURES -->
 <section class="section features" id="features">
@@ -539,115 +475,51 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="feature-num">06</div>
       <div class="feature-icon">🌟</div>
       <h3 class="feature-title">Экосистема DimkoFF</h3>
-      <p class="feature-text">CaloriePT AI 2.0 — вход в экосистему из 4 ботов: стилист, психолог, коуч. Один аккаунт, единая среда роста.</p>
+      <p class="feature-text">Calorie Coach — вход в экосистему из 4 ботов: стилист, психолог, коуч. Один аккаунт, единая среда роста.</p>
     </div>
   </div>
 </section>
 
-<!-- SPLIT — ПОЛНОШИРИННАЯ СЕКЦИЯ С ФОТО -->
-<style>
-@keyframes borderDraw {
-  0%   { clip-path: inset(0 100% 100% 0); }
-  25%  { clip-path: inset(0 0 100% 0); }
-  50%  { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
-}
-.section-frame {
-  position:absolute;inset:16px;
-  border:1px solid rgba(201,169,110,0.5);
-  pointer-events:none;
-  opacity:0;
-  transition: opacity 0.3s;
-}
-.section-frame.visible {
-  opacity:1;
-  animation: borderDraw 1.2s ease forwards;
-}
-.section-frame::before {
-  content:'';position:absolute;inset:-1px;
-  border:1px solid rgba(201,169,110,0.15);
-}
-</style>
-
-<section id="tech-section" style="position:relative;overflow:hidden;min-height:600px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <!-- Фото на всю ширину -->
-  <div style="position:absolute;inset:0;
-    background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80&auto=format&fit=crop');
-    background-size:cover;background-position:center;">
-  </div>
-  <!-- Тёмный оверлей — справа темнее для читаемости -->
-  <div style="position:absolute;inset:0;
-    background:linear-gradient(90deg, rgba(12,16,24,0.3) 0%, rgba(12,16,24,0.85) 55%, rgba(12,16,24,0.92) 100%);"></div>
-
-  <!-- Анимированная рамка -->
-  <div class="section-frame" id="tech-frame"></div>
-
-  <!-- Контент -->
-  <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;min-height:600px;">
-    <!-- Левая часть — пустая, фото видно -->
-    <div></div>
-
-    <!-- Правая часть — текст с тёмной подложкой для читаемости -->
-    <div style="display:flex;align-items:center;padding:80px 72px 80px 40px;">
-      <div>
-        <p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;">CaloriePT AI 2.0</p>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;line-height:1.2;color:#fff;margin-bottom:32px;text-shadow:0 2px 20px rgba(0,0,0,0.8);">
-          Персональный диетолог<br>в твоём <em style="font-style:italic;color:var(--gold);">телефоне</em>
-        </h2>
-
-        <div style="display:flex;flex-direction:column;gap:18px;margin-bottom:40px;">
-          <div style="display:flex;align-items:flex-start;gap:16px;">
-            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
-            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
-              <strong style="color:#fff;">Считает КБЖУ по фото</strong> — сфотографируй тарелку, бот сам определит состав и калории
-            </p>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:16px;">
-            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
-            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
-              <strong style="color:#fff;">Рецепты из холодильника</strong> — фото остатков еды, и бот составит меню на день или неделю
-            </p>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:16px;">
-            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
-            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
-              <strong style="color:#fff;">Норма калорий под твою цель</strong> — похудеть, набрать или держать форму
-            </p>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:16px;">
-            <span style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;">→</span>
-            <p style="font-size:14px;color:#C8D0DC;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.9);">
-              <strong style="color:#fff;">Полная статистика</strong> — калории, белки, жиры, углеводы за день, неделю, месяц
-            </p>
-          </div>
+<!-- SPLIT — ЧАТ ДЕМО -->
+<section class="split">
+  <div class="split-visual">
+    <!-- Декоративный фон -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(78,205,196,0.05) 0%, transparent 70%);"></div>
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="chat-msg bot">Привет! 👋 Отправь фото своего обеда — я посчитаю КБЖУ</div>
+        <div class="chat-msg user">📸 [фото тарелки с гречкой и курицей]</div>
+        <div class="chat-msg bot">
+          <span class="chat-gold">🍽 Анализ готов!</span><br><br>
+          Гречка отварная — 150г<br>
+          Куриная грудка — 120г<br>
+          Огурец свежий — 80г<br><br>
+          <span class="chat-gold">Итого:</span><br>
+          🔥 Калории: <b>387 ккал</b><br>
+          💪 Белки: 42г · Жиры: 8г · Углеводы: 38г<br><br>
+          До дневной нормы осталось 813 ккал ✅
         </div>
-
-        <a style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
-          color:var(--gold);text-decoration:none;
-          border-bottom:1px solid rgba(201,169,110,0.5);padding-bottom:4px;
-          display:inline-flex;align-items:center;gap:10px;"
-          href="https://t.me/Calorie_counter_rf_bot" target="_blank">
-          Попробовать бесплатно →
-        </a>
+        <div class="chat-msg user">Отлично! А что на ужин?</div>
+        <div class="chat-msg bot">С твоим остатком (813 ккал) идеально: лёгкий белковый ужин 🥗</div>
       </div>
     </div>
   </div>
+  <div class="split-content">
+    <p class="split-eyebrow">Технология</p>
+    <h2 class="split-title">ИИ, который <em>видит</em> твою еду</h2>
+    <p class="split-text">
+      Не нужно вручную искать продукты в базах данных. 
+      Просто сфотографируй блюдо — Gemini Vision распознаёт 
+      состав, объём и считает точное КБЖУ за 10 секунд.
+      <br><br>
+      GigaChat формирует персональные рекомендации на русском 
+      языке с учётом твоих целей и особенностей здоровья.
+    </p>
+    <a class="split-link" href="https://t.me/Calorie_counter_rf_bot" target="_blank">
+      Попробовать бесплатно →
+    </a>
+  </div>
 </section>
-
-<script>
-const techObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      document.getElementById('tech-frame').classList.add('visible');
-      techObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.2 });
-document.addEventListener('DOMContentLoaded', () => {
-  const el = document.getElementById('tech-section');
-  if (el) techObserver.observe(el);
-});
-</script>
 
 <!-- HOW IT WORKS -->
 <section class="section how" id="how">
@@ -677,229 +549,37 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </section>
 
-<!-- БОТЫ ЭКОСИСТЕМЫ -->
-<section class="section" style="background:var(--bg);" id="partners">
-  <p class="section-eyebrow">Экосистема DimkoFF</p>
-  <h2 class="section-title">Больше чем <em>диетолог</em></h2>
-
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-
-    <!-- PsyMind AI -->
-    <a href="https://t.me/psy_mind_rf_bot" target="_blank" style="text-decoration:none;">
-      <div class="eco-card" id="eco1">
-        <div class="eco-frame"></div>
-        <p class="eco-tag">Психология</p>
-        <h3 class="eco-title">PsyMind AI</h3>
-        <p class="eco-sub">ИИ-психолог, который всегда рядом</p>
-        <p class="eco-text">
-          Тревога, стресс, выгорание, проблемы в отношениях — PsyMind AI работает по методам когнитивно-поведенческой терапии (CBT) и терапии принятия (ACT). Определяет тип привязанности, помогает разобраться в себе и найти опору.
-        </p>
-        <ul class="eco-list">
-          <li>Диагностика эмоционального состояния</li>
-          <li>Техники CBT и ACT в формате диалога</li>
-          <li>Кризисная поддержка 24/7</li>
-          <li>Анонимно — без записи и ожиданий</li>
-        </ul>
-        <div class="eco-cta">Открыть PsyMind AI →</div>
-      </div>
-    </a>
-
-    <!-- Stylist AI -->
-    <a href="https://t.me/stylist_dimkoff_bot" target="_blank" style="text-decoration:none;">
-      <div class="eco-card" id="eco2">
-        <div class="eco-frame"></div>
-        <p class="eco-tag">Стиль</p>
-        <h3 class="eco-title">Stylist AI</h3>
-        <p class="eco-sub">Персональный стилист за 0 рублей</p>
-        <p class="eco-text">
-          Анализирует цветотип по 12-сезонной системе и корейской методике, определяет тип фигуры по Кибби. Составляет персональную палитру с HEX-кодами и капсульный гардероб со ссылками на Wildberries и Lamoda.
-        </p>
-        <ul class="eco-list">
-          <li>Цветотип и персональная палитра</li>
-          <li>Тип фигуры по 13 архетипам Кибби</li>
-          <li>Капсульный гардероб под бюджет</li>
-          <li>Ссылки на вещи в магазинах</li>
-        </ul>
-        <div class="eco-cta">Открыть Stylist AI →</div>
-      </div>
-    </a>
-
-    <!-- PulseAI Coach -->
-    <a href="https://t.me/PulseAICoach_bot" target="_blank" style="text-decoration:none;">
-      <div class="eco-card" id="eco3">
-        <div class="eco-frame"></div>
-        <p class="eco-tag">Коучинг</p>
-        <h3 class="eco-title">PulseAI Coach</h3>
-        <p class="eco-sub">Тренер по достижению целей</p>
-        <p class="eco-text">
-          Помогает ставить цели по методу SMART, выстраивать дисциплину и трекать привычки. Режимы: карьерный рост, work-life balance, бизнес-коучинг, борьба с выгоранием. Персональный план на основе психотипа.
-        </p>
-        <ul class="eco-list">
-          <li>SMART-цели и декомпозиция задач</li>
-          <li>Трекер привычек и стриков</li>
-          <li>Карьерный рост и переговоры</li>
-          <li>Борьба с выгоранием и прокрастинацией</li>
-        </ul>
-        <div class="eco-cta">Открыть PulseAI Coach →</div>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<style>
-.eco-card {
-  position: relative;
-  background: var(--bg2);
-  padding: 44px 40px 52px;
-  height: 100%;
-  overflow: hidden;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.3s;
-  border: 1px solid transparent;
-}
-.eco-card:hover {
-  background: var(--bg3);
-  transform: translateY(-4px);
-  border-color: rgba(201,169,110,0.4);
-}
-.eco-frame {
-  position: absolute; inset: 0;
-  pointer-events: none;
-  border: 2px solid var(--gold);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: opacity 0.1s, transform 0.4s ease;
-}
-.eco-card:hover .eco-frame {
-  opacity: 1;
-  transform: scaleX(1);
-}
-/* Подсветка снизу при hover */
-.eco-card::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-.eco-card:hover::after { transform: scaleX(1); }
-
-.eco-tag {
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 16px;
-}
-.eco-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px; font-weight: 400; color: var(--white);
-  margin-bottom: 8px;
-}
-.eco-sub {
-  font-size: 13px; color: var(--muted); margin-bottom: 20px;
-  font-style: italic;
-}
-.eco-text {
-  font-size: 13px; color: #9AA5B8; line-height: 1.75;
-  margin-bottom: 24px;
-}
-.eco-list {
-  list-style: none; margin-bottom: 32px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.eco-list li {
-  font-size: 12px; color: var(--muted);
-  padding-left: 18px; position: relative;
-}
-.eco-list li::before {
-  content: '→'; position: absolute; left: 0;
-  color: var(--gold); font-size: 11px;
-}
-.eco-cta {
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--gold);
-  border-bottom: 1px solid rgba(201,169,110,0.3);
-  display: inline-block; padding-bottom: 4px;
-}
-</style>
-
-<!-- ПАРТНЁРЫ -->
-<section class="section" style="background:var(--bg2);padding-top:100px;padding-bottom:100px;">
+<!-- MONETIZE / PARTNERS -->
+<section class="section monetize" id="partners">
   <p class="section-eyebrow">Партнёрам</p>
   <h2 class="section-title">Зарабатывайте вместе <em>с нами</em></h2>
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);">
-
-    <div class="partner-card">
-      <div class="partner-frame"></div>
-      <span class="partner-num">01</span>
-      <h3 class="partner-title">Диетологи и нутрициологи</h3>
-      <p class="partner-text">Разместите профиль в каталоге специалистов. Получайте клиентов с тёплой аудиторией, уже заинтересованной в питании.</p>
+  <div class="monetize-grid">
+    <div class="mono-card">
+      <span class="mono-emoji">💊</span>
+      <h3 class="mono-title">Диетологи и нутрициологи</h3>
+      <p class="mono-text">Разместите профиль в каталоге специалистов. Получайте клиентов с тёплой аудиторией, уже заинтересованной в питании.</p>
+      <span class="mono-badge">Комиссия 20–30% с записи</span>
     </div>
-
-    <div class="partner-card">
-      <div class="partner-frame"></div>
-      <span class="partner-num">02</span>
-      <h3 class="partner-title">Фитнес-клубы и тренеры</h3>
-      <p class="partner-text">Нативная реклама внутри бота для вашей целевой аудитории. Платите только за реальных клиентов.</p>
+    <div class="mono-card">
+      <span class="mono-emoji">🏋️</span>
+      <h3 class="mono-title">Фитнес-клубы и тренеры</h3>
+      <p class="mono-text">CPA-модель: платите только за реальных клиентов. Нативная реклама внутри бота для вашей целевой аудитории.</p>
+      <span class="mono-badge">CPA 300–800 ₽/клиент</span>
     </div>
-
-    <div class="partner-card">
-      <div class="partner-frame"></div>
-      <span class="partner-num">03</span>
-      <h3 class="partner-title">Магазины спортпитания</h3>
-      <p class="partner-text">Умные рекомендации протеина, витаминов и добавок на основе целей пользователя. Прямые ссылки на ваши продукты.</p>
+    <div class="mono-card">
+      <span class="mono-emoji">🛒</span>
+      <h3 class="mono-title">Магазины спортпитания</h3>
+      <p class="mono-text">Умные рекомендации протеина, витаминов и добавок на основе целей пользователя. Прямые ссылки на ваши продукты.</p>
+      <span class="mono-badge">От 30 000 ₽/мес</span>
     </div>
-
-    <div class="partner-card">
-      <div class="partner-frame"></div>
-      <span class="partner-num">04</span>
-      <h3 class="partner-title">Продуктовые магазины</h3>
-      <p class="partner-text">Персональные списки покупок со ссылками на ваш каталог. Интеграция с планом питания пользователя.</p>
+    <div class="mono-card">
+      <span class="mono-emoji">🥩</span>
+      <h3 class="mono-title">Продуктовые магазины</h3>
+      <p class="mono-text">Персональные списки покупок со ссылками на ваш каталог. Интеграция с планом питания пользователя.</p>
+      <span class="mono-badge">Обсуждается индивидуально</span>
     </div>
-
   </div>
 </section>
-
-<style>
-.partner-card {
-  background: var(--bg2);
-  padding: 52px 48px;
-  text-align: center;
-  position: relative; overflow: hidden;
-  transition: background 0.3s;
-}
-.partner-card:hover { background: var(--bg3); }
-.partner-frame {
-  position: absolute; inset: 0;
-  border: 2px solid var(--gold);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: opacity 0.1s, transform 0.45s ease;
-  pointer-events: none;
-}
-.partner-card:hover .partner-frame { opacity:1; transform: scaleX(1); }
-.partner-card::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.45s ease;
-}
-.partner-card:hover::after { transform: scaleX(1); }
-.partner-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 48px; font-weight: 300;
-  color: var(--gold); line-height: 1;
-  margin-bottom: 20px; display: block;
-}
-.partner-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; margin-bottom: 14px; color: var(--white);
-}
-.partner-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
-</style>
 
 <!-- CTA -->
 <section class="cta-section">
@@ -907,39 +587,21 @@ document.addEventListener('DOMContentLoaded', () => {
   <p class="cta-sub">Присоединяйся бесплатно. Без кредитной карты. Без обязательств.</p>
   <div class="cta-buttons">
     <a class="btn-primary" href="https://t.me/Calorie_counter_rf_bot" target="_blank">Открыть в Telegram</a>
-    <a class="btn-ghost" href="https://t.me/psy_mind_rf_bot" target="_blank">PsyMind AI</a>
-    <a class="btn-ghost" href="https://t.me/stylist_dimkoff_bot" target="_blank">Stylist AI</a>
-    <a class="btn-ghost" href="https://t.me/PulseAICoach_bot" target="_blank">PulseAI Coach</a>
-  </div>
-  <div style="margin-top:48px;">
-    <a href="https://t.me/VasyVenskiy" target="_blank" style="
-      display:inline-flex;align-items:center;gap:12px;
-      padding:16px 44px;
-      border:1px solid rgba(201,169,110,0.4);
-      color:var(--gold);
-      font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
-      text-decoration:none;
-      transition:all 0.25s;
-      position:relative;
-    " onmouseover="this.style.background='rgba(201,169,110,0.08)';this.style.borderColor='rgba(201,169,110,0.8)'"
-       onmouseout="this.style.background='transparent';this.style.borderColor='rgba(201,169,110,0.4)'">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-      Связаться со Студией DimkoFF
-    </a>
+    <a class="btn-ghost" href="https://t.me/psy_mind_rf_bot" target="_blank">🧠 PsyMind AI</a>
+    <a class="btn-ghost" href="https://t.me/stylist_dimkoff_bot" target="_blank">👗 Stylist AI</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Студия DimkoFF</div>
+  <div class="footer-logo">Calorie Coach</div>
   <ul class="footer-links">
-    <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank">CaloriePT AI 2.0</a></li>
-    <li><a href="https://t.me/psy_mind_rf_bot" target="_blank">PsyMind AI</a></li>
-    <li><a href="https://t.me/stylist_dimkoff_bot" target="_blank">Stylist AI</a></li>
-    <li><a href="https://t.me/PulseAICoach_bot" target="_blank">PulseAI Coach</a></li>
+    <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank">Telegram</a></li>
+    <li><a href="#">Политика конфиденциальности</a></li>
+    <li><a href="#">Поддержка</a></li>
     <li><a href="#">DimkoFF.ru</a></li>
   </ul>
-  <div class="footer-copy">© 2025 Студия DimkoFF. Все права защищены.</div>
+  <div class="footer-copy">© 2025 DimkoFF. Все права защищены.</div>
 </footer>
 
 </body>
