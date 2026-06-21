@@ -368,8 +368,9 @@ function showPage(name) {
 }
 
 function showAddFood() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  showPage('add');
+  document.getElementById('page-add').classList.add('active');
 }
 
 function selectMealType(el) {
