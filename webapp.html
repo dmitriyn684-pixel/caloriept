@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CaloriePT AI 2.0</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#141414;--bg2:#1e1e1e;--bg3:#252525;
+  --gold:#C9A84C;--gold2:rgba(201,168,76,0.12);--gold-border:rgba(201,168,76,0.2);
+  --text:#F0EDE6;--text2:#9A9589;--text3:#6B6560;
+  --border:rgba(255,255,255,0.07);
+  --blue:#5B9BD5;--orange:#D4784A;--green:#4CAF7C;
+  --radius:14px;--radius-sm:10px;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;min-height:100vh;padding-bottom:70px;overflow-x:hidden}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:0.5px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.header-logo{font-size:12px;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;font-weight:500}
+.header-streak{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--gold)}
+.streak-fire{font-size:14px}
+
+/* PAGES */
+.page{display:none;padding:14px 14px 0;animation:fadein 0.2s ease}
+.page.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* KCAL RING CARD */
+.kcal-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px}
+.kcal-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ring-wrap{position:relative;width:80px;height:80px;flex-shrink:0}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ring-pct{font-size:16px;font-weight:600;color:var(--gold)}
+.kcal-info{flex:1}
+.kcal-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
+.kcal-num{font-size:30px;font-weight:600;color:var(--text);line-height:1}
+.kcal-norm{font-size:11px;color:var(--text2);margin-top:3px}
+.kcal-badge{display:inline-block;margin-top:6px;font-size:11px;color:var(--gold);background:var(--gold2);padding:3px 8px;border-radius:20px;border:0.5px solid var(--gold-border)}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.macro{background:var(--bg3);border-radius:var(--radius-sm);padding:9px 6px;text-align:center;border:0.5px solid var(--border)}
+.macro-val{font-size:15px;font-weight:500}
+.macro-name{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+.macro-bar{height:2px;border-radius:1px;background:rgba(255,255,255,0.06);margin-top:6px;overflow:hidden}
+.macro-fill{height:100%;border-radius:1px;transition:width 0.6s ease}
+
+/* SECTION */
+.section{margin-bottom:12px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.section-title{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-weight:500}
+.section-action{font-size:12px;color:var(--gold);cursor:pointer}
+
+/* MEAL CARD */
+.meal-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden}
+.meal-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s}
+.meal-row:last-child{border-bottom:none}
+.meal-row:active{background:var(--bg3)}
+.meal-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.meal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.meal-text{flex:1;min-width:0}
+.meal-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meal-meta{font-size:10px;color:var(--text2);margin-top:1px}
+.meal-right{text-align:right;flex-shrink:0;margin-left:8px}
+.meal-kcal{font-size:13px;font-weight:500;color:var(--gold)}
+.meal-unit{font-size:9px;color:var(--text3)}
+
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;font-size:13px;font-weight:500;border-radius:var(--radius-sm);cursor:pointer;border:0.5px solid var(--gold-border);background:var(--gold2);color:var(--gold);letter-spacing:0.02em;transition:background 0.15s;margin-top:8px}
+.btn:active{background:rgba(201,168,76,0.2)}
+.btn-secondary{background:var(--bg3);border-color:var(--border);color:var(--text2);margin-top:6px}
+.btn-secondary:active{background:var(--bg2)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 20px;color:var(--text2)}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:0.4}
+.empty-text{font-size:14px}
+
+/* PROFILE */
+.profile-hero{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px}
+.profile-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--gold2);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:var(--gold);flex-shrink:0}
+.profile-name{font-size:16px;font-weight:500;color:var(--text)}
+.profile-goal{font-size:11px;color:var(--text2);margin-top:2px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat-box{background:var(--bg3);border-radius:var(--radius-sm);padding:10px 12px;border:0.5px solid var(--border)}
+.stat-val{font-size:20px;font-weight:500;color:var(--text)}
+.stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+
+/* MENU */
+.menu-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden}
+.menu-row{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s}
+.menu-row:last-child{border-bottom:none}
+.menu-row:active{background:var(--bg3)}
+.menu-left{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)}
+.menu-icon{font-size:16px;color:var(--text2)}
+.menu-arrow{font-size:12px;color:var(--text3)}
+
+/* RECIPES */
+.recipe-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;cursor:pointer;transition:background 0.15s}
+.recipe-card:active{background:var(--bg3)}
+.recipe-name{font-size:13px;font-weight:500;color:var(--text)}
+.recipe-meta{font-size:11px;color:var(--text2);margin-top:2px}
+.recipe-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:5px;border:0.5px solid var(--gold-border);color:var(--gold);background:var(--gold2)}
+.recipe-right{text-align:right;flex-shrink:0;margin-left:10px}
+.recipe-kcal{font-size:16px;font-weight:500;color:var(--gold)}
+.recipe-unit{font-size:9px;color:var(--text3)}
+
+/* ADD FOOD FORM */
+.add-form{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px}
+.form-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:14px}
+.form-group{margin-bottom:10px}
+.form-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;display:block}
+.form-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none}
+.form-input:focus{border-color:var(--gold-border)}
+.form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.meal-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.meal-type-btn{padding:8px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;text-align:center;transition:all 0.15s}
+.meal-type-btn.selected{border-color:var(--gold-border);background:var(--gold2);color:var(--gold)}
+
+/* TABS */
+.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:0.5px solid var(--border);display:flex;padding:6px 0 8px;z-index:100}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0}
+.tab-icon{font-size:20px;color:var(--text2)}
+.tab-label{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em}
+.tab.active .tab-icon{color:var(--gold)}
+.tab.active .tab-label{color:var(--gold)}
+
+/* LOADER */
+.loader{display:flex;align-items:center;justify-content:center;padding:30px;color:var(--text2);font-size:13px;gap:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:0.5px solid var(--gold-border);color:var(--text);font-size:12px;padding:8px 16px;border-radius:20px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">CaloriePT AI 2.0</div>
+  <div class="header-streak"><span class="streak-fire">🔥</span> <span id="streak-val">0</span> дней</div>
+</div>
+
+<!-- DIARY PAGE -->
+<div class="page active" id="page-diary">
+  <div class="kcal-card">
+    <div class="kcal-top">
+      <div class="ring-wrap">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="33" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="7"/>
+          <circle id="ring-arc" cx="40" cy="40" r="33" fill="none" stroke="#C9A84C" stroke-width="7"
+            stroke-dasharray="207.3" stroke-dashoffset="207.3" stroke-linecap="round"/>
+        </svg>
+        <div class="ring-center"><div class="ring-pct" id="ring-pct">0%</div></div>
+      </div>
+      <div class="kcal-info">
+        <div class="kcal-label">Съедено сегодня</div>
+        <div class="kcal-num" id="kcal-eaten">0</div>
+        <div class="kcal-norm">из <span id="kcal-norm">2000</span> ккал</div>
+        <div class="kcal-badge" id="kcal-badge">осталось 2000</div>
+      </div>
+    </div>
+    <div class="macros">
+      <div class="macro">
+        <div class="macro-val" style="color:var(--blue)" id="m-protein">0г</div>
+        <div class="macro-name">Белки</div>
+        <div class="macro-bar"><div class="macro-fill" id="bar-protein" style="width:0%;background:var(--blue)"></div></div>
+      </div>
+      <div class="macro">
+        <div class="macro-val" style="color:var(--orange)" id="m-fat">0г</div>
+        <div class="macro-name">Жиры</div>
+        <div class="macro-bar"><div class="macro-fill" id="bar-fat" style="width:0%;background:var(--orange)"></div></div>
+      </div>
+      <div class="macro">
+        <div class="macro-val" style="color:var(--gold)" id="m-carbs">0г</div>
+        <div class="macro-name">Углеводы</div>
+        <div class="macro-bar"><div class="macro-fill" id="bar-carbs" style="width:0%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Приёмы пищи</div>
+      <div class="section-action" onclick="showAddFood()">+ Добавить</div>
+    </div>
+    <div id="diary-list">
+      <div class="loader">Загрузка...</div>
+    </div>
+    <button class="btn" onclick="showAddFood()">+ Записать еду</button>
+    <button class="btn btn-secondary" onclick="openBot('photo')">📷 Фото блюда</button>
+  </div>
+</div>
+
+<!-- ADD FOOD PAGE -->
+<div class="page" id="page-add">
+  <div class="add-form">
+    <div class="form-title">Добавить приём пищи</div>
+    <div class="form-group">
+      <label class="form-label">Название блюда</label>
+      <input class="form-input" id="food-name" type="text" placeholder="Например: гречка с курицей">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Тип приёма</label>
+      <div class="meal-type-grid">
+        <div class="meal-type-btn selected" data-type="завтрак" onclick="selectMealType(this)">🌅 Завтрак</div>
+        <div class="meal-type-btn" data-type="обед" onclick="selectMealType(this)">🥗 Обед</div>
+        <div class="meal-type-btn" data-type="ужин" onclick="selectMealType(this)">🌙 Ужин</div>
+        <div class="meal-type-btn" data-type="перекус" onclick="selectMealType(this)">🍎 Перекус</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Калории (ккал)</label>
+      <input class="form-input" id="food-kcal" type="number" placeholder="300" inputmode="numeric">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Белки (г)</label>
+        <input class="form-input" id="food-protein" type="number" placeholder="25" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Жиры (г)</label>
+        <input class="form-input" id="food-fat" type="number" placeholder="10" inputmode="decimal">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Углеводы (г)</label>
+      <input class="form-input" id="food-carbs" type="number" placeholder="35" inputmode="decimal">
+    </div>
+  </div>
+  <button class="btn" onclick="saveFood()">Сохранить запись</button>
+  <button class="btn btn-secondary" onclick="showPage('diary')">Отмена</button>
+</div>
+
+<!-- RECIPES PAGE -->
+<div class="page" id="page-recipes">
+  <div class="section" style="margin-top:0">
+    <div class="section-head">
+      <div class="section-title">Рецепты от ИИ</div>
+      <div class="section-action" onclick="openBot('recipe')">Подобрать →</div>
+    </div>
+    <div id="recipes-list">
+      <div class="recipe-card" onclick="openBot('recipe_salat')">
+        <div>
+          <div class="recipe-name">Греческий салат с тунцом</div>
+          <div class="recipe-meta">20 мин · 2 порции</div>
+          <div class="recipe-tag">высокий белок</div>
+        </div>
+        <div class="recipe-right"><div class="recipe-kcal">320</div><div class="recipe-unit">ккал</div></div>
+      </div>
+      <div class="recipe-card" onclick="openBot('recipe_soup')">
+        <div>
+          <div class="recipe-name">Куриный суп с овощами</div>
+          <div class="recipe-meta">40 мин · 4 порции</div>
+          <div class="recipe-tag">низкий жир</div>
+        </div>
+        <div class="recipe-right"><div class="recipe-kcal">280</div><div class="recipe-unit">ккал</div></div>
+      </div>
+      <div class="recipe-card" onclick="openBot('recipe_blini')">
+        <div>
+          <div class="recipe-name">Овсяные блины с творогом</div>
+          <div class="recipe-meta">15 мин · 1 порция</div>
+          <div class="recipe-tag">завтрак</div>
+        </div>
+        <div class="recipe-right"><div class="recipe-kcal">410</div><div class="recipe-unit">ккал</div></div>
+      </div>
+    </div>
+    <button class="btn" onclick="openBot('fridge')">🧊 Рецепт из холодильника</button>
+    <button class="btn btn-secondary" onclick="openBot('recipes_all')">Все рецепты</button>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="page" id="page-profile">
+  <div class="profile-hero">
+    <div class="profile-top">
+      <div class="avatar" id="avatar-initials">?</div>
+      <div>
+        <div class="profile-name" id="profile-name">Загрузка...</div>
+        <div class="profile-goal" id="profile-goal">—</div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-val" id="p-weight">—</div><div class="stat-lbl">Вес</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-goal-w">—</div><div class="stat-lbl">Цель кг</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-height">—</div><div class="stat-lbl">Рост</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-kcal">2000</div><div class="stat-lbl">Норма ккал</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-head"><div class="section-title">Действия</div></div>
+    <div class="menu-card">
+      <div class="menu-row" onclick="openBot('update_weight')">
+        <div class="menu-left"><span class="menu-icon">⚖️</span> Обновить вес</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('change_goal')">
+        <div class="menu-left"><span class="menu-icon">🎯</span> Изменить цель</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('week_stats')">
+        <div class="menu-left"><span class="menu-icon">📊</span> Статистика за неделю</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('export')">
+        <div class="menu-left"><span class="menu-icon">📥</span> Скачать дневник CSV</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('specialists')">
+        <div class="menu-left"><span class="menu-icon">👨‍⚕️</span> Специалисты</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('referral')">
+        <div class="menu-left"><span class="menu-icon">🎁</span> Реферальная программа</div>
+        <span class="menu-arrow">›</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" id="tab-diary" onclick="showPage('diary')">
+    <div class="tab-icon">📋</div>
+    <div class="tab-label">Дневник</div>
+  </div>
+  <div class="tab" id="tab-recipes" onclick="showPage('recipes')">
+    <div class="tab-icon">🍽</div>
+    <div class="tab-label">Рецепты</div>
+  </div>
+  <div class="tab" id="tab-profile" onclick="showPage('profile')">
+    <div class="tab-icon">👤</div>
+    <div class="tab-label">Профиль</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.expand();
+tg.setHeaderColor('#141414');
+tg.setBackgroundColor('#141414');
+
+const BOT_API = 'https://psymind.amvera.io'; // заменить на реальный API CaloriePT
+let userData = {};
+let diaryData = [];
+let selectedMealType = 'завтрак';
+
+const goalLabels = {lose:'похудение',gain:'набор массы',maintain:'поддержание'};
+const mealColors = {завтрак:'#5B9BD5',обед:'#4CAF7C',ужин:'#C9A84C',перекус:'#D4784A'};
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const tab = document.getElementById('tab-' + name);
+  if (tab) tab.classList.add('active');
+}
+
+function showAddFood() {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  showPage('add');
+}
+
+function selectMealType(el) {
+  document.querySelectorAll('.meal-type-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMealType = el.dataset.type;
+}
+
+function openBot(action) {
+  const msgs = {
+    photo: 'Отправь фото блюда — я определю калории!',
+    recipe: 'Подбери мне рецепт',
+    fridge: 'Рецепт из холодильника',
+    recipes_all: '/recipes',
+    update_weight: 'Обновить мой вес',
+    change_goal: 'Изменить мою цель',
+    week_stats: '/stats',
+    export: '/export',
+    specialists: 'Каталог специалистов',
+    referral: '/referral',
+    recipe_salat: 'Рецепт: греческий салат с тунцом',
+    recipe_soup: 'Рецепт: куриный суп с овощами',
+    recipe_blini: 'Рецепт: овсяные блины с творогом',
+  };
+  tg.sendData(JSON.stringify({action, text: msgs[action] || action}));
+  tg.close();
+}
+
+function updateRing(eaten, norm) {
+  const pct = Math.min(Math.round(eaten / norm * 100), 100);
+  const circumference = 207.3;
+  const offset = circumference - (circumference * pct / 100);
+  document.getElementById('ring-arc').style.strokeDashoffset = offset;
+  document.getElementById('ring-pct').textContent = pct + '%';
+  document.getElementById('kcal-eaten').textContent = eaten.toLocaleString('ru');
+  document.getElementById('kcal-norm').textContent = norm.toLocaleString('ru');
+  const rem = norm - eaten;
+  const badge = document.getElementById('kcal-badge');
+  if (rem >= 0) {
+    badge.textContent = 'осталось ' + rem;
+    badge.style.color = 'var(--gold)';
+  } else {
+    badge.textContent = 'превышение ' + Math.abs(rem);
+    badge.style.color = 'var(--orange)';
+  }
+}
+
+function updateMacros(p, f, c, norm) {
+  document.getElementById('m-protein').textContent = Math.round(p) + 'г';
+  document.getElementById('m-fat').textContent = Math.round(f) + 'г';
+  document.getElementById('m-carbs').textContent = Math.round(c) + 'г';
+  const normP = norm * 0.03, normF = norm * 0.025, normC = norm * 0.075;
+  document.getElementById('bar-protein').style.width = Math.min(p/normP*100, 100) + '%';
+  document.getElementById('bar-fat').style.width = Math.min(f/normF*100, 100) + '%';
+  document.getElementById('bar-carbs').style.width = Math.min(c/normC*100, 100) + '%';
+}
+
+function renderDiary(log, norm) {
+  const list = document.getElementById('diary-list');
+  if (!log || log.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Дневник пуст. Запиши первый приём!</div></div>';
+    return;
+  }
+  let html = '<div class="meal-card">';
+  log.forEach(r => {
+    const color = mealColors[r.meal_type] || 'var(--gold)';
+    html += `<div class="meal-row">
+      <div class="meal-left">
+        <div class="meal-dot" style="background:${color}"></div>
+        <div class="meal-text">
+          <div class="meal-name">${r.meal_name}</div>
+          <div class="meal-meta">${r.meal_type || 'другое'}</div>
+        </div>
+      </div>
+      <div class="meal-right">
+        <div class="meal-kcal">${r.calories}</div>
+        <div class="meal-unit">ккал</div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  list.innerHTML = html;
+
+  const totC = log.reduce((s,r) => s + (r.calories||0), 0);
+  const totP = log.reduce((s,r) => s + (r.protein||0), 0);
+  const totF = log.reduce((s,r) => s + (r.fat||0), 0);
+  const totCa = log.reduce((s,r) => s + (r.carbs||0), 0);
+  updateRing(totC, norm);
+  updateMacros(totP, totF, totCa, norm);
+}
+
+function renderProfile(u) {
+  if (!u) return;
+  const name = u.full_name || u.username || 'Пользователь';
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('avatar-initials').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('profile-goal').textContent = 'Цель: ' + (goalLabels[u.goal] || u.goal || '—');
+  document.getElementById('p-weight').textContent = u.weight ? u.weight + ' кг' : '—';
+  document.getElementById('p-height').textContent = u.height ? u.height + ' см' : '—';
+  document.getElementById('p-kcal').textContent = u.daily_calories || 2000;
+  document.getElementById('p-goal-w').textContent = '—';
+  document.getElementById('streak-val').textContent = u.streak || 0;
+  document.getElementById('kcal-norm').textContent = u.daily_calories || 2000;
+}
+
+async function loadData() {
+  const uid = tg.initDataUnsafe?.user?.id;
+  if (!uid) {
+    renderDiary([], 2000);
+    return;
+  }
+  try {
+    const [uRes, dRes] = await Promise.all([
+      fetch(BOT_API + '/api/user/' + uid),
+      fetch(BOT_API + '/api/diary/' + uid)
+    ]);
+    if (uRes.ok) {
+      userData = await uRes.json();
+      renderProfile(userData);
+    }
+    if (dRes.ok) {
+      diaryData = await dRes.json();
+      renderDiary(diaryData, userData.daily_calories || 2000);
+    } else {
+      renderDiary([], userData.daily_calories || 2000);
+    }
+  } catch(e) {
+    renderDiary([], 2000);
+  }
+}
+
+async function saveFood() {
+  const name = document.getElementById('food-name').value.trim();
+  const kcal = parseInt(document.getElementById('food-kcal').value) || 0;
+  const protein = parseFloat(document.getElementById('food-protein').value) || 0;
+  const fat = parseFloat(document.getElementById('food-fat').value) || 0;
+  const carbs = parseFloat(document.getElementById('food-carbs').value) || 0;
+
+  if (!name) { showToast('Введи название блюда'); return; }
+  if (!kcal) { showToast('Введи калории'); return; }
+
+  const uid = tg.initDataUnsafe?.user?.id;
+  if (!uid) {
+    tg.sendData(JSON.stringify({action:'add_food', name, kcal, protein, fat, carbs, meal_type: selectedMealType}));
+    tg.close();
+    return;
+  }
+
+  try {
+    const res = await fetch(BOT_API + '/api/diary/add', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({user_id: uid, meal_name: name, calories: kcal, protein, fat, carbs, meal_type: selectedMealType})
+    });
+    if (res.ok) {
+      showToast('✓ Записано!');
+      document.getElementById('food-name').value = '';
+      document.getElementById('food-kcal').value = '';
+      document.getElementById('food-protein').value = '';
+      document.getElementById('food-fat').value = '';
+      document.getElementById('food-carbs').value = '';
+      await loadData();
+      setTimeout(() => showPage('diary'), 600);
+    } else {
+      tg.sendData(JSON.stringify({action:'add_food', name, kcal, protein, fat, carbs, meal_type: selectedMealType}));
+      tg.close();
+    }
+  } catch(e) {
+    tg.sendData(JSON.stringify({action:'add_food', name, kcal, protein, fat, carbs, meal_type: selectedMealType}));
+    tg.close();
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
