@@ -136,6 +136,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .empty-icon{font-size:36px;margin-bottom:10px;opacity:0.4}
 .empty-text{font-size:13px}
 .loader{text-align:center;padding:30px;color:var(--text2);font-size:13px}
+.hero-banner{position:relative;height:160px;overflow:hidden;margin-bottom:0;border-radius:0 0 20px 20px}
+.hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-banner-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(20,20,20,0.85))}
+.hero-banner-text{position:absolute;bottom:14px;left:16px;right:16px}
+.hero-banner-title{font-size:20px;font-weight:600;color:#fff;font-family:Georgia,serif;line-height:1.2}
+.hero-banner-title em{color:var(--gold);font-style:italic}
+.hero-banner-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;letter-spacing:0.05em;text-transform:uppercase}
+
 /* TABS */
 .tabs{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:0.5px solid var(--border);display:flex;padding:6px 0 8px;z-index:100}
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0}
@@ -153,6 +161,15 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="hdr-right">
     <div class="date-lbl" id="hdr-date"></div>
     <div class="streak">🔥 <span id="streak-val">0</span></div>
+  </div>
+</div>
+
+<div class="hero-banner" id="hero-banner">
+  <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80" alt="healthy food" loading="lazy">
+  <div class="hero-banner-overlay"></div>
+  <div class="hero-banner-text">
+    <div class="hero-banner-title">Ешь осознанно.<br><em>Живи лучше.</em></div>
+    <div class="hero-banner-sub">Питание · Здоровье · Результат</div>
   </div>
 </div>
 
@@ -379,6 +396,8 @@ function showPage(name) {
   document.getElementById('page-' + name).classList.add('active');
   const tab = document.getElementById('tab-' + name);
   if (tab) tab.classList.add('active');
+  const banner = document.getElementById('hero-banner');
+  if (banner) banner.style.display = name === 'diary' ? 'block' : 'none';
   if (name === 'week') renderWeek();
   if (name === 'recipes') renderRecipes();
 }
