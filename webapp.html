@@ -729,7 +729,10 @@ function showAI(title, prompt) {
   showOverlay('ai');
   if (!prompt) return;
   askGemini(prompt).then(text => {
-    const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/### (.*?)
+/g,'<b style="color:var(--gold);font-size:14px"></b><br>').replace(/## (.*?)
+/g,'<b style="color:var(--text);font-size:15px"></b><br>').replace(/\*\*(.*?)\*\*/g,'<b></b>').replace(/---/g,'<hr style="border-color:var(--border);margin:8px 0">').replace(/
+/g,'<br>');
     document.getElementById('ai-content').innerHTML = '<div style="font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap">' + safe + '</div>';
   }).catch(e => {
     document.getElementById('ai-content').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;</div><div class="empty-text">Ошибка: ' + e.message + '</div></div>';
