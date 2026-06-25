@@ -164,6 +164,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   </div>
 </div>
 
+<!-- DIARY -->
+<div class="page active" id="page-diary">
 <div class="hero-banner" id="hero-banner">
   <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80" alt="healthy food" loading="lazy">
   <div class="hero-banner-overlay"></div>
@@ -172,9 +174,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div class="hero-banner-sub">Питание · Здоровье · Результат</div>
   </div>
 </div>
-
-<!-- DIARY -->
-<div class="page active" id="page-diary">
   <div class="ring-card">
     <div class="ring-top">
       <div class="ring-wrap">
@@ -396,8 +395,7 @@ function showPage(name) {
   document.getElementById('page-' + name).classList.add('active');
   const tab = document.getElementById('tab-' + name);
   if (tab) tab.classList.add('active');
-  const banner = document.getElementById('hero-banner');
-  if (banner) banner.style.display = name === 'diary' ? 'block' : 'none';
+
   if (name === 'week') renderWeek();
   if (name === 'recipes') renderRecipes();
 }
