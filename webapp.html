@@ -240,6 +240,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <!-- PROFILE -->
 <div class="page" id="page-profile">
+<div class="hero-banner">
+  <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="gym" loading="lazy">
+  <div class="hero-banner-overlay"></div>
+  <div class="hero-banner-text">
+    <div class="hero-banner-title">Персональный диетолог<br><em>в твоём телефоне</em></div>
+    <div class="hero-banner-sub">CaloriePT AI 2.0</div>
+  </div>
+</div>
   <div class="profile-hero">
     <div class="profile-top">
       <div class="avatar" id="av-init">?</div>
@@ -664,7 +672,7 @@ async function loadSpecialists() {
     if (res.ok) { SPECS = await res.json(); renderSpecs(); }
     else throw new Error();
   } catch(e) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">👨‍⚕️</div><div class="empty-text">Специалисты скоро появятся</div></div><button class="btn" onclick="botAction('experts')">Открыть в боте</button>';
+    list.innerHTML = '<div class="empty"><div class="empty-icon">👨‍⚕️</div><div class="empty-text">Специалисты скоро появятся</div></div>';
   }
 }
 
