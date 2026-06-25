@@ -723,4 +723,89 @@ async function askGemini(prompt) {
   return data.text || '';
 }
 
->
+function showAI(title, prompt) {
+  document.getElementById('ai-title').textContent = title;
+  document.getElementById('ai-content').innerHTML = '<div class="loader">Думаю...</div>';
+  showOverlay('ai');
+  if (!prompt) return;
+  askGemini(prompt).then(text => {
+    const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    document.getElementById('ai-content').innerHTML = '<div style="font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap">' + safe + '</div>';
+  }).catch(e => {
+    document.getElementById('ai-content').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;</div><div class="empty-text">Ошибка: ' + e.message + '</div></div>';
+  });
+}
+
+function aiPatterns() {
+  const norm = USER.daily_calories || 2000;
+  const diaryStr = DIARY.map(r => r.meal_name + ' ' + r.calories + 'ккал').join(', ') || 'нет данных';
+  const prompt = 'Ты нутрициолог. Норма: ' + norm + ' ккал. Цель: ' + (USER.goal||'?') + '. Питание сегодня: ' + diaryStr + '. Проанализируй паттерны и дай 3-5 рекомендаций. Русский язык.';
+  showAI('Анализ паттернов', prompt);
+}
+
+function aiMyCard() {
+  const norm = USER.daily_calories || 2000;
+  const eaten = DIARY.reduce((s,r) => s+(r.calories||0), 0);
+  const p = Math.round(DIARY.reduce((s,r) => s+(r.protein||0), 0));
+  const f = Math.round(DIARY.reduce((s,r) => s+(r.fat||0), 0));
+  const c = Math.round(DIARY.reduce((s,r) => s+(r.carbs||0), 0));
+  const prompt = 'Составь карточку питания. Норма: ' + norm + ' ккал. Съедено: ' + eaten + ' ккал. Б:' + p + 'г Ж:' + f + 'г У:' + c + 'г. Вес:' + (USER.weight||'?') + 'кг Рост:' + (USER.height||'?') + 'см. Цель:' + (USER.goal||'?') + '. Стрик:' + (USER.streak||0) + ' дней. Дай оценку и 2-3 совета. Русский язык.';
+  showAI('Моя карточка', prompt);
+}
+
+function aiMenu() {
+  const norm = USER.daily_calories || 2000;
+  const eaten = DIARY.reduce((s,r) => s+(r.calories||0), 0);
+  const remaining = norm - eaten;
+  const prompt = 'Ты диетолог. Составь меню на остаток дня. Норма: ' + norm + ' ккал. Съедено: ' + eaten + ' ккал. Осталось: ' + remaining + ' ккал. Цель: ' + (USER.goal||'похудение') + '. Предложи конкретные блюда с калориями. Русский язык.';
+  showAI('Меню на сегодня', prompt);
+}
+
+function aiWeekPlan() {
+  const norm = USER.daily_calories || 2000;
+  const prompt = 'Ты диетолог. Составь план питания на 7 дней. Норма: ' + norm + ' ккал/день. Цель: ' + (USER.goal||'похудение') + '. Вес: ' + (USER.weight||'?') + 'кг. Для каждого дня: завтрак, обед, ужин, перекус с калориями. Русский язык.';
+  showAI('План на неделю', prompt);
+}
+
+function aiRecipeByCalories() {
+  const norm = USER.daily_calories || 2000;
+  const eaten = DIARY.reduce((s,r) => s+(r.calories||0), 0);
+  const remaining = norm - eaten;
+  if (remaining <= 50) {
+    showAI('Рецепт по остатку', '');
+    document.getElementById('ai-content').innerHTML = '<div class="holiday-card"><div class="holiday-icon">&#9989;</div><div class="holiday-title">Норма выполнена!</div><div class="holiday-desc">Отличная работа!</div></div>';
+    return;
+  }
+  const prompt = 'Ты шеф-повар. Предложи рецепт на ' + remaining + ' ккал. Цель: ' + (USER.goal||'похудение') + '. Простой рецепт с ингредиентами и КБЖУ. Русский язык.';
+  showAI('Рецепт по остатку', prompt);
+}
+
+function aiHoliday() {
+  const norm = USER.daily_calories || 2000;
+  const prompt = 'Ты диетолог. Пользователь идет на праздник. Норма: ' + norm + ' ккал. Цель: ' + (USER.goal||'не навредить') + '. Дай 5-7 конкретных советов как вести себя на застолье. Русский язык.';
+  showAI('Советы для праздника', prompt);
+}
+
+async function init() {
+  const uid = tg.initDataUnsafe?.user?.id;
+  renderRecipes();
+  if (!uid) { renderDiary(); return; }
+  try {
+    const res = await fetch(API+'/api/user/'+uid);
+    if (res.ok) { USER = await res.json(); renderProfile(); }
+  } catch(e) {}
+  await loadDiary();
+  try {
+    const [wRes, fRes] = await Promise.all([
+      fetch(API+'/api/week/'+uid),
+      fetch(API+'/api/favorites/'+uid)
+    ]);
+    if (wRes.ok) WEEK = await wRes.json();
+    if (fRes.ok) FAVS = await fRes.json();
+  } catch(e) {}
+}
+
+init();
+</script>
+</body>
+</html>
