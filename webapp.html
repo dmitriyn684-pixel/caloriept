@@ -276,8 +276,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div class="sec-head"><div class="sec-title">Настройки</div></div>
     <div class="card" style="margin-bottom:10px">
       <div class="row" onclick="showOverlay('weight')"><div class="row-left"><span style="font-size:18px">⚖️</span><div class="row-text"><div class="row-name">Обновить вес</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('profile')"><div class="row-left"><span style="font-size:18px">⚙️</span><div class="row-text"><div class="row-name">Изменить цель / профиль</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('conditions')"><div class="row-left"><span style="font-size:18px">🏥</span><div class="row-text"><div class="row-name">Особые состояния здоровья</div></div></div><div class="row-icon">›</div></div>
+      <div class="row" onclick="showProfileEdit()"><div class="row-left"><span style="font-size:18px">⚙️</span><div class="row-text"><div class="row-name">Изменить цель / профиль</div></div></div><div class="row-icon">›</div></div>
+      <div class="row" onclick="showOverlay('conditions')"><div class="row-left"><span style="font-size:18px">🏥</span><div class="row-text"><div class="row-name">Особые состояния здоровья</div></div></div><div class="row-icon">›</div></div>
       <div class="row" onclick="botAction('toggle_reminders')"><div class="row-left"><span style="font-size:18px">⏰</span><div class="row-text"><div class="row-name">Напоминания</div></div></div><div class="row-icon">›</div></div>
       <div class="row" onclick="botAction('export')"><div class="row-left"><span style="font-size:18px">📥</span><div class="row-text"><div class="row-name">Скачать дневник CSV</div></div></div><div class="row-icon">›</div></div>
     </div>
@@ -362,6 +362,54 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div id="spec-list"><div class="loader">Загрузка...</div></div>
 </div>
 
+
+<!-- PROFILE EDIT OVERLAY -->
+<div class="overlay" id="ov-profile-edit">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('profile-edit')">&larr;</div><div class="ov-title">Профиль и цель</div></div>
+  <div class="form-group">
+    <label class="form-lbl">Цель</label>
+    <div class="mt-grid">
+      <div class="mt-btn" data-goal="lose" onclick="selGoal(this)">&#128200; Похудеть</div>
+      <div class="mt-btn" data-goal="gain" onclick="selGoal(this)">&#128201; Набрать массу</div>
+      <div class="mt-btn" data-goal="maintain" onclick="selGoal(this)">&#9878; Поддержать вес</div>
+      <div class="mt-btn" data-goal="health" onclick="selGoal(this)">&#10084; Здоровое питание</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-lbl">Пол</label>
+    <div class="mt-grid">
+      <div class="mt-btn" data-gender="male" onclick="selGender(this)">Мужской</div>
+      <div class="mt-btn" data-gender="female" onclick="selGender(this)">Женский</div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-lbl">Возраст</label><input class="form-input" id="pe-age" type="number" placeholder="30" inputmode="numeric"></div>
+    <div class="form-group"><label class="form-lbl">Рост (см)</label><input class="form-input" id="pe-height" type="number" placeholder="175" inputmode="numeric"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-lbl">Вес (кг)</label><input class="form-input" id="pe-weight" type="number" placeholder="70" inputmode="decimal"></div>
+    <div class="form-group"><label class="form-lbl">Цель (кг)</label><input class="form-input" id="pe-goal-w" type="number" placeholder="65" inputmode="decimal"></div>
+  </div>
+  <div class="form-group">
+    <label class="form-lbl">Активность</label>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="mt-btn" style="text-align:left;padding:10px" data-activity="sedentary" onclick="selActivity(this)">Сидячий образ жизни</div>
+      <div class="mt-btn" style="text-align:left;padding:10px" data-activity="light" onclick="selActivity(this)">Лёгкая (1-2 тренировки в нед.)</div>
+      <div class="mt-btn" style="text-align:left;padding:10px" data-activity="moderate" onclick="selActivity(this)">Умеренная (3-4 тренировки)</div>
+      <div class="mt-btn" style="text-align:left;padding:10px" data-activity="active" onclick="selActivity(this)">Высокая (5+ тренировок)</div>
+    </div>
+  </div>
+  <button class="btn" onclick="saveProfileForm()">&#10003; Сохранить</button>
+</div>
+
+<!-- CONDITIONS OVERLAY -->
+<div class="overlay" id="ov-conditions">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('conditions')">&larr;</div><div class="ov-title">Особые состояния</div></div>
+  <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Отметь — ИИ будет учитывать при составлении меню</div>
+  <div class="card" id="conditions-list"></div>
+  <button class="btn" style="margin-top:8px" onclick="saveConditions()">&#10003; Сохранить</button>
+</div>
+
 <!-- AI OVERLAY -->
 <div class="overlay" id="ov-ai">
   <div class="ov-hdr">
@@ -422,6 +470,7 @@ function showPage(name) {
 function showOverlay(name) {
   document.getElementById('ov-' + name).classList.add('active');
   if (name === 'specialists') loadSpecialists();
+  if (name === 'conditions') initConditions();
 }
 
 function hideOverlay(name) {
@@ -787,6 +836,115 @@ function aiHoliday() {
   const norm = USER.daily_calories || 2000;
   const prompt = 'Ты диетолог. Пользователь идет на праздник. Норма: ' + norm + ' ккал. Цель: ' + (USER.goal||'не навредить') + '. Дай 5-7 конкретных советов как вести себя на застолье. Русский язык.';
   showAI('Советы для праздника', prompt);
+}
+
+
+let selGoalVal = '', selGenderVal = '', selActivityVal = '';
+let selConditions = new Set();
+
+const CONDITIONS = [
+  {id:'diabetes', label:'Диабет 2 типа'},
+  {id:'hypertension', label:'Гипертония'},
+  {id:'cholesterol', label:'Высокий холестерин'},
+  {id:'pregnancy', label:'Беременность'},
+  {id:'lactation', label:'Кормление грудью'},
+  {id:'vegetarian', label:'Вегетарианство'},
+  {id:'vegan', label:'Веганство'},
+  {id:'gluten', label:'Непереносимость глютена'},
+  {id:'lactose', label:'Непереносимость лактозы'},
+  {id:'gout', label:'Подагра'},
+];
+
+function selGoal(el) {
+  document.querySelectorAll('[data-goal]').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  selGoalVal = el.dataset.goal;
+}
+function selGender(el) {
+  document.querySelectorAll('[data-gender]').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  selGenderVal = el.dataset.gender;
+}
+function selActivity(el) {
+  document.querySelectorAll('[data-activity]').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  selActivityVal = el.dataset.activity;
+}
+
+function showProfileEdit() {
+  selGoalVal = USER.goal || '';
+  selGenderVal = USER.gender || '';
+  selActivityVal = USER.activity_level || '';
+  if (selGoalVal) { const b = document.querySelector('[data-goal="'+selGoalVal+'"]'); if(b) b.classList.add('sel'); }
+  if (selGenderVal) { const b = document.querySelector('[data-gender="'+selGenderVal+'"]'); if(b) b.classList.add('sel'); }
+  if (selActivityVal) { const b = document.querySelector('[data-activity="'+selActivityVal+'"]'); if(b) b.classList.add('sel'); }
+  if (USER.age) document.getElementById('pe-age').value = USER.age;
+  if (USER.height) document.getElementById('pe-height').value = USER.height;
+  if (USER.weight) document.getElementById('pe-weight').value = USER.weight;
+  showOverlay('profile-edit');
+}
+
+async function saveProfileForm() {
+  const uid = tg.initDataUnsafe?.user?.id;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  const upd = {user_id: uid};
+  if (selGoalVal) upd.goal = selGoalVal;
+  if (selGenderVal) upd.gender = selGenderVal;
+  if (selActivityVal) upd.activity_level = selActivityVal;
+  const age = parseInt(document.getElementById('pe-age').value);
+  const h = parseInt(document.getElementById('pe-height').value);
+  const w = parseFloat(document.getElementById('pe-weight').value);
+  const gw = parseFloat(document.getElementById('pe-goal-w').value);
+  if (age) upd.age = age;
+  if (h) upd.height = h;
+  if (w) upd.weight = w;
+  if (gw) upd.goal_weight = gw;
+  try {
+    const res = await fetch(API+'/api/user/update', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(upd)});
+    if (res.ok) { Object.assign(USER, upd); renderProfile(); toast('Профиль обновлён!'); hideOverlay('profile-edit'); }
+    else throw new Error();
+  } catch(e) { toast('Ошибка сохранения'); }
+}
+
+function initConditions() {
+  const list = document.getElementById('conditions-list');
+  if (!list || list.innerHTML) return;
+  const userConds = (USER.health_conditions || '').split(',').filter(Boolean);
+  selConditions = new Set(userConds);
+  let html = '';
+  CONDITIONS.forEach(function(c) {
+    const on = selConditions.has(c.id);
+    html += '<div class="row" data-cid="' + c.id + '" onclick="toggleCond(this)">' +
+      '<div class="row-left"><div class="row-text"><div class="row-name">' + c.label + '</div></div></div>' +
+      '<div style="width:22px;height:22px;border-radius:50%;border:2px solid ' + (on ? 'var(--gold)' : 'var(--text3)') + ';background:' + (on ? 'var(--gold)' : 'transparent') + '" class="cond-dot"></div>' +
+      '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function toggleCond(row) {
+  const id = row.dataset.cid;
+  const dot = row.querySelector('.cond-dot');
+  if (selConditions.has(id)) {
+    selConditions.delete(id);
+    dot.style.background = 'transparent';
+    dot.style.borderColor = 'var(--text3)';
+  } else {
+    selConditions.add(id);
+    dot.style.background = 'var(--gold)';
+    dot.style.borderColor = 'var(--gold)';
+  }
+}
+
+async function saveConditions() {
+  const uid = tg.initDataUnsafe?.user?.id;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  const val = Array.from(selConditions).join(',');
+  try {
+    const res = await fetch(API+'/api/user/update', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({user_id: uid, health_conditions: val})});
+    if (res.ok) { USER.health_conditions = val; toast('Сохранено!'); hideOverlay('conditions'); }
+    else throw new Error();
+  } catch(e) { toast('Ошибка'); }
 }
 
 async function init() {
