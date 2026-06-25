@@ -9,399 +9,350 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#141414;--bg2:#1e1e1e;--bg3:#252525;
-  --gold:#C9A84C;--gold2:rgba(201,168,76,0.1);--gold-b:rgba(201,168,76,0.2);
-  --text:#F0EDE6;--text2:#9A9589;--text3:#5A5550;
+  --gold:#C9A84C;--gold2:rgba(201,168,76,0.12);--gold-border:rgba(201,168,76,0.2);
+  --text:#F0EDE6;--text2:#9A9589;--text3:#6B6560;
   --border:rgba(255,255,255,0.07);
-  --blue:#5B9BD5;--orange:#D4784A;--green:#4CAF7C;--red:#D45B5B;
-  --r:14px;--rs:10px;
+  --blue:#5B9BD5;--orange:#D4784A;--green:#4CAF7C;
+  --radius:14px;--radius-sm:10px;
 }
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh;padding-bottom:70px;overflow-x:hidden}
-.hdr{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:0.5px solid var(--border);padding:11px 16px;display:flex;justify-content:space-between;align-items:center}
-.hdr-logo{font-size:11px;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;font-weight:600}
-.hdr-right{display:flex;align-items:center;gap:10px}
-.streak{font-size:12px;color:var(--gold)}
-.date-lbl{font-size:11px;color:var(--text3)}
-.page{display:none;padding:12px 12px 0;animation:fi 0.18s ease}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;min-height:100vh;padding-bottom:70px;overflow-x:hidden}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:0.5px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.header-logo{font-size:12px;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;font-weight:500}
+.header-streak{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--gold)}
+.streak-fire{font-size:14px}
+
+/* PAGES */
+.page{display:none;padding:14px 14px 0;animation:fadein 0.2s ease}
 .page.active{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);overflow-y:auto;padding:12px;z-index:200;padding-bottom:80px}
-.overlay.active{display:block;animation:fi 0.18s ease}
-.ov-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:0.5px solid var(--border)}
-.back-btn{width:32px;height:32px;border-radius:50%;background:var(--bg3);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
-.ov-title{font-size:15px;font-weight:500}
-.ring-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--gold-b);padding:14px;margin-bottom:10px}
-.ring-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.ring-wrap{position:relative;width:76px;height:76px;flex-shrink:0}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* KCAL RING CARD */
+.kcal-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px}
+.kcal-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ring-wrap{position:relative;width:80px;height:80px;flex-shrink:0}
 .ring-wrap svg{transform:rotate(-90deg)}
 .ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.ring-pct{font-size:15px;font-weight:600;color:var(--gold)}
-.ring-info{flex:1}
-.ring-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px}
-.ring-num{font-size:28px;font-weight:600;line-height:1}
-.ring-sub{font-size:11px;color:var(--text2);margin-top:3px}
-.ring-badge{display:inline-block;margin-top:5px;font-size:11px;color:var(--gold);background:var(--gold2);padding:2px 8px;border-radius:20px;border:0.5px solid var(--gold-b)}
-.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.macro{background:var(--bg3);border-radius:var(--rs);padding:8px 5px;text-align:center;border:0.5px solid var(--border)}
-.macro-val{font-size:14px;font-weight:500}
-.macro-name{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
-.macro-bar{height:2px;border-radius:1px;background:rgba(255,255,255,0.06);margin-top:5px;overflow:hidden}
-.macro-fill{height:100%;border-radius:1px;transition:width 0.5s}
-.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
-.qa{background:var(--bg2);border-radius:var(--rs);border:0.5px solid var(--border);padding:10px 6px;text-align:center;cursor:pointer;transition:background 0.15s}
-.qa:active{background:var(--bg3)}
-.qa-icon{font-size:22px;margin-bottom:4px}
-.qa-label{font-size:10px;color:var(--text2);line-height:1.2}
-.sec{margin-bottom:10px}
-.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-.sec-title{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-weight:500}
-.sec-action{font-size:12px;color:var(--gold);cursor:pointer}
-.card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);overflow:hidden}
-.row{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s}
-.row:last-child{border-bottom:none}
-.row:active{background:var(--bg3)}
-.row-left{display:flex;align-items:center;gap:9px;flex:1;min-width:0}
-.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.row-text{flex:1;min-width:0}
-.row-name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row-meta{font-size:10px;color:var(--text2);margin-top:1px}
-.row-right{text-align:right;flex-shrink:0;margin-left:8px}
-.row-val{font-size:13px;font-weight:500;color:var(--gold)}
-.row-unit{font-size:9px;color:var(--text3)}
-.row-icon{font-size:14px;color:var(--text3)}
-.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;font-size:13px;font-weight:500;border-radius:var(--rs);cursor:pointer;border:0.5px solid var(--gold-b);background:var(--gold2);color:var(--gold);margin-top:7px;transition:background 0.15s}
-.btn:active{background:rgba(201,168,76,0.18)}
-.btn-sec{background:var(--bg3);border-color:var(--border);color:var(--text2)}
-.form-group{margin-bottom:9px}
-.form-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;display:block}
-.form-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rs);padding:10px 11px;color:var(--text);font-size:14px;outline:none}
-.form-input:focus{border-color:var(--gold-b)}
-.form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.mt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.mt-btn{padding:8px;border-radius:var(--rs);border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;text-align:center}
-.mt-btn.sel{border-color:var(--gold-b);background:var(--gold2);color:var(--gold)}
-.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;align-items:end;height:80px;margin-bottom:6px}
-.wbar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
-.wbar-bg{flex:1;width:100%;background:var(--bg3);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end}
-.wbar-fill{width:100%;border-radius:4px;background:var(--gold2);border:0.5px solid var(--gold-b)}
-.wbar-fill.today{background:rgba(201,168,76,0.3);border-color:var(--gold)}
-.wday{font-size:9px;color:var(--text3);text-align:center}
-.profile-hero{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--gold-b);padding:14px;margin-bottom:10px}
-.profile-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.avatar{width:46px;height:46px;border-radius:50%;background:var(--gold2);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:var(--gold);flex-shrink:0}
-.profile-name{font-size:15px;font-weight:500}
+.ring-pct{font-size:16px;font-weight:600;color:var(--gold)}
+.kcal-info{flex:1}
+.kcal-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
+.kcal-num{font-size:30px;font-weight:600;color:var(--text);line-height:1}
+.kcal-norm{font-size:11px;color:var(--text2);margin-top:3px}
+.kcal-badge{display:inline-block;margin-top:6px;font-size:11px;color:var(--gold);background:var(--gold2);padding:3px 8px;border-radius:20px;border:0.5px solid var(--gold-border)}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.macro{background:var(--bg3);border-radius:var(--radius-sm);padding:9px 6px;text-align:center;border:0.5px solid var(--border)}
+.macro-val{font-size:15px;font-weight:500}
+.macro-name{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+.macro-bar{height:2px;border-radius:1px;background:rgba(255,255,255,0.06);margin-top:6px;overflow:hidden}
+.macro-fill{height:100%;border-radius:1px;transition:width 0.6s ease}
+
+/* SECTION */
+.section{margin-bottom:12px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.section-title{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-weight:500}
+.section-action{font-size:12px;color:var(--gold);cursor:pointer}
+
+/* MEAL CARD */
+.meal-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden}
+.meal-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s}
+.meal-row:last-child{border-bottom:none}
+.meal-row:active{background:var(--bg3)}
+.meal-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.meal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.meal-text{flex:1;min-width:0}
+.meal-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meal-meta{font-size:10px;color:var(--text2);margin-top:1px}
+.meal-right{text-align:right;flex-shrink:0;margin-left:8px}
+.meal-kcal{font-size:13px;font-weight:500;color:var(--gold)}
+.meal-unit{font-size:9px;color:var(--text3)}
+
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;font-size:13px;font-weight:500;border-radius:var(--radius-sm);cursor:pointer;border:0.5px solid var(--gold-border);background:var(--gold2);color:var(--gold);letter-spacing:0.02em;transition:background 0.15s;margin-top:8px}
+.btn:active{background:rgba(201,168,76,0.2)}
+.btn-secondary{background:var(--bg3);border-color:var(--border);color:var(--text2);margin-top:6px}
+.btn-secondary:active{background:var(--bg2)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 20px;color:var(--text2)}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:0.4}
+.empty-text{font-size:14px}
+
+/* PROFILE */
+.profile-hero{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px}
+.profile-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--gold2);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:var(--gold);flex-shrink:0}
+.profile-name{font-size:16px;font-weight:500;color:var(--text)}
 .profile-goal{font-size:11px;color:var(--text2);margin-top:2px}
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.stat-box{background:var(--bg3);border-radius:var(--rs);padding:9px 11px;border:0.5px solid var(--border)}
-.stat-val{font-size:19px;font-weight:500}
-.stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
-/* RECIPE SPECIFIC */
-.cat-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
-.cat-tab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.cat-tab.active{border-color:var(--gold-b);background:var(--gold2);color:var(--gold)}
-.rec-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px 13px;margin-bottom:7px;cursor:pointer;transition:background 0.15s;display:flex;justify-content:space-between;align-items:center}
-.rec-card:active{background:var(--bg3)}
-.rec-name{font-size:13px;font-weight:500}
-.rec-meta{font-size:10px;color:var(--text2);margin-top:3px}
-.rec-kcal{font-size:16px;font-weight:500;color:var(--gold);text-align:right}
-.rec-unit{font-size:9px;color:var(--text3)}
-.rec-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.tag{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border)}
-/* RECIPE DETAIL */
-.rec-detail-kcal{background:var(--gold2);border:0.5px solid var(--gold-b);border-radius:var(--r);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
-.rdk-val{font-size:16px;font-weight:600;color:var(--gold)}
-.rdk-lbl{font-size:9px;color:var(--text2);margin-top:2px}
-.ingredients-list{margin-bottom:14px}
-.ing-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px}
-.ing-row:last-child{border-bottom:none}
-.ing-name{color:var(--text)}
-.ing-amount{color:var(--text2)}
-.steps-list{counter-reset:step}
-.step{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start}
-.step-num{width:24px;height:24px;border-radius:50%;background:var(--gold2);border:0.5px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0;margin-top:1px}
-.step-text{font-size:13px;line-height:1.5;color:var(--text)}
-.tips-box{background:var(--bg3);border-radius:var(--rs);padding:10px 12px;border-left:3px solid var(--gold);font-size:12px;color:var(--text2);line-height:1.5;margin-top:4px}
-/* HOLIDAY */
-.holiday-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--gold-b);padding:16px;margin-bottom:10px;text-align:center}
-.holiday-icon{font-size:40px;margin-bottom:8px}
-.holiday-title{font-size:16px;font-weight:600;margin-bottom:6px}
-.holiday-desc{font-size:13px;color:var(--text2);line-height:1.5}
-.holiday-tips{background:var(--bg3);border-radius:var(--rs);padding:12px;margin-top:10px;text-align:left}
-.holiday-tip{display:flex;gap:8px;margin-bottom:8px;font-size:13px;align-items:flex-start}
-.holiday-tip:last-child{margin-bottom:0}
-/* FRIDGE */
-.fridge-hero{text-align:center;padding:20px 10px;color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:10px}
-.fridge-icon{font-size:48px;margin-bottom:10px}
-/* EMPTY */
-.empty{text-align:center;padding:36px 20px;color:var(--text2)}
-.empty-icon{font-size:36px;margin-bottom:10px;opacity:0.4}
-.empty-text{font-size:13px}
-.loader{text-align:center;padding:30px;color:var(--text2);font-size:13px}
-.hero-banner{position:relative;height:160px;overflow:hidden;margin-bottom:0;border-radius:0 0 20px 20px}
-.hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-banner-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(20,20,20,0.85))}
-.hero-banner-text{position:absolute;bottom:14px;left:16px;right:16px}
-.hero-banner-title{font-size:20px;font-weight:600;color:#fff;font-family:Georgia,serif;line-height:1.2}
-.hero-banner-title em{color:var(--gold);font-style:italic}
-.hero-banner-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;letter-spacing:0.05em;text-transform:uppercase}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat-box{background:var(--bg3);border-radius:var(--radius-sm);padding:10px 12px;border:0.5px solid var(--border)}
+.stat-val{font-size:20px;font-weight:500;color:var(--text)}
+.stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+
+/* MENU */
+.menu-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden}
+.menu-row{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s}
+.menu-row:last-child{border-bottom:none}
+.menu-row:active{background:var(--bg3)}
+.menu-left{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)}
+.menu-icon{font-size:16px;color:var(--text2)}
+.menu-arrow{font-size:12px;color:var(--text3)}
+
+/* RECIPES */
+.recipe-card{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;cursor:pointer;transition:background 0.15s}
+.recipe-card:active{background:var(--bg3)}
+.recipe-name{font-size:13px;font-weight:500;color:var(--text)}
+.recipe-meta{font-size:11px;color:var(--text2);margin-top:2px}
+.recipe-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:5px;border:0.5px solid var(--gold-border);color:var(--gold);background:var(--gold2)}
+.recipe-right{text-align:right;flex-shrink:0;margin-left:10px}
+.recipe-kcal{font-size:16px;font-weight:500;color:var(--gold)}
+.recipe-unit{font-size:9px;color:var(--text3)}
+
+/* ADD FOOD FORM */
+.add-form{background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px}
+.form-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:14px}
+.form-group{margin-bottom:10px}
+.form-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;display:block}
+.form-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none}
+.form-input:focus{border-color:var(--gold-border)}
+.form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.meal-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.meal-type-btn{padding:8px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;text-align:center;transition:all 0.15s}
+.meal-type-btn.selected{border-color:var(--gold-border);background:var(--gold2);color:var(--gold)}
 
 /* TABS */
 .tabs{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:0.5px solid var(--border);display:flex;padding:6px 0 8px;z-index:100}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0}
-.tab-icon{font-size:19px;color:var(--text2)}
-.tab-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.03em}
-.tab.active .tab-icon,.tab.active .tab-lbl{color:var(--gold)}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:0.5px solid var(--gold-b);color:var(--text);font-size:12px;padding:8px 16px;border-radius:20px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0}
+.tab-icon{font-size:20px;color:var(--text2)}
+.tab-label{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em}
+.tab.active .tab-icon{color:var(--gold)}
+.tab.active .tab-label{color:var(--gold)}
+
+/* LOADER */
+.loader{display:flex;align-items:center;justify-content:center;padding:30px;color:var(--text2);font-size:13px;gap:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:0.5px solid var(--gold-border);color:var(--text);font-size:12px;padding:8px 16px;border-radius:20px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
 
-<div class="hdr">
-  <div class="hdr-logo">CaloriePT AI 2.0</div>
-  <div class="hdr-right">
-    <div class="date-lbl" id="hdr-date"></div>
-    <div class="streak">🔥 <span id="streak-val">0</span></div>
-  </div>
+<div class="header">
+  <div class="header-logo">CaloriePT AI 2.0</div>
+  <div class="header-streak"><span class="streak-fire">🔥</span> <span id="streak-val">0</span> дней</div>
 </div>
 
-<!-- DIARY -->
+<!-- DIARY PAGE -->
 <div class="page active" id="page-diary">
-<div class="hero-banner" id="hero-banner">
-  <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80" alt="healthy food" loading="lazy">
-  <div class="hero-banner-overlay"></div>
-  <div class="hero-banner-text">
-    <div class="hero-banner-title">Ешь осознанно.<br><em>Живи лучше.</em></div>
-    <div class="hero-banner-sub">Питание · Здоровье · Результат</div>
-  </div>
-</div>
-  <div class="ring-card">
-    <div class="ring-top">
+  <div class="kcal-card">
+    <div class="kcal-top">
       <div class="ring-wrap">
-        <svg width="76" height="76" viewBox="0 0 76 76">
-          <circle cx="38" cy="38" r="31" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="7"/>
-          <circle id="ring-arc" cx="38" cy="38" r="31" fill="none" stroke="#C9A84C" stroke-width="7"
-            stroke-dasharray="194.8" stroke-dashoffset="194.8" stroke-linecap="round"/>
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="33" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="7"/>
+          <circle id="ring-arc" cx="40" cy="40" r="33" fill="none" stroke="#C9A84C" stroke-width="7"
+            stroke-dasharray="207.3" stroke-dashoffset="207.3" stroke-linecap="round"/>
         </svg>
         <div class="ring-center"><div class="ring-pct" id="ring-pct">0%</div></div>
       </div>
-      <div class="ring-info">
-        <div class="ring-lbl">Съедено сегодня</div>
-        <div class="ring-num" id="kcal-eaten">0</div>
-        <div class="ring-sub">из <span id="kcal-norm">2000</span> ккал</div>
-        <div class="ring-badge" id="kcal-badge">осталось 2000</div>
+      <div class="kcal-info">
+        <div class="kcal-label">Съедено сегодня</div>
+        <div class="kcal-num" id="kcal-eaten">0</div>
+        <div class="kcal-norm">из <span id="kcal-norm">2000</span> ккал</div>
+        <div class="kcal-badge" id="kcal-badge">осталось 2000</div>
       </div>
     </div>
     <div class="macros">
-      <div class="macro"><div class="macro-val" style="color:var(--blue)" id="m-p">0г</div><div class="macro-name">Белки</div><div class="macro-bar"><div class="macro-fill" id="bar-p" style="width:0%;background:var(--blue)"></div></div></div>
-      <div class="macro"><div class="macro-val" style="color:var(--orange)" id="m-f">0г</div><div class="macro-name">Жиры</div><div class="macro-bar"><div class="macro-fill" id="bar-f" style="width:0%;background:var(--orange)"></div></div></div>
-      <div class="macro"><div class="macro-val" style="color:var(--gold)" id="m-c">0г</div><div class="macro-name">Углеводы</div><div class="macro-bar"><div class="macro-fill" id="bar-c" style="width:0%;background:var(--gold)"></div></div></div>
+      <div class="macro">
+        <div class="macro-val" style="color:var(--blue)" id="m-protein">0г</div>
+        <div class="macro-name">Белки</div>
+        <div class="macro-bar"><div class="macro-fill" id="bar-protein" style="width:0%;background:var(--blue)"></div></div>
+      </div>
+      <div class="macro">
+        <div class="macro-val" style="color:var(--orange)" id="m-fat">0г</div>
+        <div class="macro-name">Жиры</div>
+        <div class="macro-bar"><div class="macro-fill" id="bar-fat" style="width:0%;background:var(--orange)"></div></div>
+      </div>
+      <div class="macro">
+        <div class="macro-val" style="color:var(--gold)" id="m-carbs">0г</div>
+        <div class="macro-name">Углеводы</div>
+        <div class="macro-bar"><div class="macro-fill" id="bar-carbs" style="width:0%;background:var(--gold)"></div></div>
+      </div>
     </div>
   </div>
-  <div class="quick-grid">
-    <div class="qa" onclick="botAction('m_food')"><div class="qa-icon">📸</div><div class="qa-label">Фото еды</div></div>
-    <div class="qa" onclick="showOverlay('add')"><div class="qa-icon">✍️</div><div class="qa-label">Текст</div></div>
-    <div class="qa" onclick="botAction('m_barcode')"><div class="qa-icon">📷</div><div class="qa-label">Штрихкод</div></div>
-    <div class="qa" onclick="botAction('m_receipt')"><div class="qa-icon">🧾</div><div class="qa-label">Чек</div></div>
-    <div class="qa" onclick="showOverlay('fridge')"><div class="qa-icon">🧊</div><div class="qa-label">Холодильник</div></div>
-    <div class="qa" onclick="showPage('recipes')"><div class="qa-icon">🍳</div><div class="qa-label">Рецепты</div></div>
-  </div>
-  <div class="sec">
-    <div class="sec-head"><div class="sec-title">Приёмы пищи</div><div class="sec-action" onclick="showOverlay('add')">+ Добавить</div></div>
-    <div id="diary-list"><div class="loader">Загрузка...</div></div>
+
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Приёмы пищи</div>
+      <div class="section-action" onclick="showAddFood()">+ Добавить</div>
+    </div>
+    <div id="diary-list">
+      <div class="loader">Загрузка...</div>
+    </div>
+    <button class="btn" onclick="showAddFood()">+ Записать еду</button>
+    <button class="btn btn-secondary" onclick="openBot('photo')">📷 Фото блюда</button>
   </div>
 </div>
 
-<!-- WEEK -->
-<div class="page" id="page-week">
-  <div class="ring-card">
-    <div class="sec-head" style="margin-bottom:10px"><div class="sec-title">Калории за 7 дней</div><div class="sec-action" id="week-avg"></div></div>
-    <div class="week-grid" id="week-bars"></div>
-    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3)" id="week-days"></div>
+<!-- ADD FOOD PAGE -->
+<div class="page" id="page-add">
+  <div class="add-form">
+    <div class="form-title">Добавить приём пищи</div>
+    <div class="form-group">
+      <label class="form-label">Название блюда</label>
+      <input class="form-input" id="food-name" type="text" placeholder="Например: гречка с курицей">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Тип приёма</label>
+      <div class="meal-type-grid">
+        <div class="meal-type-btn selected" data-type="завтрак" onclick="selectMealType(this)">🌅 Завтрак</div>
+        <div class="meal-type-btn" data-type="обед" onclick="selectMealType(this)">🥗 Обед</div>
+        <div class="meal-type-btn" data-type="ужин" onclick="selectMealType(this)">🌙 Ужин</div>
+        <div class="meal-type-btn" data-type="перекус" onclick="selectMealType(this)">🍎 Перекус</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Калории (ккал)</label>
+      <input class="form-input" id="food-kcal" type="number" placeholder="300" inputmode="numeric">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Белки (г)</label>
+        <input class="form-input" id="food-protein" type="number" placeholder="25" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Жиры (г)</label>
+        <input class="form-input" id="food-fat" type="number" placeholder="10" inputmode="decimal">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Углеводы (г)</label>
+      <input class="form-input" id="food-carbs" type="number" placeholder="35" inputmode="decimal">
+    </div>
   </div>
-  <div class="sec">
-    <div class="sec-head"><div class="sec-title">Избранные блюда</div></div>
-    <div id="fav-list"><div class="loader">Загрузка...</div></div>
-  </div>
+  <button class="btn" onclick="saveFood()">Сохранить запись</button>
+  <button class="btn btn-secondary" onclick="showPage('diary')">Отмена</button>
 </div>
 
-<!-- RECIPES -->
+<!-- RECIPES PAGE -->
 <div class="page" id="page-recipes">
-  <div class="sec" style="margin-top:0">
-    <div class="sec-head"><div class="sec-title">Рецепты</div></div>
-    <div class="cat-tabs">
-      <div class="cat-tab active" onclick="filterRecipes('все',this)">Все</div>
-      <div class="cat-tab" onclick="filterRecipes('завтрак',this)">🌅 Завтрак</div>
-      <div class="cat-tab" onclick="filterRecipes('салат',this)">🥗 Салаты</div>
-      <div class="cat-tab" onclick="filterRecipes('суп',this)">🍲 Супы</div>
+  <div class="section" style="margin-top:0">
+    <div class="section-head">
+      <div class="section-title">Рецепты от ИИ</div>
+      <div class="section-action" onclick="openBot('recipe')">Подобрать →</div>
     </div>
-    <div id="recipes-list"></div>
+    <div id="recipes-list">
+      <div class="recipe-card" onclick="openBot('recipe_salat')">
+        <div>
+          <div class="recipe-name">Греческий салат с тунцом</div>
+          <div class="recipe-meta">20 мин · 2 порции</div>
+          <div class="recipe-tag">высокий белок</div>
+        </div>
+        <div class="recipe-right"><div class="recipe-kcal">320</div><div class="recipe-unit">ккал</div></div>
+      </div>
+      <div class="recipe-card" onclick="openBot('recipe_soup')">
+        <div>
+          <div class="recipe-name">Куриный суп с овощами</div>
+          <div class="recipe-meta">40 мин · 4 порции</div>
+          <div class="recipe-tag">низкий жир</div>
+        </div>
+        <div class="recipe-right"><div class="recipe-kcal">280</div><div class="recipe-unit">ккал</div></div>
+      </div>
+      <div class="recipe-card" onclick="openBot('recipe_blini')">
+        <div>
+          <div class="recipe-name">Овсяные блины с творогом</div>
+          <div class="recipe-meta">15 мин · 1 порция</div>
+          <div class="recipe-tag">завтрак</div>
+        </div>
+        <div class="recipe-right"><div class="recipe-kcal">410</div><div class="recipe-unit">ккал</div></div>
+      </div>
+    </div>
+    <button class="btn" onclick="openBot('fridge')">🧊 Рецепт из холодильника</button>
+    <button class="btn btn-secondary" onclick="openBot('recipes_all')">Все рецепты</button>
   </div>
 </div>
 
-<!-- PROFILE -->
+<!-- PROFILE PAGE -->
 <div class="page" id="page-profile">
-<div class="hero-banner">
-  <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="gym" loading="lazy">
-  <div class="hero-banner-overlay"></div>
-  <div class="hero-banner-text">
-    <div class="hero-banner-title">Персональный диетолог<br><em>в твоём телефоне</em></div>
-    <div class="hero-banner-sub">CaloriePT AI 2.0</div>
-  </div>
-</div>
   <div class="profile-hero">
     <div class="profile-top">
-      <div class="avatar" id="av-init">?</div>
-      <div><div class="profile-name" id="p-name">Загрузка...</div><div class="profile-goal" id="p-goal">—</div></div>
+      <div class="avatar" id="avatar-initials">?</div>
+      <div>
+        <div class="profile-name" id="profile-name">Загрузка...</div>
+        <div class="profile-goal" id="profile-goal">—</div>
+      </div>
     </div>
     <div class="stat-grid">
-      <div class="stat-box"><div class="stat-val" id="p-w">—</div><div class="stat-lbl">Вес</div></div>
-      <div class="stat-box"><div class="stat-val" id="p-h">—</div><div class="stat-lbl">Рост</div></div>
-      <div class="stat-box"><div class="stat-val" id="p-k">2000</div><div class="stat-lbl">Норма ккал</div></div>
-      <div class="stat-box"><div class="stat-val" id="p-s">0</div><div class="stat-lbl">Стрик 🔥</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-weight">—</div><div class="stat-lbl">Вес</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-goal-w">—</div><div class="stat-lbl">Цель кг</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-height">—</div><div class="stat-lbl">Рост</div></div>
+      <div class="stat-box"><div class="stat-val" id="p-kcal">2000</div><div class="stat-lbl">Норма ккал</div></div>
     </div>
   </div>
-  <div class="sec">
-    <div class="sec-head"><div class="sec-title">Анализ и инсайты</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="aiPatterns()"><div class="row-left"><span style="font-size:18px">🧠</span><div class="row-text"><div class="row-name">Анализ паттернов питания</div><div class="row-meta">ИИ найдёт закономерности за 30 дней</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="aiMyCard()"><div class="row-left"><span style="font-size:18px">📊</span><div class="row-text"><div class="row-name">Моя карточка</div><div class="row-meta">Полная сводка по питанию</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="showOverlay('holiday')"><div class="row-left"><span style="font-size:18px">🎉</span><div class="row-text"><div class="row-name">Режим праздника</div><div class="row-meta">Советы как не набрать вес на праздниках</div></div></div><div class="row-icon">›</div></div>
+  <div class="section">
+    <div class="section-head"><div class="section-title">Действия</div></div>
+    <div class="menu-card">
+      <div class="menu-row" onclick="openBot('update_weight')">
+        <div class="menu-left"><span class="menu-icon">⚖️</span> Обновить вес</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('change_goal')">
+        <div class="menu-left"><span class="menu-icon">🎯</span> Изменить цель</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('week_stats')">
+        <div class="menu-left"><span class="menu-icon">📊</span> Статистика за неделю</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('export')">
+        <div class="menu-left"><span class="menu-icon">📥</span> Скачать дневник CSV</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('specialists')">
+        <div class="menu-left"><span class="menu-icon">👨‍⚕️</span> Специалисты</div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-row" onclick="openBot('referral')">
+        <div class="menu-left"><span class="menu-icon">🎁</span> Реферальная программа</div>
+        <span class="menu-arrow">›</span>
+      </div>
     </div>
-    <div class="sec-head"><div class="sec-title">Питание от ИИ</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="aiMenu()"><div class="row-left"><span style="font-size:18px">🍽</span><div class="row-text"><div class="row-name">Меню на сегодня</div><div class="row-meta">ИИ составит план под твою норму</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="aiWeekPlan()"><div class="row-left"><span style="font-size:18px">📅</span><div class="row-text"><div class="row-name">План питания на неделю</div><div class="row-meta">Персональный рацион на 7 дней</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="aiRecipeByCalories()"><div class="row-left"><span style="font-size:18px">🎯</span><div class="row-text"><div class="row-name">Рецепт по остатку калорий</div><div class="row-meta">Что приготовить чтобы попасть в норму</div></div></div><div class="row-icon">›</div></div>
-    </div>
-    <div class="sec-head"><div class="sec-title">Настройки</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="showOverlay('weight')"><div class="row-left"><span style="font-size:18px">⚖️</span><div class="row-text"><div class="row-name">Обновить вес</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('profile')"><div class="row-left"><span style="font-size:18px">⚙️</span><div class="row-text"><div class="row-name">Изменить цель / профиль</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('conditions')"><div class="row-left"><span style="font-size:18px">🏥</span><div class="row-text"><div class="row-name">Особые состояния здоровья</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('toggle_reminders')"><div class="row-left"><span style="font-size:18px">⏰</span><div class="row-text"><div class="row-name">Напоминания</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('export')"><div class="row-left"><span style="font-size:18px">📥</span><div class="row-text"><div class="row-name">Скачать дневник CSV</div></div></div><div class="row-icon">›</div></div>
-    </div>
-    <div class="sec-head"><div class="sec-title">Сообщество</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="showOverlay('specialists')"><div class="row-left"><span style="font-size:18px">👨‍⚕️</span><div class="row-text"><div class="row-name">Специалисты</div><div class="row-meta">Диетологи, тренеры, врачи</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('referral')"><div class="row-left"><span style="font-size:18px">🎁</span><div class="row-text"><div class="row-name">Пригласить друга</div><div class="row-meta">Получи бонусы за рефералов</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('our_products')"><div class="row-left"><span style="font-size:18px">🌟</span><div class="row-text"><div class="row-name">Экосистема DimkoFF</div></div></div><div class="row-icon">›</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- OVERLAYS -->
-<!-- ADD FOOD -->
-<div class="overlay" id="ov-add">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('add')">←</div><div class="ov-title">Добавить еду</div></div>
-  <div class="form-group"><label class="form-lbl">Название блюда</label><input class="form-input" id="f-name" type="text" placeholder="Гречка с курицей"></div>
-  <div class="form-group">
-    <label class="form-lbl">Тип приёма</label>
-    <div class="mt-grid">
-      <div class="mt-btn sel" data-type="завтрак" onclick="selMT(this)">🌅 Завтрак</div>
-      <div class="mt-btn" data-type="обед" onclick="selMT(this)">🥗 Обед</div>
-      <div class="mt-btn" data-type="ужин" onclick="selMT(this)">🌙 Ужин</div>
-      <div class="mt-btn" data-type="перекус" onclick="selMT(this)">🍎 Перекус</div>
-    </div>
-  </div>
-  <div class="form-group"><label class="form-lbl">Калории (ккал)</label><input class="form-input" id="f-kcal" type="number" placeholder="300" inputmode="numeric"></div>
-  <div class="form-row">
-    <div class="form-group"><label class="form-lbl">Белки (г)</label><input class="form-input" id="f-p" type="number" placeholder="25" inputmode="decimal"></div>
-    <div class="form-group"><label class="form-lbl">Жиры (г)</label><input class="form-input" id="f-f" type="number" placeholder="10" inputmode="decimal"></div>
-  </div>
-  <div class="form-group"><label class="form-lbl">Углеводы (г)</label><input class="form-input" id="f-c" type="number" placeholder="35" inputmode="decimal"></div>
-  <button class="btn" onclick="saveFood()">✓ Сохранить</button>
-  <button class="btn btn-sec" onclick="botAction('m_text')">🤖 Описать боту — он рассчитает КБЖУ</button>
-</div>
-
-<!-- FRIDGE -->
-<div class="overlay" id="ov-fridge">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('fridge')">←</div><div class="ov-title">🧊 Холодильник</div></div>
-  <div class="fridge-hero"><div class="fridge-icon">🧊</div>Сфотографируй содержимое холодильника — ИИ подберёт рецепты из того что есть</div>
-  <button class="btn" onclick="botAction('m_fridge')">📸 Сфотографировать холодильник</button>
-  <div style="margin:14px 0;text-align:center;font-size:11px;color:var(--text3)">— или введи продукты вручную —</div>
-  <div class="form-group"><label class="form-lbl">Продукты через запятую</label><input class="form-input" id="fridge-text" type="text" placeholder="яйца, курица, помидоры, рис"></div>
-  <button class="btn" onclick="fridgeText()">🍳 Подобрать рецепт</button>
-</div>
-
-<!-- WEIGHT -->
-<div class="overlay" id="ov-weight">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('weight')">←</div><div class="ov-title">⚖️ Обновить вес</div></div>
-  <div class="form-group" style="margin-top:10px"><label class="form-lbl">Текущий вес (кг)</label><input class="form-input" id="w-val" type="number" placeholder="75.5" inputmode="decimal" style="font-size:28px;text-align:center;padding:14px"></div>
-  <button class="btn" onclick="saveWeight()">✓ Сохранить</button>
-</div>
-
-<!-- HOLIDAY -->
-<div class="overlay" id="ov-holiday">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('holiday')">←</div><div class="ov-title">🎉 Режим праздника</div></div>
-  <div class="holiday-card">
-    <div class="holiday-icon">🎉</div>
-    <div class="holiday-title">Праздник без вреда</div>
-    <div class="holiday-desc">Режим праздника помогает насладиться торжеством и не сбить прогресс. Советы как есть вкусно и не выйти за рамки.</div>
-  </div>
-  <div class="holiday-tips">
-    <div class="holiday-tip"><span>🥗</span><span>Начни застолье с овощей и салатов — заполни желудок на 30% до горячего</span></div>
-    <div class="holiday-tip"><span>💧</span><span>Чередуй алкоголь с водой 1:1 — снизит аппетит и нагрузку на печень</span></div>
-    <div class="holiday-tip"><span>🍽</span><span>Используй тарелку меньшего размера — порции визуально выглядят больше</span></div>
-    <div class="holiday-tip"><span>⏰</span><span>Ешь медленно — мозгу нужно 20 минут чтобы почувствовать сытость</span></div>
-    <div class="holiday-tip"><span>🚶</span><span>После праздника — прогулка 30 минут ускорит метаболизм</span></div>
-    <div class="holiday-tip"><span>📅</span><span>На следующий день вернись к обычному режиму без строгих ограничений</span></div>
-  </div>
-  <button class="btn" onclick="aiHoliday()">🤖 Персональные советы от ИИ</button>
-</div>
-
-<!-- RECIPE DETAIL -->
-<div class="overlay" id="ov-recipe">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('recipe')">←</div><div class="ov-title" id="rec-detail-title">Рецепт</div></div>
-  <div id="rec-detail-content"></div>
-</div>
-
-<!-- SPECIALISTS -->
-<div class="overlay" id="ov-specialists">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('specialists')">←</div><div class="ov-title">👨‍⚕️ Специалисты</div></div>
-  <div id="spec-list"><div class="loader">Загрузка...</div></div>
-</div>
-
-<!-- AI OVERLAY -->
-<div class="overlay" id="ov-ai">
-  <div class="ov-hdr">
-    <div class="back-btn" onclick="hideOverlay('ai')">&larr;</div>
-    <div class="ov-title" id="ai-title">ИИ</div>
-  </div>
-  <div id="ai-content" style="padding-bottom:20px">
-    <div class="loader">Анализирую...</div>
   </div>
 </div>
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" id="tab-diary" onclick="showPage('diary')"><div class="tab-icon">📋</div><div class="tab-lbl">Дневник</div></div>
-  <div class="tab" id="tab-week" onclick="showPage('week')"><div class="tab-icon">📈</div><div class="tab-lbl">Неделя</div></div>
-  <div class="tab" id="tab-recipes" onclick="showPage('recipes')"><div class="tab-icon">🍽</div><div class="tab-lbl">Рецепты</div></div>
-  <div class="tab" id="tab-profile" onclick="showPage('profile')"><div class="tab-icon">👤</div><div class="tab-lbl">Профиль</div></div>
+  <div class="tab active" id="tab-diary" onclick="showPage('diary')">
+    <div class="tab-icon">📋</div>
+    <div class="tab-label">Дневник</div>
+  </div>
+  <div class="tab" id="tab-recipes" onclick="showPage('recipes')">
+    <div class="tab-icon">🍽</div>
+    <div class="tab-label">Рецепты</div>
+  </div>
+  <div class="tab" id="tab-profile" onclick="showPage('profile')">
+    <div class="tab-icon">👤</div>
+    <div class="tab-label">Профиль</div>
+  </div>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
-try { tg.setHeaderColor('#141414'); tg.setBackgroundColor('#141414'); } catch(e){}
+tg.setHeaderColor('#141414');
+tg.setBackgroundColor('#141414');
 
-const API = 'https://calorie-bot-dmitriy097.amvera.io';
-const MEAL_COLORS = {завтрак:'#5B9BD5',обед:'#4CAF7C',ужин:'#C9A84C',перекус:'#D4784A',other:'#9A9589'};
-const GOAL_LABELS = {lose:'похудение',gain:'набор массы',maintain:'поддержание веса'};
-const RECIPES = [{"id": 1, "name": "Омлет с помидорами", "category": "завтрак", "calories": 245, "protein": 18, "fat": 16, "carbs": 8, "time_minutes": 10, "difficulty": "простой", "servings": 1, "weight_grams": 280, "ingredients": [{"name": "яйца", "amount": "3 шт", "calories": 210}, {"name": "помидор", "amount": "1 шт (100г)", "calories": 18}, {"name": "молоко", "amount": "2 ст.л. (30мл)", "calories": 15}, {"name": "масло сливочное", "amount": "1 ч.л. (5г)", "calories": 37}], "steps": ["Разбей 3 яйца в миску, добавь 2 ст.л. молока и щепотку соли. Взбей вилкой до однородности.", "Нарежь помидор небольшими кубиками примерно 1×1 см.", "Разогрей сковороду на среднем огне, добавь сливочное масло и дай ему растаять.", "Вылей яичную смесь на сковороду. Когда края начнут схватываться (через 1 мин), добавь помидоры.", "Накрой крышкой и готовь ещё 2-3 минуты. Сложи омлет пополам и подавай горячим."], "step_timers": [0, 0, 30, 60, 150], "tags": ["яйца", "помидор", "молоко", "быстро", "завтрак", "пп", "без муки"], "tips": "Чтобы омлет был пышным — не перемешивай яйца слишком долго."}, {"id": 2, "name": "Овсяная каша с бананом и мёдом", "category": "завтрак", "calories": 380, "protein": 13, "fat": 9, "carbs": 64, "time_minutes": 10, "difficulty": "простой", "servings": 1, "weight_grams": 380, "ingredients": [{"name": "овсяные хлопья", "amount": "60г", "calories": 222}, {"name": "молоко", "amount": "200мл", "calories": 120}, {"name": "банан", "amount": "1 шт (100г)", "calories": 89}, {"name": "мёд", "amount": "1 ч.л. (10г)", "calories": 33}], "steps": ["Налей 200мл молока в небольшую кастрюлю и доведи до лёгкого кипения на среднем огне.", "Всыпь 60г овсяных хлопьев, помешай и убавь огонь до минимума.", "Вари 5-7 минут, постоянно помешивая, чтобы каша не пригорела ко дну.", "Сними с огня, переложи в тарелку и дай настояться 1-2 минуты под крышкой.", "Нарежь банан кружочками, выложи на кашу и полей ложкой мёда."], "step_timers": [0, 60, 360, 90, 0], "tags": ["овсянка", "банан", "мёд", "молоко", "завтрак", "пп", "клетчатка"], "tips": "Если хочешь кашу гуще — возьми меньше молока (150мл) и добавь воды по вкусу."}, {"id": 3, "name": "Гречневая каша на молоке", "category": "завтрак", "calories": 360, "protein": 14, "fat": 12, "carbs": 52, "time_minutes": 25, "difficulty": "простой", "servings": 1, "weight_grams": 350, "ingredients": [{"name": "гречка", "amount": "70г", "calories": 240}, {"name": "молоко", "amount": "200мл", "calories": 120}, {"name": "масло сливочное", "amount": "10г", "calories": 75}, {"name": "сахар", "amount": "5г", "calories": 19}], "steps": ["Промой 70г гречки под холодной водой, пока вода не станет прозрачной.", "Засыпь крупу в кастрюлю, залей 150мл воды и доведи до кипения на сильном огне.", "Убавь огонь до минимума, накрой крышкой и вари 15 минут не помешивая.", "Когда вода впитается — добавь горячее молоко, сахар и щепотку соли. Прогрей 3-4 минуты.", "Выложи в тарелку и положи кусочек сливочного масла в центр."], "step_timers": [60, 180, 900, 240, 0], "tags": ["гречка", "молоко", "сливочное масло", "завтрак", "сытный"], "tips": "Не открывай крышку во время варки — пар нужен для рассыпчатости каши."}, {"id": 4, "name": "Творожная запеканка с изюмом", "category": "завтрак", "calories": 220, "protein": 16, "fat": 9, "carbs": 20, "time_minutes": 50, "difficulty": "простой", "servings": 4, "weight_grams": 200, "ingredients": [{"name": "творог 5%", "amount": "500г", "calories": 605}, {"name": "яйца", "amount": "2 шт", "calories": 140}, {"name": "манная крупа", "amount": "50г", "calories": 165}, {"name": "сахар", "amount": "60г", "calories": 232}, {"name": "изюм", "amount": "50г", "calories": 135}, {"name": "ванилин", "amount": "1г", "calories": 0}], "steps": ["Залей изюм горячей водой на 10 минут, потом слей и обсуши бумажным полотенцем.", "В большой миске разомни творог вилкой. Добавь 2 яйца, сахар, манку и ванилин.", "Тщательно перемешай массу до однородности и оставь на 15 минут — манка набухнет.", "Добавь изюм, перемешай и выложи в форму, смазанную маслом. Разровняй верх.", "Запекай в духовке при 180°C 35-40 минут до золотистой корочки. Подавай со сметаной."], "step_timers": [600, 0, 900, 0, 2400], "tags": ["творог", "яйца", "изюм", "манка", "запеканка", "духовка", "пп"], "tips": "Чтобы запеканка была пышной — не открывай духовку первые 25 минут."}, {"id": 5, "name": "Сырники со сметаной", "category": "завтрак", "calories": 340, "protein": 22, "fat": 18, "carbs": 24, "time_minutes": 25, "difficulty": "простой", "servings": 2, "weight_grams": 250, "ingredients": [{"name": "творог 9%", "amount": "300г", "calories": 477}, {"name": "яйцо", "amount": "1 шт", "calories": 70}, {"name": "мука пшеничная", "amount": "40г", "calories": 146}, {"name": "сахар", "amount": "20г", "calories": 77}, {"name": "сметана 20%", "amount": "60г", "calories": 122}, {"name": "масло растительное", "amount": "20г", "calories": 177}], "steps": ["Разотри творог через сито или вилкой до однородной массы без комков.", "Добавь к творогу яйцо, сахар, щепотку соли и 30г муки. Перемешай ложкой.", "Сформируй из теста шарики размером с грецкий орех и приплюсни в лепёшки толщиной 1.5см.", "Обваляй каждый сырник в оставшейся муке. Разогрей сковороду с растительным маслом.", "Жарь сырники по 2-3 минуты с каждой стороны до золотистой корочки. Подавай со сметаной."], "step_timers": [120, 0, 0, 0, 300], "tags": ["творог", "сырники", "сметана", "сладкое", "завтрак", "жареное"], "tips": "Если творог влажный — отожми его через марлю, иначе сырники развалятся."}, {"id": 6, "name": "Яичница с беконом", "category": "завтрак", "calories": 420, "protein": 24, "fat": 34, "carbs": 4, "time_minutes": 12, "difficulty": "простой", "servings": 1, "weight_grams": 200, "ingredients": [{"name": "яйца", "amount": "3 шт", "calories": 210}, {"name": "бекон", "amount": "50г", "calories": 271}, {"name": "масло растительное", "amount": "5г", "calories": 44}, {"name": "укроп", "amount": "5г", "calories": 2}], "steps": ["Нарежь бекон полосками шириной 1см и выложи на холодную сковороду.", "Включи средний огонь и жарь бекон 4-5 минут до хрустящей корочки, периодически переворачивая.", "Сдвинь бекон к одному краю сковороды. На освободившееся место разбей 3 яйца.", "Жарь яичницу 2-3 минуты до белого цвета белка, желток оставь жидким.", "Посыпь рубленым укропом и щепоткой чёрного перца. Подавай сразу горячей."], "step_timers": [0, 270, 0, 150, 0], "tags": ["яйца", "бекон", "быстро", "завтрак", "сытный", "белок"], "tips": "Бекон жарь на холодной сковороде — жир вытопится постепенно и мясо будет хрустящим."}, {"id": 7, "name": "Тост с авокадо и яйцом", "category": "завтрак", "calories": 360, "protein": 14, "fat": 22, "carbs": 28, "time_minutes": 12, "difficulty": "простой", "servings": 1, "weight_grams": 220, "ingredients": [{"name": "хлеб цельнозерновой", "amount": "2 ломтика (60г)", "calories": 144}, {"name": "авокадо", "amount": "1/2 шт (75г)", "calories": 120}, {"name": "яйцо", "amount": "1 шт", "calories": 70}, {"name": "лимонный сок", "amount": "5мл", "calories": 1}, {"name": "масло растительное", "amount": "3г", "calories": 27}], "steps": ["Поджарь 2 ломтика хлеба в тостере или на сухой сковороде до золотистого цвета.", "Разрежь авокадо пополам, удали косточку и достань мякоть ложкой в миску.", "Разомни авокадо вилкой, добавь лимонный сок, соль и перец. Перемешай.", "Разогрей сковороду с маслом и пожарь яйцо-глазунью 3-4 минуты до плотного белка.", "Намажь тосты пастой из авокадо, сверху положи яичницу. Посыпь чёрным перцем."], "step_timers": [120, 0, 0, 210, 0], "tags": ["авокадо", "яйцо", "хлеб", "пп", "быстро", "завтрак", "полезные жиры"], "tips": "Лимонный сок не даёт авокадо потемнеть и подчёркивает его вкус."}, {"id": 8, "name": "Блины с творогом", "category": "завтрак", "calories": 380, "protein": 18, "fat": 14, "carbs": 45, "time_minutes": 40, "difficulty": "средний", "servings": 4, "weight_grams": 250, "ingredients": [{"name": "мука", "amount": "200г", "calories": 728}, {"name": "молоко", "amount": "500мл", "calories": 300}, {"name": "яйца", "amount": "2 шт", "calories": 140}, {"name": "творог 9%", "amount": "400г", "calories": 636}, {"name": "сахар", "amount": "40г", "calories": 154}, {"name": "масло растительное", "amount": "30г", "calories": 265}], "steps": ["Взбей яйца с щепоткой соли и 20г сахара. Добавь молоко и постепенно введи муку.", "Размешай тесто венчиком до однородности без комков. Влей 20г масла и оставь на 10 минут.", "Разогрей блинную сковороду, смажь маслом. Наливай тесто половником и распределяй наклоном.", "Жарь блины по 1-2 минуты с каждой стороны до золотистого цвета. Складывай стопкой.", "Смешай творог с оставшимся сахаром. На каждый блин выложи начинку и сверни конвертом."], "step_timers": [0, 600, 0, 1200, 0], "tags": ["блины", "творог", "молоко", "мука", "завтрак", "сладкое"], "tips": "Первый блин всегда комом — это нормально, по нему калибруется температура сковороды."}, {"id": 9, "name": "Мюсли с йогуртом и ягодами", "category": "завтрак", "calories": 310, "protein": 14, "fat": 8, "carbs": 45, "time_minutes": 5, "difficulty": "простой", "servings": 1, "weight_grams": 320, "ingredients": [{"name": "мюсли без сахара", "amount": "60г", "calories": 222}, {"name": "греческий йогурт 2%", "amount": "150г", "calories": 90}, {"name": "ягоды смешанные", "amount": "80г", "calories": 38}, {"name": "мёд", "amount": "10г", "calories": 33}], "steps": ["Высыпь 60г мюсли в глубокую миску.", "Сверху выложи 150г греческого йогурта, распредели ровным слоем.", "Промой 80г свежих или размороженных ягод и обсуши бумажным полотенцем.", "Выложи ягоды на йогурт красивой горкой по центру.", "Полей всё мёдом тонкой струйкой. Перемешай перед едой или ешь слоями."], "step_timers": [0, 0, 30, 0, 0], "tags": ["мюсли", "йогурт", "ягоды", "пп", "быстро", "завтрак", "клетчатка"], "tips": "Замоченные на ночь мюсли с йогуртом — готовый завтрак без готовки утром."}, {"id": 10, "name": "Манная каша с маслом", "category": "завтрак", "calories": 280, "protein": 9, "fat": 11, "carbs": 36, "time_minutes": 12, "difficulty": "простой", "servings": 1, "weight_grams": 320, "ingredients": [{"name": "манная крупа", "amount": "40г", "calories": 132}, {"name": "молоко", "amount": "250мл", "calories": 150}, {"name": "масло сливочное", "amount": "10г", "calories": 75}, {"name": "сахар", "amount": "10г", "calories": 39}], "steps": ["Налей молоко в кастрюлю, добавь сахар и щепотку соли. Доведи до кипения на среднем огне.", "Тонкой струйкой всыпай манку, постоянно помешивая венчиком, чтобы не было комков.", "Убавь огонь до минимума и вари 5-7 минут, помешивая, до загустения.", "Сними с огня, накрой крышкой и дай настояться 2-3 минуты.", "Разложи по тарелкам и положи в центр кусочек сливочного масла."], "step_timers": [180, 60, 360, 150, 0], "tags": ["манка", "молоко", "сливочное масло", "завтрак", "детское"], "tips": "Сыпь манку только в кипящее молоко и сразу мешай — иначе будут комочки."}, {"id": 11, "name": "Французские тосты", "category": "завтрак", "calories": 410, "protein": 14, "fat": 16, "carbs": 52, "time_minutes": 15, "difficulty": "простой", "servings": 1, "weight_grams": 240, "ingredients": [{"name": "хлеб белый", "amount": "3 ломтика (90г)", "calories": 239}, {"name": "яйцо", "amount": "1 шт", "calories": 70}, {"name": "молоко", "amount": "60мл", "calories": 36}, {"name": "масло сливочное", "amount": "10г", "calories": 75}, {"name": "сахар", "amount": "10г", "calories": 39}, {"name": "корица", "amount": "1г", "calories": 0}], "steps": ["В широкой миске взбей яйцо, молоко, сахар и щепотку корицы до однородности.", "Окунай каждый ломтик хлеба в смесь на 5-10 секунд, давая ему пропитаться.", "Разогрей сковороду на среднем огне, растопи кусочек сливочного масла.", "Выложи тосты на сковороду и жарь по 2-3 минуты с каждой стороны до румяной корочки.", "Подавай горячими, по желанию полей кленовым сиропом или мёдом."], "step_timers": [0, 30, 60, 240, 0], "tags": ["тосты", "яйца", "молоко", "корица", "завтрак", "сладкое", "быстро"], "tips": "Используй чёрствый хлеб — он лучше впитает яичную смесь и не развалится."}, {"id": 12, "name": "Панкейки с кленовым сиропом", "category": "завтрак", "calories": 440, "protein": 12, "fat": 14, "carbs": 68, "time_minutes": 25, "difficulty": "простой", "servings": 2, "weight_grams": 200, "ingredients": [{"name": "мука пшеничная", "amount": "150г", "calories": 546}, {"name": "молоко", "amount": "200мл", "calories": 120}, {"name": "яйцо", "amount": "1 шт", "calories": 70}, {"name": "сахар", "amount": "30г", "calories": 116}, {"name": "разрыхлитель", "amount": "5г", "calories": 0}, {"name": "масло сливочное", "amount": "20г", "calories": 149}, {"name": "кленовый сироп", "amount": "30мл", "calories": 78}], "steps": ["В миске смешай муку, сахар, разрыхлитель и щепотку соли.", "В другой миске взбей яйцо с молоком и растопленным маслом.", "Соедини сухие и жидкие ингредиенты, перемешай до однородности — допустимы небольшие комочки.", "Разогрей сухую сковороду на среднем огне. Наливай тесто половником в виде кружочков.", "Жарь по 2 минуты с каждой стороны до золотистого цвета. Подавай стопкой с сиропом."], "step_timers": [0, 60, 60, 60, 480], "tags": ["панкейки", "мука", "молоко", "сладкое", "завтрак", "сироп"], "tips": "Переворачивай панкейк когда на поверхности появятся пузырьки — это знак готовности."}, {"id": 13, "name": "Скрэмбл с зелёным луком", "category": "завтрак", "calories": 260, "protein": 18, "fat": 19, "carbs": 4, "time_minutes": 8, "difficulty": "простой", "servings": 1, "weight_grams": 200, "ingredients": [{"name": "яйца", "amount": "3 шт", "calories": 210}, {"name": "молоко", "amount": "30мл", "calories": 18}, {"name": "масло сливочное", "amount": "10г", "calories": 75}, {"name": "зелёный лук", "amount": "10г", "calories": 2}], "steps": ["Разбей яйца в миску, добавь молоко, соль и перец. Слегка взбей вилкой.", "Растопи масло на сковороде на слабом огне — масло не должно шипеть.", "Вылей яичную смесь и подожди 30 секунд, пока низ не схватится.", "Лопаткой собирай яйца от краёв к центру, формируя крупные мягкие складки.", "Сними с огня когда яйца ещё слегка влажные. Посыпь рубленым зелёным луком."], "step_timers": [0, 60, 30, 90, 0], "tags": ["яйца", "молоко", "лук", "быстро", "завтрак", "белок"], "tips": "Готовь скрэмбл на слабом огне — высокая температура делает яйца резиновыми."}, {"id": 14, "name": "Протеиновые блинчики с творогом", "category": "завтрак", "calories": 310, "protein": 28, "fat": 11, "carbs": 22, "time_minutes": 15, "difficulty": "простой", "servings": 1, "weight_grams": 220, "ingredients": [{"name": "творог 2%", "amount": "150г", "calories": 154}, {"name": "яйцо", "amount": "1 шт", "calories": 70}, {"name": "овсяные хлопья", "amount": "30г", "calories": 111}, {"name": "банан", "amount": "1/2 шт (50г)", "calories": 45}, {"name": "масло растительное", "amount": "5г", "calories": 44}], "steps": ["Измельчи овсяные хлопья в блендере или кофемолке до состояния муки.", "В миске разомни банан вилкой, добавь творог, яйцо и овсяную муку.", "Перемешай массу до однородности — должно получиться густое тесто.", "Разогрей сковороду с каплей масла. Выкладывай тесто ложкой в виде небольших блинчиков.", "Жарь по 2-3 минуты с каждой стороны на среднем огне до золотистой корочки."], "step_timers": [60, 0, 0, 60, 240], "tags": ["творог", "овсянка", "банан", "пп", "белок", "завтрак", "без сахара"], "tips": "Эти блинчики отлично подходят после тренировки — много белка и медленных углеводов."}, {"id": 15, "name": "Запечённая овсянка с яблоками", "category": "завтрак", "calories": 290, "protein": 9, "fat": 7, "carbs": 50, "time_minutes": 45, "difficulty": "простой", "servings": 4, "weight_grams": 220, "ingredients": [{"name": "овсяные хлопья", "amount": "200г", "calories": 740}, {"name": "молоко", "amount": "400мл", "calories": 240}, {"name": "яблоко", "amount": "2 шт (300г)", "calories": 156}, {"name": "мёд", "amount": "40г", "calories": 131}, {"name": "корица", "amount": "3г", "calories": 0}, {"name": "грецкий орех", "amount": "30г", "calories": 196}], "steps": ["Разогрей духовку до 180°C. Очисти яблоки и нарежь их кубиками 1×1см.", "В миске смешай овсяные хлопья, корицу, измельчённые орехи и щепотку соли.", "В другой миске соедини молоко с мёдом, размешай до растворения.", "Выложи в форму для запекания: овсянка, яблоки сверху, залей молочной смесью.", "Запекай 35 минут до золотистой корочки. Подавай тёплой, разрезав на порции."], "step_timers": [0, 0, 60, 0, 2100], "tags": ["овсянка", "яблоки", "мёд", "запекание", "пп", "завтрак", "клетчатка"], "tips": "Готовая овсянка отлично хранится в холодильнике 3 дня — разогрей в микроволновке."}, {"id": 16, "name": "Греческий салат", "category": "салат", "calories": 220, "protein": 8, "fat": 16, "carbs": 12, "time_minutes": 10, "difficulty": "простой", "servings": 2, "weight_grams": 280, "ingredients": [{"name": "помидоры", "amount": "200г", "calories": 36}, {"name": "огурец", "amount": "150г", "calories": 23}, {"name": "сыр фета", "amount": "80г", "calories": 211}, {"name": "оливки чёрные", "amount": "50г", "calories": 58}, {"name": "красный лук", "amount": "30г", "calories": 12}, {"name": "оливковое масло", "amount": "20мл", "calories": 177}, {"name": "лимонный сок", "amount": "10мл", "calories": 2}], "steps": ["Помой помидоры и огурцы. Помидоры нарежь крупными дольками, огурцы — толстыми полукольцами.", "Очисти красный лук и нарежь его тонкими полукольцами.", "Сыр фета нарежь кубиками примерно 1.5×1.5см.", "В широкой миске смешай овощи, оливки и сыр. Не перемешивай слишком интенсивно.", "Заправь оливковым маслом и лимонным соком. Посоли, поперчи и подавай сразу."], "step_timers": [0, 0, 0, 0, 0], "tags": ["помидоры", "огурец", "фета", "оливки", "салат", "средиземноморская", "пп"], "tips": "Не нарезай овощи слишком мелко — в настоящем греческом салате куски крупные."}, {"id": 17, "name": "Цезарь с курицей", "category": "салат", "calories": 380, "protein": 32, "fat": 22, "carbs": 14, "time_minutes": 25, "difficulty": "средний", "servings": 2, "weight_grams": 320, "ingredients": [{"name": "куриная грудка", "amount": "300г", "calories": 495}, {"name": "салат романо", "amount": "200г", "calories": 32}, {"name": "сухарики", "amount": "50г", "calories": 195}, {"name": "пармезан", "amount": "40г", "calories": 156}, {"name": "соус цезарь", "amount": "40мл", "calories": 200}, {"name": "помидоры черри", "amount": "100г", "calories": 18}], "steps": ["Посоли и поперчи куриную грудку. Обжарь на сковороде с каплей масла по 4-5 минут с каждой стороны.", "Дай курице отдохнуть 5 минут, затем нарежь её ломтиками поперёк волокон.", "Помой и обсуши листья салата. Порви руками на крупные куски прямо в миску.", "Помидоры черри разрежь пополам. Пармезан натри на крупной тёрке или нарежь стружкой.", "Выложи салат, курицу, помидоры и сухарики. Полей соусом, посыпь пармезаном и подавай."], "step_timers": [540, 300, 0, 0, 0], "tags": ["курица", "салат", "пармезан", "сухарики", "соус цезарь", "белок"], "tips": "Соус наноси перед подачей — иначе салат осядет и потеряет хруст."}, {"id": 18, "name": "Оливье", "category": "салат", "calories": 240, "protein": 10, "fat": 16, "carbs": 14, "time_minutes": 60, "difficulty": "простой", "servings": 6, "weight_grams": 250, "ingredients": [{"name": "картофель", "amount": "400г", "calories": 308}, {"name": "морковь", "amount": "200г", "calories": 82}, {"name": "яйца", "amount": "4 шт", "calories": 280}, {"name": "огурцы солёные", "amount": "200г", "calories": 22}, {"name": "колбаса варёная", "amount": "300г", "calories": 762}, {"name": "горошек консервированный", "amount": "200г", "calories": 110}, {"name": "майонез", "amount": "150г", "calories": 945}], "steps": ["Отвари картофель и морковь в кожуре до готовности — около 25 минут. Свари яйца вкрутую 10 минут.", "Остуди овощи и яйца под холодной водой. Очисти от кожуры и скорлупы.", "Нарежь все ингредиенты кубиками 0.5-0.7см: картофель, морковь, яйца, огурцы, колбасу.", "Выложи всё в большую миску, добавь горошек (без жидкости из банки) и перемешай.", "Заправь майонезом, посоли по вкусу и дай постоять в холодильнике 30 минут перед подачей."], "step_timers": [1500, 600, 600, 0, 1800], "tags": ["картофель", "морковь", "яйца", "колбаса", "горошек", "майонез", "праздник"], "tips": "Заправляй салат за 30 минут до подачи — успеет настояться, но не размокнет."}, {"id": 19, "name": "Свекольный салат с грецким орехом", "category": "салат", "calories": 190, "protein": 5, "fat": 12, "carbs": 16, "time_minutes": 70, "difficulty": "простой", "servings": 4, "weight_grams": 180, "ingredients": [{"name": "свёкла", "amount": "500г", "calories": 215}, {"name": "грецкий орех", "amount": "60г", "calories": 392}, {"name": "чеснок", "amount": "2 зубчика (8г)", "calories": 12}, {"name": "майонез", "amount": "60г", "calories": 378}, {"name": "чернослив", "amount": "40г", "calories": 96}], "steps": ["Промой свёклу и отвари в кипящей воде 50-60 минут до мягкости. Остуди под холодной водой.", "Очисти свёклу от кожуры — она легко снимается у варёной свёклы. Натри на крупной тёрке.", "Чернослив залей кипятком на 5 минут, затем нарежь мелкими полосками.", "Грецкие орехи измельчи ножом до мелких кусочков. Чеснок пропусти через пресс.", "Соедини все ингредиенты в миске, заправь майонезом, перемешай и охлади перед подачей."], "step_timers": [3300, 600, 300, 0, 1800], "tags": ["свёкла", "орех", "чернослив", "чеснок", "салат", "клетчатка", "пп"], "tips": "Свёклу можно запечь в духовке в фольге — вкус будет насыщеннее, чем у варёной."}, {"id": 20, "name": "Капрезе", "category": "салат", "calories": 280, "protein": 16, "fat": 22, "carbs": 6, "time_minutes": 8, "difficulty": "простой", "servings": 2, "weight_grams": 250, "ingredients": [{"name": "помидоры", "amount": "200г", "calories": 36}, {"name": "моцарелла", "amount": "200г", "calories": 560}, {"name": "базилик свежий", "amount": "20г", "calories": 4}, {"name": "оливковое масло", "amount": "20мл", "calories": 177}, {"name": "бальзамический уксус", "amount": "10мл", "calories": 9}], "steps": ["Помой помидоры и нарежь их кружочками толщиной 0.5см.", "Моцареллу нарежь такими же кружочками, как помидоры.", "Помой и обсуши листья базилика. Крупные оторви от стебля, мелкие оставь как есть.", "Выкладывай на тарелку чередуя: помидор, моцарелла, базилик. Повторяй до конца.", "Полей оливковым маслом и бальзамическим уксусом. Посоли крупной солью и подавай."], "step_timers": [0, 0, 0, 0, 0], "tags": ["помидоры", "моцарелла", "базилик", "оливковое масло", "итальянская", "лето"], "tips": "Используй спелые мясистые помидоры комнатной температуры — холодные потеряют аромат."}, {"id": 21, "name": "Нисуаз", "category": "салат", "calories": 320, "protein": 22, "fat": 18, "carbs": 16, "time_minutes": 25, "difficulty": "средний", "servings": 2, "weight_grams": 350, "ingredients": [{"name": "тунец консервированный", "amount": "200г", "calories": 192}, {"name": "картофель", "amount": "200г", "calories": 154}, {"name": "стручковая фасоль", "amount": "150г", "calories": 47}, {"name": "яйца", "amount": "2 шт", "calories": 140}, {"name": "оливки", "amount": "50г", "calories": 58}, {"name": "помидоры черри", "amount": "150г", "calories": 27}, {"name": "оливковое масло", "amount": "20мл", "calories": 177}], "steps": ["Отвари картофель в кожуре 20 минут. Параллельно свари яйца вкрутую 10 минут.", "Стручковую фасоль отвари в кипящей подсоленной воде 4 минуты, затем сразу окуни в холодную.", "Очисти и нарежь картофель кружочками. Яйца разрежь на половинки. Помидоры черри — пополам.", "Слей жидкость с тунца и разломи его вилкой на крупные кусочки.", "На большом блюде красиво разложи все ингредиенты группами. Полей оливковым маслом и подавай."], "step_timers": [1200, 240, 0, 0, 0], "tags": ["тунец", "картофель", "фасоль", "яйца", "оливки", "французская", "белок"], "tips": "Не перемешивай ингредиенты — нисуаз красив именно отдельными группами на тарелке."}, {"id": 22, "name": "Морковь по-корейски", "category": "салат", "calories": 110, "protein": 1, "fat": 8, "carbs": 9, "time_minutes": 30, "difficulty": "простой", "servings": 4, "weight_grams": 150, "ingredients": [{"name": "морковь", "amount": "500г", "calories": 205}, {"name": "масло растительное", "amount": "50мл", "calories": 442}, {"name": "уксус 9%", "amount": "20мл", "calories": 4}, {"name": "чеснок", "amount": "4 зубчика (16г)", "calories": 24}, {"name": "сахар", "amount": "15г", "calories": 58}, {"name": "приправа для корейской моркови", "amount": "10г", "calories": 30}], "steps": ["Очисти морковь и натри на тёрке для корейской моркови или нарежь тонкой соломкой.", "Посоли (1 ч.л.) и помни морковь руками 2-3 минуты, чтобы пустила сок.", "Добавь сахар, уксус и приправу для корейской моркови. Перемешай и оставь на 10 минут.", "Раскали растительное масло на сковороде до лёгкого дымка. Добавь измельчённый чеснок.", "Сразу вылей горячее масло с чесноком в морковь, перемешай и охлади в холодильнике 30 минут."], "step_timers": [0, 180, 600, 120, 1800], "tags": ["морковь", "чеснок", "уксус", "острое", "салат", "веганский", "пп"], "tips": "Чем дольше салат стоит — тем вкуснее. Идеально настоится за ночь в холодильнике."}, {"id": 23, "name": "Тёплый салат с курицей", "category": "салат", "calories": 290, "protein": 28, "fat": 14, "carbs": 14, "time_minutes": 20, "difficulty": "простой", "servings": 2, "weight_grams": 320, "ingredients": [{"name": "куриное филе", "amount": "300г", "calories": 495}, {"name": "руккола", "amount": "100г", "calories": 25}, {"name": "помидоры черри", "amount": "150г", "calories": 27}, {"name": "грибы шампиньоны", "amount": "150г", "calories": 33}, {"name": "оливковое масло", "amount": "15мл", "calories": 133}, {"name": "бальзамический уксус", "amount": "10мл", "calories": 9}, {"name": "пармезан", "amount": "30г", "calories": 117}], "steps": ["Нарежь куриное филе полосками шириной 1.5см. Грибы — пластинами.", "Разогрей сковороду с оливковым маслом. Обжарь курицу 5-7 минут до золотистой корочки.", "Добавь грибы к курице и жарь ещё 4-5 минут до выпаривания жидкости.", "В большой миске разложи рукколу, сверху помидоры черри, разрезанные пополам.", "Выложи горячую курицу с грибами, полей бальзамиком и посыпь стружкой пармезана."], "step_timers": [0, 420, 270, 0, 0], "tags": ["курица", "руккола", "грибы", "помидоры", "пармезан", "тёплый", "пп"], "tips": "Подавай сразу — горячая курица слегка подвяливает рукколу и раскрывает её вкус."}, {"id": 24, "name": "Салат с тунцом и фасолью", "category": "салат", "calories": 250, "protein": 22, "fat": 10, "carbs": 18, "time_minutes": 10, "difficulty": "простой", "servings": 2, "weight_grams": 280, "ingredients": [{"name": "тунец консервированный", "amount": "200г", "calories": 192}, {"name": "красная фасоль консервированная", "amount": "200г", "calories": 264}, {"name": "красный лук", "amount": "50г", "calories": 20}, {"name": "помидоры", "amount": "150г", "calories": 27}, {"name": "оливковое масло", "amount": "15мл", "calories": 133}, {"name": "лимонный сок", "amount": "10мл", "calories": 2}], "steps": ["Слей жидкость с тунца и разомни вилкой на крупные кусочки.", "Промой фасоль под холодной водой и обсуши на дуршлаге.", "Помидоры нарежь кубиками 1×1см. Красный лук — тонкими полукольцами.", "В миске соедини все ингредиенты, аккуратно перемешай чтобы не разломать тунца.", "Заправь оливковым маслом и лимонным соком, посоли и поперчи по вкусу."], "step_timers": [0, 60, 0, 0, 0], "tags": ["тунец", "фасоль", "помидоры", "лук", "белок", "салат", "пп", "быстро"], "tips": "Бери тунца в собственном соку — в масле он жирнее и забивает вкус овощей."}, {"id": 25, "name": "Винегрет", "category": "салат", "calories": 130, "protein": 3, "fat": 6, "carbs": 16, "time_minutes": 70, "difficulty": "простой", "servings": 4, "weight_grams": 200, "ingredients": [{"name": "свёкла", "amount": "200г", "calories": 86}, {"name": "картофель", "amount": "200г", "calories": 154}, {"name": "морковь", "amount": "150г", "calories": 62}, {"name": "огурцы солёные", "amount": "150г", "calories": 17}, {"name": "капуста квашеная", "amount": "150г", "calories": 28}, {"name": "масло растительное", "amount": "30мл", "calories": 265}, {"name": "лук репчатый", "amount": "50г", "calories": 20}], "steps": ["Отвари свёклу, картофель и морковь в кожуре до готовности (около 50 минут для свёклы, 25 — остальные).", "Остуди овощи под холодной водой и очисти от кожуры. Нарежь все мелкими кубиками 0.7×0.7см.", "Огурцы и лук тоже нарежь кубиками такого же размера.", "Квашеную капусту отожми от рассола, если она длинная — нарежь короче.", "Соедини все овощи в большой миске, заправь маслом, перемешай и охлади 30 минут перед подачей."], "step_timers": [3000, 600, 0, 60, 1800], "tags": ["свёкла", "картофель", "капуста", "огурцы", "веганский", "пп", "клетчатка"], "tips": "Полей картофель маслом до смешивания со свёклой — тогда он не окрасится в красный."}, {"id": 26, "name": "Борщ классический", "category": "суп", "calories": 150, "protein": 9, "fat": 7, "carbs": 14, "time_minutes": 90, "difficulty": "средний", "servings": 6, "weight_grams": 350, "ingredients": [{"name": "говядина на кости", "amount": "500г", "calories": 1250}, {"name": "свёкла", "amount": "300г", "calories": 129}, {"name": "капуста", "amount": "300г", "calories": 81}, {"name": "картофель", "amount": "300г", "calories": 231}, {"name": "морковь", "amount": "150г", "calories": 62}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "томатная паста", "amount": "40г", "calories": 38}, {"name": "вода", "amount": "2.5л", "calories": 0}], "steps": ["Залей мясо холодной водой, доведи до кипения, сними пену и вари 1 час на медленном огне.", "Достань мясо, отдели от костей и нарежь кусочками. Бульон процеди.", "Натри свёклу и морковь, нарежь лук. Обжарь овощи 5 минут, добавь томатную пасту, туши 10 минут.", "В кипящий бульон положи нарезанный картофель, через 10 минут — нашинкованную капусту.", "Добавь зажарку, мясо, соль, лавровый лист. Вари 10 минут и дай настояться 20 минут под крышкой."], "step_timers": [3600, 0, 900, 1200, 1200], "tags": ["свёкла", "капуста", "говядина", "картофель", "томат", "украинский", "сытный"], "tips": "Добавь ложку сахара в зажарку из свёклы — это раскроет вкус и сохранит цвет."}, {"id": 27, "name": "Щи из свежей капусты", "category": "суп", "calories": 120, "protein": 8, "fat": 5, "carbs": 12, "time_minutes": 80, "difficulty": "простой", "servings": 6, "weight_grams": 350, "ingredients": [{"name": "говядина", "amount": "400г", "calories": 1000}, {"name": "капуста белокочанная", "amount": "500г", "calories": 135}, {"name": "картофель", "amount": "300г", "calories": 231}, {"name": "морковь", "amount": "100г", "calories": 41}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "помидоры", "amount": "150г", "calories": 27}, {"name": "вода", "amount": "2.5л", "calories": 0}], "steps": ["Отвари говядину в 2.5л воды около часа на медленном огне, регулярно снимая пену.", "Нарежь картофель кубиками, капусту нашинкуй тонкой соломкой, морковь натри на тёрке.", "Лук мелко наруби, помидоры обдай кипятком, сними кожицу и нарежь кубиками.", "Достань мясо, нарежь кусочками. В бульон положи картофель, через 10 минут — капусту.", "Обжарь лук, морковь и помидоры на масле. Добавь зажарку и мясо в щи, вари ещё 10 минут."], "step_timers": [3600, 0, 0, 1200, 600], "tags": ["капуста", "говядина", "картофель", "помидоры", "русский", "сытный"], "tips": "Щи на следующий день вкуснее — попробуй приготовить вечером и поесть на обед."}, {"id": 28, "name": "Куриный суп с лапшой", "category": "суп", "calories": 180, "protein": 14, "fat": 6, "carbs": 18, "time_minutes": 50, "difficulty": "простой", "servings": 4, "weight_grams": 350, "ingredients": [{"name": "куриная грудка", "amount": "300г", "calories": 495}, {"name": "лапша", "amount": "100г", "calories": 350}, {"name": "картофель", "amount": "200г", "calories": 154}, {"name": "морковь", "amount": "100г", "calories": 41}, {"name": "лук репчатый", "amount": "80г", "calories": 32}, {"name": "вода", "amount": "2л", "calories": 0}, {"name": "зелень", "amount": "20г", "calories": 8}], "steps": ["Залей куриную грудку 2л холодной воды, доведи до кипения, сними пену и вари 25 минут.", "Достань курицу, нарежь кубиками. Бульон оставь в кастрюле на огне.", "Картофель нарежь кубиками, морковь — кружочками, лук — мелко. Положи в бульон.", "Через 10 минут добавь лапшу и нарезанную курицу. Вари ещё 7-8 минут до готовности лапши.", "Посоли, поперчи. Дай настояться 5 минут. Подавай посыпав свежей зеленью."], "step_timers": [1500, 0, 600, 480, 300], "tags": ["курица", "лапша", "картофель", "морковь", "лёгкий", "детское"], "tips": "Лапшу клади в самом конце — иначе она разварится и суп будет похож на кашу."}, {"id": 29, "name": "Грибной суп-пюре", "category": "суп", "calories": 140, "protein": 5, "fat": 9, "carbs": 10, "time_minutes": 35, "difficulty": "простой", "servings": 4, "weight_grams": 300, "ingredients": [{"name": "шампиньоны", "amount": "500г", "calories": 110}, {"name": "картофель", "amount": "200г", "calories": 154}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "сливки 20%", "amount": "200мл", "calories": 410}, {"name": "масло сливочное", "amount": "20г", "calories": 149}, {"name": "вода", "amount": "1л", "calories": 0}], "steps": ["Грибы помой и нарежь пластинами. Лук и картофель — кубиками.", "В кастрюле растопи масло, обжарь лук 3 минуты, добавь грибы и жарь ещё 7-8 минут.", "Добавь картофель, залей водой и вари 15 минут до мягкости картофеля.", "Сними с огня и пюрируй блендером прямо в кастрюле до однородной массы.", "Влей сливки, посоли, поперчи и прогрей 2-3 минуты не доводя до кипения. Подавай с гренками."], "step_timers": [0, 660, 900, 0, 180], "tags": ["грибы", "картофель", "сливки", "лук", "крем-суп", "вегетарианское"], "tips": "Несколько обжаренных кусочков грибов оставь и положи поверх пюре для красоты и текстуры."}, {"id": 30, "name": "Рассольник", "category": "суп", "calories": 170, "protein": 9, "fat": 6, "carbs": 22, "time_minutes": 90, "difficulty": "средний", "servings": 6, "weight_grams": 350, "ingredients": [{"name": "говядина", "amount": "400г", "calories": 1000}, {"name": "перловка", "amount": "100г", "calories": 320}, {"name": "картофель", "amount": "300г", "calories": 231}, {"name": "огурцы солёные", "amount": "200г", "calories": 22}, {"name": "морковь", "amount": "100г", "calories": 41}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "огуречный рассол", "amount": "100мл", "calories": 5}], "steps": ["Замочи перловку в холодной воде на 30 минут, потом отвари 30 минут до полуготовности.", "Свари бульон из говядины (1 час). Достань мясо, нарежь кубиками.", "Натри морковь, нарежь лук кубиками. Обжарь на масле 5 минут.", "Огурцы натри на тёрке или нарежь мелкими кубиками. Картофель нарежь крупнее.", "В бульон положи картофель и перловку. Через 15 минут добавь огурцы, зажарку, мясо и рассол. Вари 10 минут."], "step_timers": [3600, 3600, 300, 0, 1500], "tags": ["перловка", "говядина", "огурцы", "картофель", "русский", "сытный"], "tips": "Картофель добавляй до огурцов — кислота огурцов мешает картошке развариваться."}, {"id": 31, "name": "Уха из форели", "category": "суп", "calories": 160, "protein": 18, "fat": 6, "carbs": 9, "time_minutes": 40, "difficulty": "простой", "servings": 4, "weight_grams": 350, "ingredients": [{"name": "форель (стейки)", "amount": "500г", "calories": 700}, {"name": "картофель", "amount": "300г", "calories": 231}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "морковь", "amount": "100г", "calories": 41}, {"name": "вода", "amount": "1.8л", "calories": 0}, {"name": "лавровый лист", "amount": "2 шт", "calories": 0}, {"name": "укроп", "amount": "20г", "calories": 8}], "steps": ["Залей рыбу холодной водой, доведи до кипения, сними пену и вари 15 минут.", "Достань рыбу, отдели мякоть от костей. Бульон процеди через марлю.", "Нарежь картофель кубиками, морковь кружочками, лук четвертинками.", "В чистый бульон положи овощи и лавровый лист. Вари 15 минут до готовности картофеля.", "Верни рыбу в кастрюлю, посоли, поперчи. Прогрей 2 минуты, посыпь укропом и подавай."], "step_timers": [900, 0, 0, 900, 120], "tags": ["форель", "картофель", "лук", "рыба", "уха", "лёгкий"], "tips": "Бросай в готовую уху небольшую рюмку водки — это убирает рыбный привкус."}, {"id": 32, "name": "Тыквенный крем-суп", "category": "суп", "calories": 130, "protein": 3, "fat": 7, "carbs": 14, "time_minutes": 35, "difficulty": "простой", "servings": 4, "weight_grams": 300, "ingredients": [{"name": "тыква", "amount": "600г", "calories": 156}, {"name": "картофель", "amount": "150г", "calories": 116}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "сливки 20%", "amount": "150мл", "calories": 308}, {"name": "оливковое масло", "amount": "15мл", "calories": 133}, {"name": "вода", "amount": "800мл", "calories": 0}, {"name": "имбирь", "amount": "10г", "calories": 8}], "steps": ["Очисти тыкву и картофель от кожуры, нарежь кубиками 2×2см. Лук и имбирь нарежь мелко.", "В кастрюле разогрей оливковое масло, обжарь лук и имбирь 3 минуты.", "Добавь тыкву и картофель, залей водой так чтобы она едва покрывала овощи. Доведи до кипения.", "Вари 20 минут до полной мягкости овощей. Сними с огня.", "Пюрируй блендером, влей сливки, посоли. Прогрей 2 минуты и подавай с тыквенными семечками."], "step_timers": [0, 180, 60, 1200, 120], "tags": ["тыква", "картофель", "сливки", "имбирь", "крем-суп", "осенний", "вегетарианское"], "tips": "Запеки тыкву в духовке вместо варки — суп получится насыщеннее и слаще."}, {"id": 33, "name": "Гороховый суп с копчёностями", "category": "суп", "calories": 220, "protein": 12, "fat": 9, "carbs": 24, "time_minutes": 90, "difficulty": "средний", "servings": 6, "weight_grams": 350, "ingredients": [{"name": "горох сухой", "amount": "300г", "calories": 1014}, {"name": "копчёные рёбра", "amount": "300г", "calories": 870}, {"name": "картофель", "amount": "300г", "calories": 231}, {"name": "морковь", "amount": "150г", "calories": 62}, {"name": "лук репчатый", "amount": "100г", "calories": 40}, {"name": "вода", "amount": "2.5л", "calories": 0}], "steps": ["Замочи горох в холодной воде на 4-6 часов или на ночь, потом промой.", "Залей рёбра холодной водой, доведи до кипения, сними пену и положи горох. Вари 50 минут.", "Нарежь картофель кубиками, морковь натри, лук мелко наруби.", "Обжарь лук с морковью на сковороде 5 минут до золотистого цвета.", "Положи картофель в суп, через 10 минут — зажарку. Вари ещё 10 минут, посоли и дай настояться."], "step_timers": [21600, 3000, 0, 300, 1200], "tags": ["горох", "копчёности", "картофель", "морковь", "сытный", "белок"], "tips": "Если забыл замочить горох — добавь щепотку соды, он быстрее разварится."}, {"id": 34, "name": "Суп-пюре из брокколи", "category": "суп", "calories": 120, "protein": 5, "fat": 7, "carbs": 9, "time_minutes": 25, "difficulty": "простой", "servings": 4, "weight_grams": 280, "ingredients": [{"name": "брокколи", "amount": "500г", "calories": 170}, {"name": "картофель", "amount": "150г", "calories": 116}, {"name": "лук репчатый", "amount": "80г", "calories": 32}, {"name": "сливки 20%", "amount": "150мл", "calories": 308}, {"name": "оливковое масло", "amount": "15мл", "calories": 133}, {"name": "вода", "amount": "800мл", "calories": 0}], "steps": ["Разбери брокколи на соцветия. Картофель и лук нарежь крупными кубиками.", "В кастрюле разогрей оливковое масло и обжарь лук 3 минуты до прозрачности.", "Добавь картофель и брокколи, залей водой и вари 12-15 минут до мягкости.", "Сними с огня, остуди слегка и пюрируй блендером до однородной кремовой консистенции.", "Влей сливки, посоли по вкусу и прогрей 2-3 минуты. Подавай с гренками или сухариками."], "step_timers": [0, 180, 900, 0, 180], "tags": ["брокколи", "картофель", "сливки", "лук", "крем-суп", "вегетарианское", "пп"], "tips": "Не вари брокколи слишком долго — она потеряет ярко-зелёный цвет."}, {"id": 35, "name": "Солянка мясная", "category": "суп", "calories": 200, "protein": 14, "fat": 12, "carbs": 8, "time_minutes": 90, "difficulty": "средний", "servings": 6, "weight_grams": 350, "ingredients": [{"name": "говядина", "amount": "300г", "calories": 750}, {"name": "колбаса копчёная", "amount": "200г", "calories": 700}, {"name": "сосиски", "amount": "200г", "calories": 530}, {"name": "огурцы солёные", "amount": "200г", "calories": 22}, {"name": "лук репчатый", "amount": "150г", "calories": 60}, {"name": "томатная паста", "amount": "60г", "calories": 57}, {"name": "оливки", "amount": "80г", "calories": 92}, {"name": "вода", "amount": "2л", "calories": 0}], "steps": ["Свари бульон из говядины (1 час), процеди и нарежь мясо кубиками.", "Колбасу и сосиски нарежь соломкой. Огурцы натри на крупной тёрке. Лук — мелко.", "На сковороде обжарь лук 3 минуты, добавь томатную пасту и огурцы. Туши 7 минут.", "В бульон положи мясо, колбасу, сосиски и зажарку. Вари 15 минут на медленном огне.", "Добавь оливки с рассолом, лавровый лист, перец горошком. Дай настояться 10 минут."], "step_timers": [3600, 0, 600, 900, 600], "tags": ["говядина", "колбаса", "огурцы", "оливки", "томат", "русский", "сытный"], "tips": "Подавай с долькой лимона и сметаной — это классика солянки."}];
+const BOT_API = 'https://psymind.amvera.io'; // заменить на реальный API CaloriePT
+let userData = {};
+let diaryData = [];
+let selectedMealType = 'завтрак';
 
-let USER = {}, DIARY = [], WEEK = [], FAVS = [], SPECS = [];
-let selMealType = 'завтрак';
-let currentRecipeCat = 'все';
+const goalLabels = {lose:'похудение',gain:'набор массы',maintain:'поддержание'};
+const mealColors = {завтрак:'#5B9BD5',обед:'#4CAF7C',ужин:'#C9A84C',перекус:'#D4784A'};
 
-const now = new Date();
-const days = ['вс','пн','вт','ср','чт','пт','сб'];
-const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-document.getElementById('hdr-date').textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
-
-function toast(msg) {
+function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -414,399 +365,185 @@ function showPage(name) {
   document.getElementById('page-' + name).classList.add('active');
   const tab = document.getElementById('tab-' + name);
   if (tab) tab.classList.add('active');
-
-  if (name === 'week') renderWeek();
-  if (name === 'recipes') renderRecipes();
 }
 
-function showOverlay(name) {
-  document.getElementById('ov-' + name).classList.add('active');
-  if (name === 'specialists') loadSpecialists();
+function showAddFood() {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  showPage('add');
 }
 
-function hideOverlay(name) {
-  document.getElementById('ov-' + name).classList.remove('active');
+function selectMealType(el) {
+  document.querySelectorAll('.meal-type-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMealType = el.dataset.type;
 }
 
-function botAction(action) {
+function openBot(action) {
   const msgs = {
-    m_food: '📸 Отправь фото блюда — определю калории',
-    m_barcode: '📷 Отправь фото штрихкода',
-    m_receipt: '🧾 Отправь фото чека',
-    m_fridge: '🧊 Отправь фото холодильника — подберу рецепт',
-    m_text: '✍️ Опиши что съел — я рассчитаю КБЖУ',
-    patterns: '🧠 Анализирую паттерны питания за 30 дней...',
-    my_card: '📊 Формирую твою карточку питания...',
-    holiday: '🎉 Персональные советы для праздника...',
-    ai_menu: '🍽 Составляю меню на сегодня под твою норму...',
-    bmi_ai: '📅 Составляю план питания на неделю...',
-    recipe_remaining: '🎯 Подбираю рецепт по остатку калорий...',
-    profile: '⚙️ Открываю настройки профиля...',
-    conditions: '🏥 Особые состояния здоровья...',
-    toggle_reminders: '⏰ Управление напоминаниями...',
-    export: '📥 Экспортирую дневник в CSV...',
-    referral: '🎁 Реферальная программа...',
-    our_products: '🌟 Экосистема DimkoFF...',
+    photo: 'Отправь фото блюда — я определю калории!',
+    recipe: 'Подбери мне рецепт',
+    fridge: 'Рецепт из холодильника',
+    recipes_all: '/recipes',
+    update_weight: 'Обновить мой вес',
+    change_goal: 'Изменить мою цель',
+    week_stats: '/stats',
+    export: '/export',
+    specialists: 'Каталог специалистов',
+    referral: '/referral',
+    recipe_salat: 'Рецепт: греческий салат с тунцом',
+    recipe_soup: 'Рецепт: куриный суп с овощами',
+    recipe_blini: 'Рецепт: овсяные блины с творогом',
   };
-  try {
-    tg.sendData(JSON.stringify({action, text: msgs[action] || action}));
-    tg.close();
-  } catch(e) { toast('Открой в Telegram'); }
-}
-
-function selMT(el) {
-  document.querySelectorAll('.mt-btn').forEach(b => b.classList.remove('sel'));
-  el.classList.add('sel');
-  selMealType = el.dataset.type;
+  tg.sendData(JSON.stringify({action, text: msgs[action] || action}));
+  tg.close();
 }
 
 function updateRing(eaten, norm) {
   const pct = Math.min(Math.round(eaten / norm * 100), 100);
-  const c = 194.8;
-  document.getElementById('ring-arc').style.strokeDashoffset = c - (c * pct / 100);
+  const circumference = 207.3;
+  const offset = circumference - (circumference * pct / 100);
+  document.getElementById('ring-arc').style.strokeDashoffset = offset;
   document.getElementById('ring-pct').textContent = pct + '%';
   document.getElementById('kcal-eaten').textContent = eaten.toLocaleString('ru');
   document.getElementById('kcal-norm').textContent = norm.toLocaleString('ru');
   const rem = norm - eaten;
   const badge = document.getElementById('kcal-badge');
-  badge.textContent = rem >= 0 ? 'осталось ' + rem : 'превышение ' + Math.abs(rem);
-  badge.style.color = rem >= 0 ? 'var(--gold)' : 'var(--red)';
+  if (rem >= 0) {
+    badge.textContent = 'осталось ' + rem;
+    badge.style.color = 'var(--gold)';
+  } else {
+    badge.textContent = 'превышение ' + Math.abs(rem);
+    badge.style.color = 'var(--orange)';
+  }
 }
 
 function updateMacros(p, f, c, norm) {
-  document.getElementById('m-p').textContent = Math.round(p) + 'г';
-  document.getElementById('m-f').textContent = Math.round(f) + 'г';
-  document.getElementById('m-c').textContent = Math.round(c) + 'г';
-  document.getElementById('bar-p').style.width = Math.min(p/(norm*0.03)*100,100)+'%';
-  document.getElementById('bar-f').style.width = Math.min(f/(norm*0.025)*100,100)+'%';
-  document.getElementById('bar-c').style.width = Math.min(c/(norm*0.075)*100,100)+'%';
+  document.getElementById('m-protein').textContent = Math.round(p) + 'г';
+  document.getElementById('m-fat').textContent = Math.round(f) + 'г';
+  document.getElementById('m-carbs').textContent = Math.round(c) + 'г';
+  const normP = norm * 0.03, normF = norm * 0.025, normC = norm * 0.075;
+  document.getElementById('bar-protein').style.width = Math.min(p/normP*100, 100) + '%';
+  document.getElementById('bar-fat').style.width = Math.min(f/normF*100, 100) + '%';
+  document.getElementById('bar-carbs').style.width = Math.min(c/normC*100, 100) + '%';
 }
 
-function renderDiary() {
+function renderDiary(log, norm) {
   const list = document.getElementById('diary-list');
-  if (!DIARY.length) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Пусто. Добавь первый приём!</div></div>';
-    updateRing(0, USER.daily_calories || 2000); return;
+  if (!log || log.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Дневник пуст. Запиши первый приём!</div></div>';
+    return;
   }
-  let html = '<div class="card">';
-  DIARY.forEach(r => {
-    const col = MEAL_COLORS[r.meal_type] || MEAL_COLORS.other;
-    html += '<div class="row"><div class="row-left"><div class="dot" style="background:'+col+'"></div><div class="row-text"><div class="row-name">'+r.meal_name+'</div><div class="row-meta">'+( r.meal_type||'другое')+'</div></div></div><div class="row-right"><div class="row-val">'+r.calories+'</div><div class="row-unit">ккал</div></div></div>';
+  let html = '<div class="meal-card">';
+  log.forEach(r => {
+    const color = mealColors[r.meal_type] || 'var(--gold)';
+    html += `<div class="meal-row">
+      <div class="meal-left">
+        <div class="meal-dot" style="background:${color}"></div>
+        <div class="meal-text">
+          <div class="meal-name">${r.meal_name}</div>
+          <div class="meal-meta">${r.meal_type || 'другое'}</div>
+        </div>
+      </div>
+      <div class="meal-right">
+        <div class="meal-kcal">${r.calories}</div>
+        <div class="meal-unit">ккал</div>
+      </div>
+    </div>`;
   });
   html += '</div>';
   list.innerHTML = html;
-  const norm = USER.daily_calories || 2000;
-  const totC = DIARY.reduce((s,r)=>s+(r.calories||0),0);
-  const totP = DIARY.reduce((s,r)=>s+(r.protein||0),0);
-  const totF = DIARY.reduce((s,r)=>s+(r.fat||0),0);
-  const totCa = DIARY.reduce((s,r)=>s+(r.carbs||0),0);
+
+  const totC = log.reduce((s,r) => s + (r.calories||0), 0);
+  const totP = log.reduce((s,r) => s + (r.protein||0), 0);
+  const totF = log.reduce((s,r) => s + (r.fat||0), 0);
+  const totCa = log.reduce((s,r) => s + (r.carbs||0), 0);
   updateRing(totC, norm);
   updateMacros(totP, totF, totCa, norm);
 }
 
-function renderWeek() {
-  if (!WEEK.length) return;
-  const norm = USER.daily_calories || 2000;
-  const maxVal = Math.max(...WEEK.map(d=>d.total_calories||0), norm);
-  const barsEl = document.getElementById('week-bars');
-  const daysEl = document.getElementById('week-days');
-  const todayStr = new Date().toISOString().slice(0,10);
-  const dayNames = ['вс','пн','вт','ср','чт','пт','сб'];
-  barsEl.innerHTML = ''; daysEl.innerHTML = '';
-  const avg = Math.round(WEEK.reduce((s,d)=>s+(d.total_calories||0),0)/WEEK.length);
-  document.getElementById('week-avg').textContent = 'Среднее: '+avg+' ккал';
-  WEEK.forEach(d => {
-    const pct = Math.min((d.total_calories||0)/maxVal*100,100);
-    const isToday = d.date === todayStr;
-    const date = new Date(d.date);
-    const wrap = document.createElement('div');
-    wrap.className = 'wbar-wrap';
-    wrap.innerHTML = '<div class="wbar-bg"><div class="wbar-fill'+(isToday?' today':'')+'" style="height:'+pct+'%"></div></div>';
-    barsEl.appendChild(wrap);
-    const lbl = document.createElement('div');
-    lbl.className = 'wday';
-    lbl.textContent = dayNames[date.getDay()];
-    daysEl.appendChild(lbl);
-  });
-  if (FAVS.length) {
-    let html = '';
-    FAVS.forEach(f => {
-      html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+f.meal_name+'</div><div class="rec-meta">Б:'+Math.round(f.protein||0)+' Ж:'+Math.round(f.fat||0)+' У:'+Math.round(f.carbs||0)+'</div></div><div><div class="rec-kcal">'+f.calories+'</div><div class="rec-unit">ккал</div></div></div>';
-    });
-    document.getElementById('fav-list').innerHTML = html;
-  } else {
-    document.getElementById('fav-list').innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-text">Сохрани блюда в избранное через бота</div></div>';
-  }
+function renderProfile(u) {
+  if (!u) return;
+  const name = u.full_name || u.username || 'Пользователь';
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('avatar-initials').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('profile-goal').textContent = 'Цель: ' + (goalLabels[u.goal] || u.goal || '—');
+  document.getElementById('p-weight').textContent = u.weight ? u.weight + ' кг' : '—';
+  document.getElementById('p-height').textContent = u.height ? u.height + ' см' : '—';
+  document.getElementById('p-kcal').textContent = u.daily_calories || 2000;
+  document.getElementById('p-goal-w').textContent = '—';
+  document.getElementById('streak-val').textContent = u.streak || 0;
+  document.getElementById('kcal-norm').textContent = u.daily_calories || 2000;
 }
 
-function filterRecipes(cat, el) {
-  currentRecipeCat = cat;
-  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  renderRecipes();
-}
-
-function renderRecipes() {
-  const filtered = currentRecipeCat === 'все' ? RECIPES : RECIPES.filter(r => r.category === currentRecipeCat);
-  let html = '';
-  filtered.forEach(r => {
-    const tags = (r.tags||[]).slice(0,3).map(t=>'<span class="tag">'+t+'</span>').join('');
-    html += '<div class="rec-card" onclick="showRecipe('+r.id+')"><div style="flex:1;min-width:0"><div class="rec-name">'+r.name+'</div><div class="rec-meta">'+r.time_minutes+' мин · '+r.difficulty+'</div><div class="rec-tags">'+tags+'</div></div><div style="text-align:right;flex-shrink:0;margin-left:10px"><div class="rec-kcal">'+r.calories+'</div><div class="rec-unit">ккал</div></div></div>';
-  });
-  document.getElementById('recipes-list').innerHTML = html || '<div class="empty"><div class="empty-icon">🍽</div><div class="empty-text">Рецепты не найдены</div></div>';
-}
-
-function showRecipe(id) {
-  const r = RECIPES.find(x => x.id === id);
-  if (!r) return;
-  document.getElementById('rec-detail-title').textContent = r.name;
-  let html = '<div class="rec-detail-kcal">';
-  html += '<div><div class="rdk-val">'+r.calories+'</div><div class="rdk-lbl">ккал</div></div>';
-  html += '<div><div class="rdk-val">'+r.protein+'г</div><div class="rdk-lbl">белки</div></div>';
-  html += '<div><div class="rdk-val">'+r.fat+'г</div><div class="rdk-lbl">жиры</div></div>';
-  html += '<div><div class="rdk-val">'+r.carbs+'г</div><div class="rdk-lbl">углев</div></div>';
-  html += '</div>';
-  html += '<div style="font-size:11px;color:var(--text2);margin-bottom:12px">'+r.time_minutes+' мин · '+r.difficulty+' · '+r.servings+' порция · '+r.weight_grams+'г</div>';
-  html += '<div class="sec-head" style="margin-bottom:8px"><div class="sec-title">Ингредиенты</div></div>';
-  html += '<div class="ingredients-list card">';
-  (r.ingredients||[]).forEach(ing => {
-    html += '<div class="ing-row" style="padding:8px 13px"><span class="ing-name">'+ing.name+'</span><span class="ing-amount">'+ing.amount+' · '+ing.calories+' ккал</span></div>';
-  });
-  html += '</div>';
-  html += '<div class="sec-head" style="margin:12px 0 8px"><div class="sec-title">Приготовление</div></div>';
-  html += '<div class="steps-list">';
-  (r.steps||[]).forEach((step, i) => {
-    html += '<div class="step"><div class="step-num">'+(i+1)+'</div><div class="step-text">'+step+'</div></div>';
-  });
-  html += '</div>';
-  if (r.tips) {
-    html += '<div class="tips-box">💡 '+r.tips+'</div>';
-  }
-  html += '<button class="btn" style="margin-top:14px" onclick="addRecipeToDiary('+r.id+')">+ Добавить в дневник</button>';
-  document.getElementById('rec-detail-content').innerHTML = html;
-  showOverlay('recipe');
-}
-
-async function addRecipeToDiary(id) {
-  const r = RECIPES.find(x => x.id === id);
-  if (!r) return;
+async function loadData() {
   const uid = tg.initDataUnsafe?.user?.id;
-  if (!uid) { toast('Открой в Telegram'); return; }
+  if (!uid) {
+    renderDiary([], 2000);
+    return;
+  }
   try {
-    const res = await fetch(API + '/api/diary/add', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({user_id: uid, meal_name: r.name, calories: r.calories, protein: r.protein, fat: r.fat, carbs: r.carbs, meal_type: 'другое'})
-    });
-    if (res.ok) { toast('✓ '+r.name+' добавлен в дневник!'); hideOverlay('recipe'); await loadDiary(); }
-    else throw new Error();
-  } catch(e) { toast('Ошибка — попробуй снова'); }
-}
-
-function renderProfile() {
-  if (!USER.user_id) return;
-  const name = USER.full_name || USER.username || 'Пользователь';
-  document.getElementById('p-name').textContent = name;
-  document.getElementById('av-init').textContent = name.charAt(0).toUpperCase();
-  document.getElementById('p-goal').textContent = 'Цель: '+(GOAL_LABELS[USER.goal]||USER.goal||'—');
-  document.getElementById('p-w').textContent = USER.weight ? USER.weight+' кг' : '—';
-  document.getElementById('p-h').textContent = USER.height ? USER.height+' см' : '—';
-  document.getElementById('p-k').textContent = USER.daily_calories||2000;
-  document.getElementById('p-s').textContent = USER.streak||0;
-  document.getElementById('streak-val').textContent = USER.streak||0;
+    const [uRes, dRes] = await Promise.all([
+      fetch(BOT_API + '/api/user/' + uid),
+      fetch(BOT_API + '/api/diary/' + uid)
+    ]);
+    if (uRes.ok) {
+      userData = await uRes.json();
+      renderProfile(userData);
+    }
+    if (dRes.ok) {
+      diaryData = await dRes.json();
+      renderDiary(diaryData, userData.daily_calories || 2000);
+    } else {
+      renderDiary([], userData.daily_calories || 2000);
+    }
+  } catch(e) {
+    renderDiary([], 2000);
+  }
 }
 
 async function saveFood() {
-  const name = document.getElementById('f-name').value.trim();
-  const kcal = parseInt(document.getElementById('f-kcal').value)||0;
-  const p = parseFloat(document.getElementById('f-p').value)||0;
-  const f = parseFloat(document.getElementById('f-f').value)||0;
-  const c = parseFloat(document.getElementById('f-c').value)||0;
-  if (!name) { toast('Введи название'); return; }
-  if (!kcal) { toast('Введи калории'); return; }
+  const name = document.getElementById('food-name').value.trim();
+  const kcal = parseInt(document.getElementById('food-kcal').value) || 0;
+  const protein = parseFloat(document.getElementById('food-protein').value) || 0;
+  const fat = parseFloat(document.getElementById('food-fat').value) || 0;
+  const carbs = parseFloat(document.getElementById('food-carbs').value) || 0;
+
+  if (!name) { showToast('Введи название блюда'); return; }
+  if (!kcal) { showToast('Введи калории'); return; }
+
   const uid = tg.initDataUnsafe?.user?.id;
-  if (!uid) { botAction('m_text'); return; }
+  if (!uid) {
+    tg.sendData(JSON.stringify({action:'add_food', name, kcal, protein, fat, carbs, meal_type: selectedMealType}));
+    tg.close();
+    return;
+  }
+
   try {
-    const res = await fetch(API+'/api/diary/add', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({user_id:uid, meal_name:name, calories:kcal, protein:p, fat:f, carbs:c, meal_type:selMealType})
+    const res = await fetch(BOT_API + '/api/diary/add', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({user_id: uid, meal_name: name, calories: kcal, protein, fat, carbs, meal_type: selectedMealType})
     });
     if (res.ok) {
-      toast('✓ Записано!');
-      ['f-name','f-kcal','f-p','f-f','f-c'].forEach(id => document.getElementById(id).value='');
-      hideOverlay('add');
-      await loadDiary();
-    } else throw new Error();
-  } catch(e) { toast('Ошибка сохранения'); }
-}
-
-async function saveWeight() {
-  const w = parseFloat(document.getElementById('w-val').value);
-  if (!w||w<20||w>300) { toast('Введи корректный вес'); return; }
-  const uid = tg.initDataUnsafe?.user?.id;
-  try {
-    const res = await fetch(API+'/api/user/update', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({user_id:uid, weight:w})
-    });
-    if (res.ok) { USER.weight=w; document.getElementById('p-w').textContent=w+' кг'; toast('✓ Вес обновлён!'); hideOverlay('weight'); }
-    else throw new Error();
-  } catch(e) { toast('Ошибка — попробуй снова'); }
-}
-
-function fridgeText() {
-  const text = document.getElementById('fridge-text').value.trim();
-  if (!text) { toast('Введи продукты'); return; }
-  try {
-    tg.sendData(JSON.stringify({action:'fridge_text', text:'🧊 У меня есть: '+text+'. Подбери рецепт'}));
-    tg.close();
-  } catch(e) { toast('Открой в Telegram'); }
-}
-
-async function addFavToDiary(favId) {
-  const uid = tg.initDataUnsafe?.user?.id;
-  if (!uid) return;
-  try {
-    const res = await fetch(API+'/api/diary/add_fav', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({user_id:uid, fav_id:favId})
-    });
-    if (res.ok) { toast('✓ Добавлено в дневник!'); await loadDiary(); showPage('diary'); }
-    else throw new Error();
-  } catch(e) { toast('Ошибка'); }
-}
-
-async function loadSpecialists() {
-  const list = document.getElementById('spec-list');
-  if (SPECS.length) { renderSpecs(); return; }
-  try {
-    const res = await fetch(API+'/api/specialists');
-    if (res.ok) { SPECS = await res.json(); renderSpecs(); }
-    else throw new Error();
+      showToast('✓ Записано!');
+      document.getElementById('food-name').value = '';
+      document.getElementById('food-kcal').value = '';
+      document.getElementById('food-protein').value = '';
+      document.getElementById('food-fat').value = '';
+      document.getElementById('food-carbs').value = '';
+      await loadData();
+      setTimeout(() => showPage('diary'), 600);
+    } else {
+      tg.sendData(JSON.stringify({action:'add_food', name, kcal, protein, fat, carbs, meal_type: selectedMealType}));
+      tg.close();
+    }
   } catch(e) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">👨‍⚕️</div><div class="empty-text">Специалисты скоро появятся</div></div>';
+    tg.sendData(JSON.stringify({action:'add_food', name, kcal, protein, fat, carbs, meal_type: selectedMealType}));
+    tg.close();
   }
 }
 
-function renderSpecs() {
-  if (!SPECS.length) {
-    document.getElementById('spec-list').innerHTML = '<div class="empty"><div class="empty-icon">👨‍⚕️</div><div class="empty-text">Специалисты скоро появятся</div></div>';
-    return;
-  }
-  let html = '';
-  SPECS.forEach(s => {
-    html += '<div style="background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px 13px;margin-bottom:7px"><div style="font-size:13px;font-weight:500">'+s.name+'</div><div style="font-size:11px;color:var(--gold);margin-top:2px">'+( s.specialty||'')+'</div><div style="font-size:11px;color:var(--text2);margin-top:5px;line-height:1.4">'+( s.description||'')+'</div></div>';
-  });
-  document.getElementById('spec-list').innerHTML = html;
-}
-
-async function loadDiary() {
-  const uid = tg.initDataUnsafe?.user?.id;
-  if (!uid) { renderDiary(); return; }
-  try {
-    const res = await fetch(API+'/api/diary/'+uid);
-    if (res.ok) { DIARY = await res.json(); renderDiary(); }
-    else { DIARY=[]; renderDiary(); }
-  } catch(e) { DIARY=[]; renderDiary(); }
-}
-
-
-const GEMINI_KEY = 'AQ.Ab8RN6L8XPjD3pRrOsEpDHgWWIOWsb9t4r14cFEeHYtBIv52Hw';
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
-
-async function askGemini(prompt) {
-  const res = await fetch(GEMINI_URL, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({contents: [{parts: [{text: prompt}]}], generationConfig: {maxOutputTokens: 1500, temperature: 0.7}})
-  });
-  if (!res.ok) throw new Error('Gemini error ' + res.status);
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-
-function showAI(title, prompt) {
-  document.getElementById('ai-title').textContent = title;
-  document.getElementById('ai-content').innerHTML = '<div class="loader">Думаю...</div>';
-  showOverlay('ai');
-  if (!prompt) return;
-  askGemini(prompt).then(text => {
-    const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    document.getElementById('ai-content').innerHTML = '<div style="font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap">' + safe + '</div>';
-  }).catch(e => {
-    document.getElementById('ai-content').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;</div><div class="empty-text">Ошибка: ' + e.message + '</div></div>';
-  });
-}
-
-function aiPatterns() {
-  const norm = USER.daily_calories || 2000;
-  const diaryStr = DIARY.map(r => r.meal_name + ' ' + r.calories + 'ккал').join(', ') || 'нет данных';
-  const prompt = 'Ты нутрициолог. Норма: ' + norm + ' ккал. Цель: ' + (USER.goal||'?') + '. Питание сегодня: ' + diaryStr + '. Проанализируй паттерны и дай 3-5 рекомендаций. Русский язык.';
-  showAI('Анализ паттернов', prompt);
-}
-
-function aiMyCard() {
-  const norm = USER.daily_calories || 2000;
-  const eaten = DIARY.reduce((s,r) => s+(r.calories||0), 0);
-  const p = Math.round(DIARY.reduce((s,r) => s+(r.protein||0), 0));
-  const f = Math.round(DIARY.reduce((s,r) => s+(r.fat||0), 0));
-  const c = Math.round(DIARY.reduce((s,r) => s+(r.carbs||0), 0));
-  const prompt = 'Составь карточку питания. Норма: ' + norm + ' ккал. Съедено: ' + eaten + ' ккал. Б:' + p + 'г Ж:' + f + 'г У:' + c + 'г. Вес:' + (USER.weight||'?') + 'кг Рост:' + (USER.height||'?') + 'см. Цель:' + (USER.goal||'?') + '. Стрик:' + (USER.streak||0) + ' дней. Дай оценку и 2-3 совета. Русский язык.';
-  showAI('Моя карточка', prompt);
-}
-
-function aiMenu() {
-  const norm = USER.daily_calories || 2000;
-  const eaten = DIARY.reduce((s,r) => s+(r.calories||0), 0);
-  const remaining = norm - eaten;
-  const prompt = 'Ты диетолог. Составь меню на остаток дня. Норма: ' + norm + ' ккал. Съедено: ' + eaten + ' ккал. Осталось: ' + remaining + ' ккал. Цель: ' + (USER.goal||'похудение') + '. Предложи конкретные блюда с калориями. Русский язык.';
-  showAI('Меню на сегодня', prompt);
-}
-
-function aiWeekPlan() {
-  const norm = USER.daily_calories || 2000;
-  const prompt = 'Ты диетолог. Составь план питания на 7 дней. Норма: ' + norm + ' ккал/день. Цель: ' + (USER.goal||'похудение') + '. Вес: ' + (USER.weight||'?') + 'кг. Для каждого дня: завтрак, обед, ужин, перекус с калориями. Русский язык.';
-  showAI('План на неделю', prompt);
-}
-
-function aiRecipeByCalories() {
-  const norm = USER.daily_calories || 2000;
-  const eaten = DIARY.reduce((s,r) => s+(r.calories||0), 0);
-  const remaining = norm - eaten;
-  if (remaining <= 50) {
-    showAI('Рецепт по остатку', '');
-    document.getElementById('ai-content').innerHTML = '<div class="holiday-card"><div class="holiday-icon">&#9989;</div><div class="holiday-title">Норма выполнена!</div><div class="holiday-desc">Отличная работа!</div></div>';
-    return;
-  }
-  const prompt = 'Ты шеф-повар. Предложи рецепт на ' + remaining + ' ккал. Цель: ' + (USER.goal||'похудение') + '. Простой рецепт с ингредиентами и КБЖУ. Русский язык.';
-  showAI('Рецепт по остатку', prompt);
-}
-
-function aiHoliday() {
-  const norm = USER.daily_calories || 2000;
-  const prompt = 'Ты диетолог. Пользователь идет на праздник. Норма: ' + norm + ' ккал. Цель: ' + (USER.goal||'не навредить') + '. Дай 5-7 конкретных советов как вести себя на застолье. Русский язык.';
-  showAI('Советы для праздника', prompt);
-}
-
-async function init() {
-  const uid = tg.initDataUnsafe?.user?.id;
-  renderRecipes();
-  if (!uid) { renderDiary(); return; }
-  try {
-    const res = await fetch(API+'/api/user/'+uid);
-    if (res.ok) { USER = await res.json(); renderProfile(); }
-  } catch(e) {}
-  await loadDiary();
-  try {
-    const [wRes, fRes] = await Promise.all([
-      fetch(API+'/api/week/'+uid),
-      fetch(API+'/api/favorites/'+uid)
-    ]);
-    if (wRes.ok) WEEK = await wRes.json();
-    if (fRes.ok) FAVS = await fRes.json();
-  } catch(e) {}
-}
-
-init();
+loadData();
 </script>
 </body>
 </html>
