@@ -152,6 +152,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .tab.active .tab-icon,.tab.active .tab-lbl{color:var(--gold)}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:0.5px solid var(--gold-b);color:var(--text);font-size:12px;padding:8px 16px;border-radius:20px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
+.moto-banner{position:relative;border-radius:16px;overflow:hidden;margin-bottom:10px;cursor:pointer}
+.moto-banner img{width:100%;height:160px;object-fit:cover;display:block}
+.moto-banner-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.3),rgba(0,0,0,0.7))}
+.moto-banner-text{position:absolute;bottom:0;left:0;right:0;padding:14px 16px}
+.moto-banner-quote{font-size:14px;font-weight:600;color:#fff;line-height:1.4;font-family:Georgia,serif}
+.moto-banner-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em}
 </style>
 </head>
 <body>
@@ -219,8 +225,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3)" id="week-days"></div>
   </div>
   <div class="sec">
-    <div class="sec-head"><div class="sec-title">Избранные блюда</div></div>
-    <div id="fav-list"><div class="loader">Загрузка...</div></div>
+    <div class="sec-head"><div class="sec-title">Мотивация</div></div>
+    <div id="moto-banners"></div>
   </div>
 </div>
 
@@ -514,7 +520,29 @@ function renderDiary() {
   updateMacros(totP, totF, totCa, norm);
 }
 
+const MOTO_BANNERS = [
+  {img: 'https://dmitriyn684-pixel.github.io/caloriept/gym_small.jpg', quote: 'Твоё тело может всё. Это твой разум надо убедить.', sub: 'Мотивация дня'},
+  {img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80', quote: 'Каждая тренировка — это инвестиция в себя.', sub: 'Фитнес и здоровье'},
+  {img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80', quote: 'Ешь правильно. Живи долго. Будь счастлив.', sub: 'Здоровое питание'},
+  {img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80', quote: 'Маленькие шаги каждый день — большие результаты.', sub: 'Путь к цели'},
+  {img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80', quote: 'Не считай дни — делай так, чтобы дни считались.', sub: 'Упорство'},
+];
+
+function renderMotoBanners() {
+  const el = document.getElementById('moto-banners');
+  if (!el) return;
+  const today = new Date().getDay();
+  const b1 = MOTO_BANNERS[today % MOTO_BANNERS.length];
+  const b2 = MOTO_BANNERS[(today + 1) % MOTO_BANNERS.length];
+  let html = '';
+  [b1, b2].forEach(function(b) {
+    html += '<div class="moto-banner"><img src="' + b.img + '" loading="lazy"><div class="moto-banner-overlay"></div><div class="moto-banner-text"><div class="moto-banner-quote">' + b.quote + '</div><div class="moto-banner-sub">' + b.sub + '</div></div></div>';
+  });
+  el.innerHTML = html;
+}
+
 function renderWeek() {
+  renderMotoBanners();
   if (!WEEK.length) return;
   const norm = USER.daily_calories || 2000;
   const maxVal = Math.max(...WEEK.map(d=>d.total_calories||0), norm);
