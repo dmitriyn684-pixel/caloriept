@@ -622,14 +622,56 @@ function renderWeek() {
   if (FAVS.length) {
     let html = '';
     FAVS.forEach(f => {
-      var fname = f.meal_name || f.name || 'Блюдо'; html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+fname+'</div><div class="rec-meta">Б:'+Math.round(f.protein||0)+' Ж:'+Math.round(f.fat||0)+' У:'+Math.round(f.carbs||0)+'</div></div><div><div class="rec-kcal">'+f.calories+'</div><div class="rec-unit">ккал</div></div></div>';
+      var fname = f.meal_name || f.name || 'Блюдо'; html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+fname+'</div><div class="rec-meta">Б:'+
+  // Trading stats block
+  const statsCard = document.getElementById('week-stats-card');
+  if (statsCard) {
+    statsCard.style.display = 'block';
+    const norm = USER.daily_calories || 2000;
+    const vals = WEEK.map(function(d){return d.total_calories||0;});
+    const nonZero = vals.filter(function(v){return v>0;});
+    const total = vals.reduce(function(a,b){return a+b;},0);
+    const avg = nonZero.length ? Math.round(total/nonZero.length) : 0;
+    const best = Math.max.apply(null, vals);
+    const daysInNorm = vals.filter(function(v){return v>=norm*0.8&&v<=norm*1.2;}).length;
+    const weekDeficit = norm*7 - total;
+    const dayNames = ['вс','пн','вт','ср','чт','пт','сб'];
+
+    document.getElementById('ws-avg').textContent = avg+' ккал';
+    document.getElementById('ws-total').textContent = total.toLocaleString('ru')+' ккал';
+    document.getElementById('ws-best').textContent = best+' ккал';
+    document.getElementById('ws-days').textContent = daysInNorm+'/7';
+
+    var avgDiff = avg - norm;
+    var avgEl = document.getElementById('ws-avg-d');
+    if(avgDiff>0){avgEl.textContent='+'+avgDiff+' профицит';avgEl.className='trade-metric-delta delta-down';}
+    else if(avgDiff<0){avgEl.textContent=avgDiff+' дефицит';avgEl.className='trade-metric-delta delta-up';}
+    else{avgEl.textContent='в норме';avgEl.className='trade-metric-delta delta-neutral';}
+
+    var defEl = document.getElementById('ws-deficit');
+    if(weekDeficit>0){defEl.textContent='-'+weekDeficit.toLocaleString('ru')+' дефицит';defEl.className='trade-metric-delta delta-up';}
+    else{defEl.textContent='+'+Math.abs(weekDeficit).toLocaleString('ru')+' профицит';defEl.className='trade-metric-delta delta-down';}
+
+    document.getElementById('ws-days-d').textContent = daysInNorm>=5?'Отличная неделя!':daysInNorm>=3?'Хороший прогресс':'Есть куда расти';
+
+    var trend = document.getElementById('week-trend');
+    if(daysInNorm>=5){trend.textContent='↑ ОТЛИЧНО';trend.className='trade-badge badge-green';}
+    else if(daysInNorm>=3){trend.textContent='→ СТАБИЛЬНО';trend.className='trade-badge badge-gold';}
+    else{trend.textContent='↓ РАБОТАЕМ';trend.className='trade-badge badge-red';}
+
+    var maxV = Math.max.apply(null, vals.concat([norm]));
+    var barsHtml = '';
+    WEEK.forEach(function(d){
+      var v = d.total_calories||0;
+      var pct = maxV>0?Math.round(v/maxV*100):0;
+      var date = new Date(d.date);
+      var dn = dayNames[date.getDay()];
+      var color = v>=norm*0.8&&v<=norm*1.2?'#4CAF7C':v>norm*1.2?'#D45B5B':'#5B9BD5';
+      barsHtml += '<div class="trade-bar-row"><div class="trade-bar-lbl">'+dn+'</div><div class="trade-bar-bg"><div class="trade-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div class="trade-bar-val" style="color:'+color+'">'+(v||'—')+'</div></div>';
     });
-    document.getElementById('fav-list').innerHTML = html;
-  } else {
-    document.getElementById('fav-list').innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-text">Сохрани блюда в избранное через бота</div></div>';
+    document.getElementById('ws-bars').innerHTML = barsHtml;
   }
 }
-
 function filterRecipes(cat, el) {
   currentRecipeCat = cat;
   document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
