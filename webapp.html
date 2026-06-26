@@ -237,10 +237,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="sec" style="margin-top:0">
     <div class="sec-head"><div class="sec-title">Рецепты</div></div>
     <div class="cat-tabs">
-      <div class="cat-tab active" onclick="filterRecipes('все',this)">Все</div>
-      <div class="cat-tab" onclick="filterRecipes('завтрак',this)">🌅 Завтрак</div>
+      <div class="cat-tab active" onclick="filterRecipes('завтрак',this)">🌅 Завтрак</div>
       <div class="cat-tab" onclick="filterRecipes('салат',this)">🥗 Салаты</div>
       <div class="cat-tab" onclick="filterRecipes('суп',this)">🍲 Супы</div>
+      <div class="cat-tab" onclick="filterRecipes('ужин',this)">🍽 Ужин</div>
+      <div class="cat-tab" onclick="filterRecipes('веганское',this)">🌱 Веганские</div>
+      <div class="cat-tab" onclick="filterRecipes('специальное',this)">💚 Спец. питание</div>
     </div>
     <div id="recipes-list"></div>
   </div>
@@ -402,7 +404,7 @@ const RECIPES = [{"id": 1, "name": "Омлет с помидорами", "catego
 
 let USER = {}, DIARY = [], WEEK = [], FAVS = [], SPECS = [];
 let selMealType = 'завтрак';
-let currentRecipeCat = 'все';
+let currentRecipeCat = 'завтрак';
 
 const now = new Date();
 const days = ['вс','пн','вт','ср','чт','пт','сб'];
