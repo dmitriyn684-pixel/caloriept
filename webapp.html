@@ -541,7 +541,7 @@ function renderWeek() {
   if (FAVS.length) {
     let html = '';
     FAVS.forEach(f => {
-      html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+f.meal_name+'</div><div class="rec-meta">Б:'+Math.round(f.protein||0)+' Ж:'+Math.round(f.fat||0)+' У:'+Math.round(f.carbs||0)+'</div></div><div><div class="rec-kcal">'+f.calories+'</div><div class="rec-unit">ккал</div></div></div>';
+      var fname = f.meal_name || f.name || 'Блюдо'; html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+fname+'</div><div class="rec-meta">Б:'+Math.round(f.protein||0)+' Ж:'+Math.round(f.fat||0)+' У:'+Math.round(f.carbs||0)+'</div></div><div><div class="rec-kcal">'+f.calories+'</div><div class="rec-unit">ккал</div></div></div>';
     });
     document.getElementById('fav-list').innerHTML = html;
   } else {
