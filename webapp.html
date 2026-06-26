@@ -158,6 +158,26 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .moto-banner-text{position:absolute;bottom:0;left:0;right:0;padding:14px 16px}
 .moto-banner-quote{font-size:14px;font-weight:600;color:#fff;line-height:1.4;font-family:Georgia,serif}
 .moto-banner-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em}
+.trade-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:14px;margin-bottom:10px}
+.trade-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.trade-title{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-weight:500}
+.trade-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+.badge-green{background:rgba(76,175,124,0.15);color:#4CAF7C;border:0.5px solid rgba(76,175,124,0.3)}
+.badge-red{background:rgba(212,91,91,0.15);color:#D45B5B;border:0.5px solid rgba(212,91,91,0.3)}
+.badge-gold{background:var(--gold2);color:var(--gold);border:0.5px solid var(--gold-b)}
+.trade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.trade-metric{background:var(--bg3);border-radius:var(--rs);padding:10px;border:0.5px solid var(--border)}
+.trade-metric-val{font-size:18px;font-weight:700;line-height:1}
+.trade-metric-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-top:3px}
+.trade-metric-delta{font-size:10px;margin-top:2px;font-weight:500}
+.delta-up{color:#4CAF7C}
+.delta-down{color:#D45B5B}
+.delta-neutral{color:var(--gold)}
+.trade-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.trade-bar-lbl{font-size:10px;color:var(--text2);width:24px;text-align:right;flex-shrink:0}
+.trade-bar-bg{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.trade-bar-fill{height:100%;border-radius:3px;transition:width 0.5s}
+.trade-bar-val{font-size:10px;font-weight:600;width:36px;text-align:right;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -227,6 +247,38 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="sec">
     <div class="sec-head"><div class="sec-title">Мотивация</div></div>
     <div id="moto-banners"></div>
+  </div>
+  <div class="trade-card" id="week-stats-card" style="display:none">
+    <div class="trade-header">
+      <div class="trade-title">&#128202; Аналитика недели</div>
+      <div class="trade-badge badge-gold" id="week-trend">—</div>
+    </div>
+    <div class="trade-grid">
+      <div class="trade-metric">
+        <div class="trade-metric-val" id="ws-avg" style="color:var(--gold)">—</div>
+        <div class="trade-metric-lbl">Среднее ккал/день</div>
+        <div class="trade-metric-delta delta-neutral" id="ws-avg-d">норма</div>
+      </div>
+      <div class="trade-metric">
+        <div class="trade-metric-val" id="ws-total" style="color:#5B9BD5">—</div>
+        <div class="trade-metric-lbl">Всего за неделю</div>
+        <div class="trade-metric-delta" id="ws-deficit">дефицит/профицит</div>
+      </div>
+      <div class="trade-metric">
+        <div class="trade-metric-val" id="ws-best" style="color:#4CAF7C">—</div>
+        <div class="trade-metric-lbl">Лучший день</div>
+        <div class="trade-metric-delta delta-up" id="ws-best-d">макс ккал</div>
+      </div>
+      <div class="trade-metric">
+        <div class="trade-metric-val" id="ws-days" style="color:#D4784A">—</div>
+        <div class="trade-metric-lbl">Дней в норме</div>
+        <div class="trade-metric-delta" id="ws-days-d">из 7 дней</div>
+      </div>
+    </div>
+    <div class="trade-header" style="margin-bottom:8px">
+      <div class="trade-title">&#128200; Калории по дням</div>
+    </div>
+    <div id="ws-bars"></div>
   </div>
 </div>
 
@@ -544,6 +596,7 @@ function renderMotoBanners() {
 function renderWeek() {
   renderMotoBanners();
   if (!WEEK.length) return;
+
   const norm = USER.daily_calories || 2000;
   const maxVal = Math.max(...WEEK.map(d=>d.total_calories||0), norm);
   const barsEl = document.getElementById('week-bars');
