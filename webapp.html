@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CaloriePT AI 2.0</title><!-- v11 -->
+<title>CaloriePT AI 2.0</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -619,59 +619,50 @@ function renderWeek() {
     lbl.textContent = dayNames[date.getDay()];
     daysEl.appendChild(lbl);
   });
-  if (FAVS.length) {
-    let html = '';
-    FAVS.forEach(f => {
-      var fname = f.meal_name || f.name || 'Блюдо'; html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+fname+'</div><div class="rec-meta">Б:'+
-  // Trading stats block
-  const statsCard = document.getElementById('week-stats-card');
-  if (statsCard) {
-    statsCard.style.display = 'block';
-    const norm = USER.daily_calories || 2000;
-    const vals = WEEK.map(function(d){return d.total_calories||0;});
-    const nonZero = vals.filter(function(v){return v>0;});
-    const total = vals.reduce(function(a,b){return a+b;},0);
-    const avg = nonZero.length ? Math.round(total/nonZero.length) : 0;
-    const best = Math.max.apply(null, vals);
-    const daysInNorm = vals.filter(function(v){return v>=norm*0.8&&v<=norm*1.2;}).length;
-    const weekDeficit = norm*7 - total;
-    const dayNames = ['вс','пн','вт','ср','чт','пт','сб'];
-
-    document.getElementById('ws-avg').textContent = avg+' ккал';
-    document.getElementById('ws-total').textContent = total.toLocaleString('ru')+' ккал';
-    document.getElementById('ws-best').textContent = best+' ккал';
-    document.getElementById('ws-days').textContent = daysInNorm+'/7';
-
-    var avgDiff = avg - norm;
-    var avgEl = document.getElementById('ws-avg-d');
-    if(avgDiff>0){avgEl.textContent='+'+avgDiff+' профицит';avgEl.className='trade-metric-delta delta-down';}
-    else if(avgDiff<0){avgEl.textContent=avgDiff+' дефицит';avgEl.className='trade-metric-delta delta-up';}
-    else{avgEl.textContent='в норме';avgEl.className='trade-metric-delta delta-neutral';}
-
-    var defEl = document.getElementById('ws-deficit');
-    if(weekDeficit>0){defEl.textContent='-'+weekDeficit.toLocaleString('ru')+' дефицит';defEl.className='trade-metric-delta delta-up';}
-    else{defEl.textContent='+'+Math.abs(weekDeficit).toLocaleString('ru')+' профицит';defEl.className='trade-metric-delta delta-down';}
-
-    document.getElementById('ws-days-d').textContent = daysInNorm>=5?'Отличная неделя!':daysInNorm>=3?'Хороший прогресс':'Есть куда расти';
-
-    var trend = document.getElementById('week-trend');
-    if(daysInNorm>=5){trend.textContent='↑ ОТЛИЧНО';trend.className='trade-badge badge-green';}
-    else if(daysInNorm>=3){trend.textContent='→ СТАБИЛЬНО';trend.className='trade-badge badge-gold';}
-    else{trend.textContent='↓ РАБОТАЕМ';trend.className='trade-badge badge-red';}
-
-    var maxV = Math.max.apply(null, vals.concat([norm]));
-    var barsHtml = '';
+  // Stats
+  var sc = document.getElementById('week-stats-card');
+  if (sc && WEEK.length) {
+    sc.style.display='block';
+    var nr=USER.daily_calories||2000;
+    var vs=WEEK.map(function(d){return d.total_calories||0;});
+    var tot=vs.reduce(function(a,b){return a+b;},0);
+    var nz=vs.filter(function(v){return v>0;});
+    var avg=nz.length?Math.round(tot/nz.length):0;
+    var best=Math.max.apply(null,vs);
+    var din=vs.filter(function(v){return v>=nr*0.8&&v<=nr*1.2;}).length;
+    var wd=nr*7-tot;
+    var dn=['вс','пн','вт','ср','чт','пт','сб'];
+    document.getElementById('ws-avg').textContent=avg+' ккал';
+    document.getElementById('ws-total').textContent=tot.toLocaleString('ru')+' ккал';
+    document.getElementById('ws-best').textContent=best+' ккал';
+    document.getElementById('ws-days').textContent=din+'/7';
+    var ad=avg-nr;
+    var ae=document.getElementById('ws-avg-d');
+    if(ad>0){ae.textContent='+'+ad+' профицит';ae.className='trade-metric-delta delta-down';}
+    else if(ad<0){ae.textContent=ad+' дефицит';ae.className='trade-metric-delta delta-up';}
+    else{ae.textContent='в норме';ae.className='trade-metric-delta delta-neutral';}
+    var de=document.getElementById('ws-deficit');
+    if(wd>0){de.textContent='-'+wd.toLocaleString('ru')+' дефицит';de.className='trade-metric-delta delta-up';}
+    else{de.textContent='+'+Math.abs(wd).toLocaleString('ru')+' профицит';de.className='trade-metric-delta delta-down';}
+    document.getElementById('ws-days-d').textContent=din>=5?'Отличная!':din>=3?'Хороший прогресс':'Есть куда расти';
+    var tr=document.getElementById('week-trend');
+    if(din>=5){tr.textContent='↑ ОТЛИЧНО';tr.className='trade-badge badge-green';}
+    else if(din>=3){tr.textContent='→ СТАБИЛЬНО';tr.className='trade-badge badge-gold';}
+    else{tr.textContent='↓ РАБОТАЕМ';tr.className='trade-badge badge-red';}
+    var mx=Math.max.apply(null,vs.concat([nr]));
+    var bh='';
     WEEK.forEach(function(d){
-      var v = d.total_calories||0;
-      var pct = maxV>0?Math.round(v/maxV*100):0;
-      var date = new Date(d.date);
-      var dn = dayNames[date.getDay()];
-      var color = v>=norm*0.8&&v<=norm*1.2?'#4CAF7C':v>norm*1.2?'#D45B5B':'#5B9BD5';
-      barsHtml += '<div class="trade-bar-row"><div class="trade-bar-lbl">'+dn+'</div><div class="trade-bar-bg"><div class="trade-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div class="trade-bar-val" style="color:'+color+'">'+(v||'—')+'</div></div>';
+      var v=d.total_calories||0;
+      var p=mx>0?Math.round(v/mx*100):0;
+      var dd=new Date(d.date);
+      var nm=dn[dd.getDay()];
+      var cl=v>=nr*0.8&&v<=nr*1.2?'#4CAF7C':v>nr*1.2?'#D45B5B':'#5B9BD5';
+      bh+='<div class="trade-bar-row"><div class="trade-bar-lbl">'+nm+'</div><div class="trade-bar-bg"><div class="trade-bar-fill" style="width:'+p+'%;background:'+cl+'"></div></div><div class="trade-bar-val" style="color:'+cl+'">'+(v||'—')+'</div></div>';
     });
-    document.getElementById('ws-bars').innerHTML = barsHtml;
+    document.getElementById('ws-bars').innerHTML=bh;
   }
 }
+
 function filterRecipes(cat, el) {
   currentRecipeCat = cat;
   document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
