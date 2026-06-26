@@ -152,22 +152,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .tab.active .tab-icon,.tab.active .tab-lbl{color:var(--gold)}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:0.5px solid var(--gold-b);color:var(--text);font-size:12px;padding:8px 16px;border-radius:20px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
-.trade-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:14px;margin-bottom:10px}
-.trade-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
-.badge-green{background:rgba(76,175,124,0.15);color:#4CAF7C;border:0.5px solid rgba(76,175,124,0.3)}
-.badge-red{background:rgba(212,91,91,0.15);color:#D45B5B;border:0.5px solid rgba(212,91,91,0.3)}
-.badge-gold{background:var(--gold2);color:var(--gold);border:0.5px solid var(--gold-b)}
-.trade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
-.trade-metric{background:var(--bg3);border-radius:var(--rs);padding:10px;border:0.5px solid var(--border)}
-.trade-metric-val{font-size:18px;font-weight:700;line-height:1}
-.trade-metric-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-top:3px}
-.trade-metric-delta{font-size:10px;margin-top:2px;font-weight:500}
-.delta-up{color:#4CAF7C}.delta-down{color:#D45B5B}.delta-neutral{color:var(--gold)}
-.trade-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.trade-bar-lbl{font-size:10px;color:var(--text2);width:24px;text-align:right;flex-shrink:0}
-.trade-bar-bg{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
-.trade-bar-fill{height:100%;border-radius:3px;transition:width 0.6s}
-.trade-bar-val{font-size:10px;font-weight:600;width:36px;text-align:right;flex-shrink:0}
 .moto-banner{position:relative;border-radius:16px;overflow:hidden;margin-bottom:10px;cursor:pointer}
 .moto-banner img{width:100%;height:160px;object-fit:cover;display:block}
 .moto-banner-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.3),rgba(0,0,0,0.7))}
@@ -243,36 +227,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="sec">
     <div class="sec-head"><div class="sec-title">Мотивация</div></div>
     <div id="moto-banners"></div>
-  </div>
-  <div class="trade-card" id="week-stats-card" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">&#128202; Аналитика недели</div>
-      <div class="trade-badge badge-gold" id="week-trend">—</div>
-    </div>
-    <div class="trade-grid">
-      <div class="trade-metric">
-        <div class="trade-metric-val" id="ws-avg" style="color:var(--gold)">—</div>
-        <div class="trade-metric-lbl">Среднее ккал/день</div>
-        <div class="trade-metric-delta delta-neutral" id="ws-avg-d">—</div>
-      </div>
-      <div class="trade-metric">
-        <div class="trade-metric-val" id="ws-total" style="color:#5B9BD5">—</div>
-        <div class="trade-metric-lbl">Всего за неделю</div>
-        <div class="trade-metric-delta" id="ws-deficit">—</div>
-      </div>
-      <div class="trade-metric">
-        <div class="trade-metric-val" id="ws-best" style="color:#4CAF7C">—</div>
-        <div class="trade-metric-lbl">Лучший день</div>
-        <div class="trade-metric-delta delta-up" id="ws-best-d">—</div>
-      </div>
-      <div class="trade-metric">
-        <div class="trade-metric-val" id="ws-days" style="color:#D4784A">—</div>
-        <div class="trade-metric-lbl">Дней в норме</div>
-        <div class="trade-metric-delta" id="ws-days-d">—</div>
-      </div>
-    </div>
-    <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em;font-weight:500;margin-bottom:8px">&#128200; Калории по дням</div>
-    <div id="ws-bars"></div>
   </div>
 </div>
 
@@ -715,50 +669,6 @@ function renderWeek() {
     document.getElementById('fav-list').innerHTML = html;
   } else {
     document.getElementById('fav-list').innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-text">Сохрани блюда в избранное через бота</div></div>';
-  }
-  // Trading stats
-  var sc = document.getElementById('week-stats-card');
-  if (sc) {
-    sc.style.display = 'block';
-    var nr = USER.daily_calories || 2000;
-    var vs = WEEK.map(function(d){return d.total_calories||0;});
-    var nz = vs.filter(function(v){return v>0;});
-    var tot = vs.reduce(function(a,b){return a+b;},0);
-    var avg = nz.length ? Math.round(tot/nz.length) : 0;
-    var best = Math.max.apply(null, vs.concat([0]));
-    var din = vs.filter(function(v){return v>=nr*0.8&&v<=nr*1.2;}).length;
-    var wd = nr*7-tot;
-    var dn = ['вс','пн','вт','ср','чт','пт','сб'];
-    document.getElementById('ws-avg').textContent = avg+' ккал';
-    document.getElementById('ws-total').textContent = tot.toLocaleString('ru')+' ккал';
-    document.getElementById('ws-best').textContent = best+' ккал';
-    document.getElementById('ws-days').textContent = din+'/7';
-    var ad = avg-nr;
-    var ae = document.getElementById('ws-avg-d');
-    if(ad>0){ae.textContent='+'+ad+' профицит';ae.className='trade-metric-delta delta-down';}
-    else if(ad<0){ae.textContent=ad+' дефицит';ae.className='trade-metric-delta delta-up';}
-    else{ae.textContent='в норме';ae.className='trade-metric-delta delta-neutral';}
-    var de = document.getElementById('ws-deficit');
-    if(wd>0){de.textContent='-'+Math.round(wd).toLocaleString('ru')+' дефицит';de.className='trade-metric-delta delta-up';}
-    else{de.textContent='+'+Math.round(Math.abs(wd)).toLocaleString('ru')+' профицит';de.className='trade-metric-delta delta-down';}
-    var bd = WEEK[vs.indexOf(best)];
-    if(bd){var bdd=new Date(bd.date);document.getElementById('ws-best-d').textContent=dn[bdd.getDay()]+' — лучший день';}
-    document.getElementById('ws-days-d').textContent=din>=5?'Отличная неделя!':din>=3?'Хороший прогресс':'Есть куда расти';
-    var tr = document.getElementById('week-trend');
-    if(din>=5){tr.textContent='↑ ОТЛИЧНО';tr.className='trade-badge badge-green';}
-    else if(din>=3){tr.textContent='→ СТАБИЛЬНО';tr.className='trade-badge badge-gold';}
-    else{tr.textContent='↓ РАБОТАЕМ';tr.className='trade-badge badge-red';}
-    var mx = Math.max.apply(null, vs.concat([nr]));
-    var bh = '';
-    WEEK.forEach(function(d){
-      var v=d.total_calories||0;
-      var p=mx>0?Math.round(v/mx*100):0;
-      var dd=new Date(d.date);
-      var nm=dn[dd.getDay()];
-      var cl=v>=nr*0.8&&v<=nr*1.2?'#4CAF7C':v>nr*1.2?'#D45B5B':'#5B9BD5';
-      bh+='<div class="trade-bar-row"><div class="trade-bar-lbl">'+nm+'</div><div class="trade-bar-bg"><div class="trade-bar-fill" style="width:'+p+'%;background:'+cl+'"></div></div><div class="trade-bar-val" style="color:'+cl+'">'+(v||'—')+'</div></div>';
-    });
-    document.getElementById('ws-bars').innerHTML = bh;
   }
 }
 
