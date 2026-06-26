@@ -873,12 +873,18 @@ async function addFavToDiary(favId) {
 async function loadSpecialists() {
   const list = document.getElementById('spec-list');
   if (SPECS.length) { renderSpecs(); return; }
+  list.innerHTML = '<div style="background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:14px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.6">&#129657; Я — AI-ассистент и даю общие рекомендации. Если нужно персональное сопровождение с учётом твоих анализов и здоровья — выбери специалиста.<br><br>Все эксперты — проверенные практики с опытом и сертификатами.<br><br>&#9878; Платформа — информационный сервис. Все консультации и оплата проходят напрямую между тобой и специалистом.</div><div class="loader">Загрузка...</div>';
   try {
     const res = await fetch(API+'/api/specialists');
-    if (res.ok) { SPECS = await res.json(); renderSpecs(); }
-    else throw new Error();
+    if (res.ok) {
+      SPECS = await res.json();
+      if (SPECS.length) { renderSpecs(); }
+      else { list.innerHTML = '<div style="background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:14px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.6">&#129657; Я — AI-ассистент и даю общие рекомендации. Если нужно персональное сопровождение с учётом твоих анализов и здоровья — выбери специалиста.<br><br>Все эксперты — проверенные практики с опытом и сертификатами.<br><br>&#9878; Платформа — информационный сервис. Все консультации и оплата проходят напрямую между тобой и специалистом.</div><div class="empty"><div class="empty-icon">&#128340;</div><div class="empty-text">Специалисты скоро появятся</div></div>'; }
+    } else {
+      list.innerHTML = '<div style="background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:14px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.6">&#129657; Я — AI-ассистент и даю общие рекомендации. Если нужно персональное сопровождение с учётом твоих анализов и здоровья — выбери специалиста.<br><br>Все эксперты — проверенные практики с опытом и сертификатами.<br><br>&#9878; Платформа — информационный сервис. Все консультации и оплата проходят напрямую между тобой и специалистом.</div><div class="empty"><div class="empty-icon">&#128340;</div><div class="empty-text">Специалисты скоро появятся</div></div>';
+    }
   } catch(e) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">👨‍⚕️</div><div class="empty-text">Специалисты скоро появятся</div></div>';
+    list.innerHTML = '<div style="background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:14px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.6">&#129657; Я — AI-ассистент и даю общие рекомендации. Если нужно персональное сопровождение с учётом твоих анализов и здоровья — выбери специалиста.<br><br>Все эксперты — проверенные практики с опытом и сертификатами.<br><br>&#9878; Платформа — информационный сервис. Все консультации и оплата проходят напрямую между тобой и специалистом.</div><div class="empty"><div class="empty-icon">&#128340;</div><div class="empty-text">Специалисты скоро появятся</div></div>';
   }
 }
 
