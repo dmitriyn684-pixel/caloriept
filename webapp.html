@@ -926,7 +926,18 @@ async function saveMoodEntry() {
     var insight = aiData.text || '';
 
     var safe = insight.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    resultEl.innerHTML = '<div style="background:var(--bg3);border-radius:var(--rs);padding:12px;border-left:3px solid var(--gold);font-size:13px;line-height:1.6;color:var(--text);margin-top:4px">&#128161; ' + safe + '</div>';
+    resultEl.innerHTML = '<div style="background:var(--bg3);border-radius:var(--rs);padding:12px;border-left:3px solid var(--gold);font-size:13px;line-height:1.6;color:var(--text);margin-top:4px">&#128161; ' + safe + '</div>' +
+      '<div style="background:var(--bg2);border-radius:var(--rs);border:0.5px solid var(--border);padding:12px;margin-top:8px;font-size:12px;color:var(--text2);line-height:1.5">' +
+      '&#9989; Запись сохранена. В конце недели получишь полный отчёт с анализом твоих паттернов питания &#128202;' +
+      '</div>' +
+      '<div style="margin-top:8px;background:var(--gold2);border:0.5px solid var(--gold-b);border-radius:var(--rs);padding:12px">' +
+      '<div style="font-size:12px;color:var(--text2);margin-bottom:8px">Хочешь разобраться глубже? Поговори с AI-психологом:</div>' +
+      '<a href="https://t.me/psy_mind_rf_bot" style="display:flex;align-items:center;gap:8px;text-decoration:none">' +
+      '<span style="font-size:20px">&#129504;</span>' +
+      '<div><div style="font-size:13px;font-weight:500;color:var(--gold)">PsyMind AI</div>' +
+      '<div style="font-size:11px;color:var(--text2)">AI-психолог — работа с мышлением и эмоциями</div></div>' +
+      '<span style="margin-left:auto;color:var(--gold);font-size:18px">&#8250;</span></a>' +
+      '</div>';
 
     // Reset form
     document.getElementById('mood-food').value = '';
