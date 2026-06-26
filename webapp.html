@@ -283,6 +283,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <div class="row" onclick="aiMyCard()"><div class="row-left"><span style="font-size:18px">📊</span><div class="row-text"><div class="row-name">Моя карточка</div><div class="row-meta">Полная сводка по питанию</div></div></div><div class="row-icon">›</div></div>
       <div class="row" onclick="showOverlay('holiday')"><div class="row-left"><span style="font-size:18px">🎉</span><div class="row-text"><div class="row-name">Режим праздника</div><div class="row-meta">Советы как не набрать вес на праздниках</div></div></div><div class="row-icon">›</div></div>
     </div>
+    <div class="sec-head"><div class="sec-title">Дневник осознанности</div></div>
+    <div class="card" style="margin-bottom:10px">
+      <div class="row" onclick="showOverlay('mood')"><div class="row-left"><span style="font-size:18px">&#128212;</span><div class="row-text"><div class="row-name">Добавить запись</div><div class="row-meta">Что ел и как себя чувствовал</div></div></div><div class="row-icon">&#8250;</div></div>
+      <div class="row" onclick="loadMoodHistory()"><div class="row-left"><span style="font-size:18px">&#128200;</span><div class="row-text"><div class="row-name">История и паттерны</div><div class="row-meta">Записи за последние 7 дней</div></div></div><div class="row-icon">&#8250;</div></div>
+    </div>
     <div class="sec-head"><div class="sec-title">Питание от ИИ</div></div>
     <div class="card" style="margin-bottom:10px">
       <div class="row" onclick="aiMenu()"><div class="row-left"><span style="font-size:18px">🍽</span><div class="row-text"><div class="row-name">Меню на сегодня</div><div class="row-meta">ИИ составит план под твою норму</div></div></div><div class="row-icon">›</div></div>
@@ -376,6 +381,47 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="overlay" id="ov-specialists">
   <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('specialists')">←</div><div class="ov-title">👨‍⚕️ Специалисты</div></div>
   <div id="spec-list"><div class="loader">Загрузка...</div></div>
+</div>
+
+
+<!-- MOOD DIARY OVERLAY -->
+<div class="overlay" id="ov-mood">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('mood')">&larr;</div><div class="ov-title">&#128212; Дневник осознанности</div></div>
+  <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.5">Отслеживай связь между едой и состоянием. Это займёт 2 минуты.</div>
+  <div class="form-group">
+    <label class="form-lbl">1. Что ты ел(а) сегодня? (кратко)</label>
+    <input class="form-input" id="mood-food" type="text" placeholder="кофе, круассан, бургер...">
+  </div>
+  <div class="form-group">
+    <label class="form-lbl">2. Состояние ДО еды</label>
+    <div style="display:flex;flex-wrap:wrap;gap:6px" id="mood-state-btns">
+      <div class="mt-btn" data-state="тревога" onclick="selMoodState(this)">😰 Тревога</div>
+      <div class="mt-btn" data-state="спокойствие" onclick="selMoodState(this)">😌 Спокойствие</div>
+      <div class="mt-btn" data-state="раздражение" onclick="selMoodState(this)">😤 Раздражение</div>
+      <div class="mt-btn" data-state="пустота" onclick="selMoodState(this)">😶 Пустота</div>
+      <div class="mt-btn" data-state="радость" onclick="selMoodState(this)">😊 Радость</div>
+      <div class="mt-btn" data-state="усталость" onclick="selMoodState(this)">😴 Усталость</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-lbl">3. Что повлияло на выбор еды?</label>
+    <div style="display:flex;flex-wrap:wrap;gap:6px" id="mood-reason-btns">
+      <div class="mt-btn" data-reason="голод" onclick="selMoodReason(this)">🍽 Голод</div>
+      <div class="mt-btn" data-reason="стресс" onclick="selMoodReason(this)">⚡ Стресс</div>
+      <div class="mt-btn" data-reason="привычка" onclick="selMoodReason(this)">🔄 Привычка</div>
+      <div class="mt-btn" data-reason="компания" onclick="selMoodReason(this)">👥 Компания</div>
+      <div class="mt-btn" data-reason="скука" onclick="selMoodReason(this)">💭 Скука</div>
+      <div class="mt-btn" data-reason="эмоция" onclick="selMoodReason(this)">❤️ Эмоция</div>
+    </div>
+  </div>
+  <button class="btn" onclick="saveMoodEntry()">&#10003; Сохранить запись</button>
+  <div id="mood-ai-result" style="margin-top:12px"></div>
+</div>
+
+<!-- MOOD HISTORY OVERLAY -->
+<div class="overlay" id="ov-mood-history">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('mood-history')">&larr;</div><div class="ov-title">&#128202; История дневника</div></div>
+  <div id="mood-history-list"><div class="loader">Загрузка...</div></div>
 </div>
 
 <!-- AI OVERLAY -->
@@ -829,6 +875,102 @@ function aiHoliday() {
   const norm = USER.daily_calories || 2000;
   const prompt = 'Ты диетолог. Пользователь идет на праздник. Норма: ' + norm + ' ккал. Цель: ' + (USER.goal||'не навредить') + '. Дай 5-7 конкретных советов как вести себя на застолье. Русский язык.';
   showAI('Советы для праздника', prompt);
+}
+
+
+let selMoodStateVal = '';
+let selMoodReasonVal = '';
+let MOOD_ENTRIES = [];
+
+function selMoodState(el) {
+  document.querySelectorAll('#mood-state-btns .mt-btn').forEach(function(b){b.classList.remove('sel');});
+  el.classList.add('sel');
+  selMoodStateVal = el.dataset.state;
+}
+
+function selMoodReason(el) {
+  document.querySelectorAll('#mood-reason-btns .mt-btn').forEach(function(b){b.classList.remove('sel');});
+  el.classList.add('sel');
+  selMoodReasonVal = el.dataset.reason;
+}
+
+async function saveMoodEntry() {
+  var food = document.getElementById('mood-food').value.trim();
+  if (!food) { toast('Напиши что ел(а)'); return; }
+  if (!selMoodStateVal) { toast('Выбери состояние'); return; }
+  if (!selMoodReasonVal) { toast('Выбери причину'); return; }
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) { toast('Открой в Telegram'); return; }
+
+  var resultEl = document.getElementById('mood-ai-result');
+  resultEl.innerHTML = '<div class="loader">Анализирую...</div>';
+
+  var entry = {user_id: uid, food: food, state: selMoodStateVal, reason: selMoodReasonVal};
+
+  try {
+    // Save to API
+    var res = await fetch(API + '/api/mood/add', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(entry)
+    });
+
+    // Get AI insight
+    var prompt = 'Ты AI-ассистент дневника осознанного питания. Пользователь съел: ' + food + '. Состояние ДО: ' + selMoodStateVal + '. Причина выбора: ' + selMoodReasonVal + '. Дай короткий (2-3 предложения) тёплый психологический инсайт о связи состояния и выбора еды. Без осуждения. Без слов "вредный", "плохой", "надо". Используй фразы "часто это связано с...", "попробуй заметить...". В конце — один вопрос для размышления. Отвечай на русском.';
+    var aiRes = await fetch(API + '/api/ai', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: prompt, user_id: uid})
+    });
+    var aiData = await aiRes.json();
+    var insight = aiData.text || '';
+
+    var safe = insight.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    resultEl.innerHTML = '<div style="background:var(--bg3);border-radius:var(--rs);padding:12px;border-left:3px solid var(--gold);font-size:13px;line-height:1.6;color:var(--text);margin-top:4px">&#128161; ' + safe + '</div>';
+
+    // Reset form
+    document.getElementById('mood-food').value = '';
+    selMoodStateVal = '';
+    selMoodReasonVal = '';
+    document.querySelectorAll('#mood-state-btns .mt-btn, #mood-reason-btns .mt-btn').forEach(function(b){b.classList.remove('sel');});
+    toast('Запись сохранена!');
+  } catch(e) {
+    resultEl.innerHTML = '';
+    toast('Ошибка: ' + e.message);
+  }
+}
+
+async function loadMoodHistory() {
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  showOverlay('mood-history');
+  var list = document.getElementById('mood-history-list');
+  try {
+    var res = await fetch(API + '/api/mood/' + uid);
+    if (res.ok) {
+      var data = await res.json();
+      if (!data.length) {
+        list.innerHTML = '<div class="empty"><div class="empty-icon">&#128212;</div><div class="empty-text">Записей пока нет. Добавь первую!</div></div>';
+        return;
+      }
+      var html = '';
+      data.forEach(function(e) {
+        var d = new Date(e.created_at || e.date);
+        var dateStr = d.toLocaleDateString('ru', {day:'numeric', month:'short'});
+        html += '<div style="background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px;margin-bottom:8px">' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
+          '<div style="font-size:12px;font-weight:500">' + (e.food || '') + '</div>' +
+          '<div style="font-size:10px;color:var(--text3)">' + dateStr + '</div></div>' +
+          '<div style="font-size:11px;color:var(--text2)">' + (e.state||'') + ' · ' + (e.reason||'') + '</div>' +
+          '</div>';
+      });
+      list.innerHTML = html;
+    } else {
+      list.innerHTML = '<div class="empty"><div class="empty-icon">&#128212;</div><div class="empty-text">Записей пока нет</div></div>';
+    }
+  } catch(err) {
+    list.innerHTML = '<div class="empty"><div class="empty-text">Ошибка загрузки</div></div>';
+  }
 }
 
 async function init() {
