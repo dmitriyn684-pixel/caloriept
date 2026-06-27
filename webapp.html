@@ -688,9 +688,15 @@ const MOTO_BANNERS = [
 function renderMotoBanners() {
   const el = document.getElementById('moto-banners');
   if (!el) return;
-  const today = new Date().getDay();
-  const b1 = MOTO_BANNERS[today % MOTO_BANNERS.length];
-  const b2 = MOTO_BANNERS[(today + 1) % MOTO_BANNERS.length];
+  // Change banners daily at 7:00 MSK (UTC+3)
+  const now = new Date();
+  const msk = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+  const mskHour = msk.getUTCHours();
+  const mskDay = msk.getUTCDay();
+  // If before 7:00 MSK - use previous day's banners
+  const dayIndex = mskHour >= 7 ? mskDay : (mskDay + 6) % 7;
+  const b1 = MOTO_BANNERS[dayIndex % MOTO_BANNERS.length];
+  const b2 = MOTO_BANNERS[(dayIndex + 1) % MOTO_BANNERS.length];
   let html = '';
   [b1, b2].forEach(function(b) {
     html += '<div class="moto-banner"><img src="' + b.img + '" loading="lazy"><div class="moto-banner-overlay"></div><div class="moto-banner-text"><div class="moto-banner-quote">' + b.quote + '</div><div class="moto-banner-sub">' + b.sub + '</div></div></div>';
