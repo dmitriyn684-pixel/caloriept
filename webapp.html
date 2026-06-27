@@ -678,11 +678,64 @@ function renderDiary() {
 }
 
 const MOTO_BANNERS = [
-  {img: 'https://dmitriyn684-pixel.github.io/caloriept/gym_small.jpg', quote: 'Твоё тело может всё. Это твой разум надо убедить.', sub: 'Мотивация дня'},
-  {img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80', quote: 'Каждая тренировка — это инвестиция в себя.', sub: 'Фитнес и здоровье'},
-  {img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80', quote: 'Ешь правильно. Живи долго. Будь счастлив.', sub: 'Здоровое питание'},
-  {img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80', quote: 'Маленькие шаги каждый день — большие результаты.', sub: 'Путь к цели'},
-  {img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80', quote: 'Не считай дни — делай так, чтобы дни считались.', sub: 'Упорство'},
+  {img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',quote:'Твоё тело может всё. Это твой разум надо убедить.',sub:'Мотивация дня'},
+  {img:'https://dmitriyn684-pixel.github.io/caloriept/gym_small.jpg',quote:'Каждая тренировка — это инвестиция в себя.',sub:'Фитнес и здоровье'},
+  {img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80',quote:'Ешь правильно. Живи долго. Будь счастлив.',sub:'Здоровое питание'},
+  {img:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80',quote:'Маленькие шаги каждый день — большие результаты.',sub:'Путь к цели'},
+  {img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80',quote:'Не считай дни — делай так, чтобы дни считались.',sub:'Упорство'},
+  {img:'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80',quote:'Дисциплина — это мост между целями и достижениями.',sub:'Сила воли'},
+  {img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80',quote:'Сегодняшнее ты должно быть лучше вчерашнего.',sub:'Рост каждый день'},
+  {img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',quote:'Твоё тело — это отражение твоих привычек.',sub:'Осознанность'},
+  {img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80',quote:'Хорошая еда — это забота о себе.',sub:'Питание'},
+  {img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80',quote:'Начни с малого. Главное — начать.',sub:'Первый шаг'},
+  {img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',quote:'Сила — не в мышцах. Сила — в решениях.',sub:'Ментальная сила'},
+  {img:'https://images.unsplash.com/photo-1540206395-68808572332f?w=600&q=80',quote:'Ты станешь тем, чем ты ешь.',sub:'Сила еды'},
+  {img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',quote:'Нет пределов — есть только границы которые ты сам себе ставишь.',sub:'Без границ'},
+  {img:'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80',quote:'Движение — это лекарство от всего.',sub:'Активность'},
+  {img:'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600&q=80',quote:'Свежие продукты — основа здоровья.',sub:'Питание'},
+  {img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',quote:'Победа начинается в голове.',sub:'Мышление победителя'},
+  {img:'https://dmitriyn684-pixel.github.io/caloriept/gym_small.jpg',quote:'Каждое утро — это новый шанс.',sub:'Новый день'},
+  {img:'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600&q=80',quote:'Тренируйся в хорошие дни, чтобы быть готовым в плохие.',sub:'Готовность'},
+  {img:'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&q=80',quote:'Боль временна. Гордость от результата — вечна.',sub:'Упорство'},
+  {img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80',quote:'Ешь с любовью в себя.',sub:'Осознанное питание'},
+  {img:'https://images.unsplash.com/photo-1434596922112-19c563067271?w=600&q=80',quote:'Лучшее время для начала — сейчас.',sub:'Действуй'},
+  {img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&q=80',quote:'Здоровье — это инвестиция, а не расход.',sub:'Инвестиции'},
+  {img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80',quote:'Баланс — это не диета, это образ жизни.',sub:'Образ жизни'},
+  {img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80',quote:'Спокойствие начинается с выбора еды.',sub:'Внутренний мир'},
+  {img:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80',quote:'Каждая капля пота — шаг к цели.',sub:'К цели'},
+  {img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',quote:'Ты — это проект на всю жизнь.',sub:'Ты — главное'},
+  {img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',quote:'Не жди мотивацию. Действуй и она придёт.',sub:'Действие'},
+  {img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80',quote:'Правильное питание — это любовь к себе.',sub:'Самолюбовь'},
+  {img:'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80',quote:'Твоё лучшее я — впереди.',sub:'Будущее'},
+  {img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',quote:'Спорт — это не наказание. Это праздник.',sub:'Радость'},
+  {img:'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80',quote:'Привычка сильнее мотивации.',sub:'Привычка'},
+  {img:'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600&q=80',quote:'Ешь, чтобы жить. Не живи, чтобы есть.',sub:'Мудрость'},
+  {img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',quote:'Ты сильнее, чем думаешь.',sub:'Вера в себя'},
+  {img:'https://dmitriyn684-pixel.github.io/caloriept/gym_small.jpg',quote:'Результат требует времени.',sub:'Терпение'},
+  {img:'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600&q=80',quote:'Даже маленький прогресс — это прогресс.',sub:'Прогресс'},
+  {img:'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&q=80',quote:'Фокус на процессе. Результат придёт.',sub:'Фокус'},
+  {img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80',quote:'Твоё здоровье — твоя ответственность.',sub:'Ответственность'},
+  {img:'https://images.unsplash.com/photo-1434596922112-19c563067271?w=600&q=80',quote:'Слушай своё тело.',sub:'Телесное ощущение'},
+  {img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&q=80',quote:'Еда — это топливо для жизни.',sub:'Еда как топливо'},
+  {img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80',quote:'Ты не диетишь. Ты ведёшь здоровый образ жизни.',sub:'Образ жизни'},
+  {img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80',quote:'Спать, двигаться, есть — вот формула.',sub:'Баланс'},
+  {img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',quote:'Уважай себя — начиная с тарелки.',sub:'Самоуважение'},
+  {img:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80',quote:'Движение лечит душу.',sub:'Душа и тело'},
+  {img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80',quote:'Каждый день без тренировки — потерянный день.',sub:'Постоянство'},
+  {img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',quote:'Здоровое тело — здоровый дух.',sub:'Гармония'},
+  {img:'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80',quote:'Хвали себя за малое.',sub:'Благодарность'},
+  {img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',quote:'Твой путь — твоя скорость.',sub:'Индивидуальность'},
+  {img:'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80',quote:'Продолжай. Даже когда тяжело.',sub:'Стойкость'},
+  {img:'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600&q=80',quote:'Цвет твоей тарелки — это здоровье.',sub:'Яркость'},
+  {img:'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600&q=80',quote:'Еда — это не враг. Еда — это лекарство.',sub:'Смена привычек'},
+  {img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80',quote:'Каждый день — это выбор.',sub:'Выбор'},
+  {img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',quote:'Сила — в движении.',sub:'Движение'},
+  {img:'https://dmitriyn684-pixel.github.io/caloriept/gym_small.jpg',quote:'Чем лучше ты питаешься, тем лучше чувствуешь.',sub:'Связь'},
+  {img:'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&q=80',quote:'Не отказывайся от целей. Отказывайся от отговорок.',sub:'Целеустремленность'},
+  {img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80',quote:'Вода, сон, движение — три столпа здоровья.',sub:'Основы'},
+  {img:'https://images.unsplash.com/photo-1434596922112-19c563067271?w=600&q=80',quote:'Твой организм верит в тебя.',sub:'Доверие себе'},
+  {img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&q=80',quote:'Ешь ярко, живи ярко.',sub:'Яркость жизни'},
+  {img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80',quote:'Здоровье — это процесс, а не событие.',sub:'Процесс'},
 ];
 
 function renderMotoBanners() {
@@ -694,7 +747,10 @@ function renderMotoBanners() {
   const mskHour = msk.getUTCHours();
   const mskDay = msk.getUTCDay();
   // If before 7:00 MSK - use previous day's banners
-  const dayIndex = mskHour >= 7 ? mskDay : (mskDay + 6) % 7;
+  // Day of year for 60-day cycle
+  const startOfYear = new Date(Date.UTC(msk.getUTCFullYear(), 0, 0));
+  const dayOfYear = Math.floor((msk - startOfYear) / 86400000);
+  const dayIndex = mskHour >= 7 ? dayOfYear : dayOfYear - 1;
   const b1 = MOTO_BANNERS[dayIndex % MOTO_BANNERS.length];
   const b2 = MOTO_BANNERS[(dayIndex + 1) % MOTO_BANNERS.length];
   let html = '';
