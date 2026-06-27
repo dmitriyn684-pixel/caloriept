@@ -1310,11 +1310,11 @@ async function calcFoodByAI() {
     if (match) {
       var obj = JSON.parse(match[0]);
       // Fill form fields
-      if (obj.name) document.getElementById('food-name').value = obj.name;
-      if (obj.calories) document.getElementById('food-cal').value = obj.calories;
-      if (obj.protein) document.getElementById('food-prot').value = obj.protein;
-      if (obj.fat) document.getElementById('food-fat').value = obj.fat;
-      if (obj.carbs) document.getElementById('food-carbs').value = obj.carbs;
+      if (obj.name) document.getElementById('f-name').value = obj.name;
+      if (obj.calories) document.getElementById('f-kcal').value = obj.calories;
+      if (obj.protein) document.getElementById('f-p').value = obj.protein;
+      if (obj.fat) document.getElementById('f-f').value = obj.fat;
+      if (obj.carbs) document.getElementById('f-c').value = obj.carbs;
       resultEl.innerHTML = '<span style="color:#4CAF7C">✓ КБЖУ заполнено! Проверь и нажми Сохранить.</span>';
       document.getElementById('ai-food-input').style.display = 'none';
       document.getElementById('ai-food-btn').textContent = '🤖 Рассчитать КБЖУ по описанию';
