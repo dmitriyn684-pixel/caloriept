@@ -98,6 +98,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .cat-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
 .cat-tab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .cat-tab.active{border-color:var(--gold-b);background:var(--gold2);color:var(--gold)}
+.mind-emo-btn{padding:6px 12px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;}
+.mind-emo-btn.active{border-color:var(--gold-b);background:var(--gold2);color:var(--gold);}
 .rec-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px 13px;margin-bottom:7px;cursor:pointer;transition:background 0.15s;display:flex;justify-content:space-between;align-items:center}
 .rec-card:active{background:var(--bg3)}
 .rec-name{font-size:13px;font-weight:500}
@@ -549,6 +551,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="tabs">
   <div class="tab active" id="tab-diary" onclick="showPage('diary')"><div class="tab-icon">📋</div><div class="tab-lbl">Дневник</div></div>
   <div class="tab" id="tab-week" onclick="showPage('week')"><div class="tab-icon">📈</div><div class="tab-lbl">Неделя</div></div>
+  <div class="tab" id="tab-mind" onclick="showPage('mind')"><div class="tab-icon">🧠</div><div class="tab-lbl">Разум</div></div>
   <div class="tab" id="tab-recipes" onclick="showPage('recipes')"><div class="tab-icon">🍽</div><div class="tab-lbl">Рецепты</div></div>
   <div class="tab" id="tab-profile" onclick="showPage('profile')"><div class="tab-icon">👤</div><div class="tab-lbl">Профиль</div></div>
 </div>
@@ -589,8 +592,75 @@ function showPage(name) {
 
   if (name === 'week') renderWeek();
   if (name === 'recipes') renderRecipes();
+  if (name === 'mind') loadMindHistory();
 }
 
+
+
+// ─── ДНЕВНИК ОСОЗНАННОСТИ ───────────────────────────────────────
+let selectedEmotion = '';
+let selectedReason = '';
+
+function selectEmotion(btn, val) {
+  document.querySelectorAll('#mind-emotion-btns .mind-emo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedEmotion = val;
+}
+
+function selectReason(btn, val) {
+  document.querySelectorAll('#mind-reason-btns .mind-emo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedReason = val;
+}
+
+async function saveMindEntry() {
+  const food = document.getElementById('mind-food').value.trim();
+  if (!food) { toast('Опиши что ел(а)'); return; }
+  if (!selectedEmotion) { toast('Выбери состояние'); return; }
+  if (!selectedReason) { toast('Выбери причину'); return; }
+
+  try {
+    const res = await fetch(API + '/mind', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ user_id: UID, food, emotion: selectedEmotion, reason: selectedReason })
+    });
+    if (res.ok) {
+      toast('✓ Запись сохранена!');
+      document.getElementById('mind-food').value = '';
+      selectedEmotion = '';
+      selectedReason = '';
+      document.querySelectorAll('.mind-emo-btn').forEach(b => b.classList.remove('active'));
+      await loadMindHistory();
+    }
+  } catch(e) { toast('Ошибка сохранения'); }
+}
+
+async function loadMindHistory() {
+  if (!UID) return;
+  try {
+    const res = await fetch(API + '/mind/' + UID);
+    if (!res.ok) return;
+    const data = await res.json();
+    const el = document.getElementById('mind-history');
+    if (!data.entries || !data.entries.length) {
+      el.innerHTML = '<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px;">Записей пока нет.<br>Сделай первую запись!</div>';
+      return;
+    }
+    el.innerHTML = '<div style="font-size:13px;font-weight:600;color:var(--text1);margin-bottom:10px;">📚 Последние записи</div>' +
+      data.entries.slice(0,7).map(e => `
+        <div style="background:var(--bg2);border-radius:12px;padding:12px;margin-bottom:8px;border:0.5px solid var(--border);">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">${e.date}</div>
+          <div style="font-size:13px;color:var(--text1);margin-bottom:4px;">🍽 ${e.food}</div>
+          <div style="display:flex;gap:8px;">
+            <span style="font-size:11px;background:var(--bg3);padding:3px 8px;border-radius:10px;color:var(--text2);">${e.emotion}</span>
+            <span style="font-size:11px;background:var(--bg3);padding:3px 8px;border-radius:10px;color:var(--text2);">${e.reason}</span>
+          </div>
+          ${e.insight ? `<div style="font-size:12px;color:var(--gold);margin-top:6px;">💡 ${e.insight}</div>` : ''}
+        </div>
+      `).join('');
+  } catch(e) { console.log('Mind history error', e); }
+}
 
 function shareBot() {
   const url = 'https://t.me/share/url?url=https://t.me/Calorie_counter_rf_bot&text=%F0%9F%8D%8E%20CaloriePT%20AI%202.0%20%E2%80%94%20%D1%83%D0%BC%D0%BD%D1%8B%D0%B9%20%D1%81%D1%87%D1%91%D1%82%D1%87%D0%B8%D0%BA%20%D0%BA%D0%B0%D0%BB%D0%BE%D1%80%D0%B8%D0%B9%20%D1%81%20AI!';
@@ -1347,5 +1417,76 @@ async function init() {
 
 init();
 </script>
+<!-- PAGE: MIND -->
+<div class="page" id="page-mind">
+  <div class="sec">
+
+    <!-- Объяснение концепции -->
+    <div style="background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:16px;border:0.5px solid var(--border);">
+      <div style="font-size:16px;font-weight:700;color:var(--text1);margin-bottom:8px;">🧠 Еда и мышление — одна система</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;">
+        Твой кишечник и мозг связаны напрямую через блуждающий нерв. Учёные называют это осью <b style="color:var(--gold)">«микробиота → кишечник → мозг»</b>. Это значит:
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😰 <b>Тревога</b> → тянет к сладкому и мучному (быстрый дофамин)</div>
+        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😤 <b>Раздражение</b> → жирная еда или пропуск приёма пищи</div>
+        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😴 <b>Усталость</b> → переедание вечером (накопленный стресс)</div>
+        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😌 <b>Спокойствие</b> → осознанный выбор еды</div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5;">
+        Дневник ниже помогает замечать свои паттерны. Всего 3 вопроса в день — и через неделю ты увидишь связь между состоянием и едой.
+      </div>
+    </div>
+
+    <!-- Форма записи -->
+    <div id="mind-form" style="background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:16px;border:0.5px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;color:var(--text1);margin-bottom:12px;">📝 Запись дня</div>
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">1. Что ты ел(а) сегодня? (кратко)</div>
+        <textarea id="mind-food" placeholder="Например: каша утром, суп и курица днём, творог вечером..." style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:10px;color:var(--text1);font-size:13px;resize:none;height:70px;box-sizing:border-box;"></textarea>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">2. Какое состояние было ДО еды?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="mind-emotion-btns">
+          <button onclick="selectEmotion(this,'тревога')" class="mind-emo-btn">😰 Тревога</button>
+          <button onclick="selectEmotion(this,'спокойствие')" class="mind-emo-btn">😌 Спокойствие</button>
+          <button onclick="selectEmotion(this,'раздражение')" class="mind-emo-btn">😤 Раздражение</button>
+          <button onclick="selectEmotion(this,'пустота')" class="mind-emo-btn">😶 Пустота</button>
+          <button onclick="selectEmotion(this,'радость')" class="mind-emo-btn">😊 Радость</button>
+          <button onclick="selectEmotion(this,'усталость')" class="mind-emo-btn">😴 Усталость</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">3. Что повлияло на выбор еды?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="mind-reason-btns">
+          <button onclick="selectReason(this,'голод')" class="mind-emo-btn">🤤 Голод</button>
+          <button onclick="selectReason(this,'стресс')" class="mind-emo-btn">⚡ Стресс</button>
+          <button onclick="selectReason(this,'привычка')" class="mind-emo-btn">🔄 Привычка</button>
+          <button onclick="selectReason(this,'компания')" class="mind-emo-btn">👥 Компания</button>
+          <button onclick="selectReason(this,'скука')" class="mind-emo-btn">😑 Скука</button>
+          <button onclick="selectReason(this,'эмоция')" class="mind-emo-btn">💔 Эмоция</button>
+        </div>
+      </div>
+
+      <button onclick="saveMindEntry()" style="width:100%;background:var(--gold);color:#000;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;">✨ Сохранить запись</button>
+    </div>
+
+    <!-- История записей -->
+    <div id="mind-history"></div>
+
+    <!-- CTA на психолога -->
+    <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:16px;padding:20px;margin-top:8px;text-align:center;border:0.5px solid var(--border);">
+      <div style="font-size:20px;margin-bottom:8px;">🧠</div>
+      <div style="font-size:14px;font-weight:700;color:#e0e0ff;margin-bottom:6px;">Хочешь разобраться глубже?</div>
+      <div style="font-size:12px;color:#9090aa;margin-bottom:14px;">Мира — AI-психолог, который поможет понять связь между эмоциями, мышлением и едой. Доступна 24/7.</div>
+      <a href="https://t.me/psy_mind_rf_bot" style="display:block;background:var(--gold);color:#000;border-radius:12px;padding:12px;font-size:13px;font-weight:600;text-decoration:none;">💬 Поговорить с Мирой</a>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>
