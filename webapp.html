@@ -1579,6 +1579,15 @@ const ANNA_HELLO = '👋 Привет! Я Анна, ваш персональн�
   '🧘‍♀️ Разберём связь настроения и еды? У меня есть данные вашего журнала эмоций.\n\n' +
   'Просто начните диалог — я слушаю ❤️';
 
+function cleanMd(t) {
+  if (!t) return t;
+  return t
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/__(.+?)__/g, '$1')
+    .replace(/(^|\n)#{1,4}\s*/g, '$1')
+    .replace(/\*(?!\s)(.+?)\*/g, '$1');
+}
+
 function annaQuick(text) {
   document.getElementById('anna-input').value = text;
   sendAnna();
@@ -1640,7 +1649,7 @@ async function sendAnna() {
       body: JSON.stringify({ user_id: UID, message: msg })
     });
     const data = await res.json();
-    annaBubble(data.reply || 'Анна сейчас недоступна, попробуй через минуту.', 'a');
+    annaBubble(cleanMd(data.reply) || 'Анна сейчас недоступна, попробуй через минуту.', 'a');
   } catch (e) {
     annaBubble('Ошибка соединения. Попробуй ещё раз.', 'a');
   }
