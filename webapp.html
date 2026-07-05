@@ -160,6 +160,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .moto-banner-text{position:absolute;bottom:0;left:0;right:0;padding:14px 16px}
 .moto-banner-quote{font-size:14px;font-weight:600;color:#fff;line-height:1.4;font-family:Georgia,serif}
 .moto-banner-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em}
+
+/* Прячем рекламный баннер сайта только когда открыта вкладка Анны */
+body.on-anna #landing-banner { display: none !important; }
 </style>
 </head>
 <body>
@@ -221,7 +224,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 
 <!-- LANDING BANNER -->
-<div onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.openLink('https://caloriept.ru');else window.open('https://caloriept.ru','_blank')" style="margin:12px 16px 8px;background:linear-gradient(135deg,#1a1a1a,#2a2a1a);border-radius:16px;padding:16px;border:0.5px solid var(--gold-b);cursor:pointer;display:flex;align-items:center;gap:12px;">
+<div id="landing-banner" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.openLink('https://caloriept.ru');else window.open('https://caloriept.ru','_blank')" style="margin:12px 16px 8px;background:linear-gradient(135deg,#1a1a1a,#2a2a1a);border-radius:16px;padding:16px;border:0.5px solid var(--gold-b);cursor:pointer;display:flex;align-items:center;gap:12px;">
   <div style="font-size:28px;">🌐</div>
   <div>
     <div style="font-size:13px;font-weight:700;color:var(--gold);">CaloriePT AI 2.0</div>
@@ -561,11 +564,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <div class="page" id="page-anna">
-  <div class="card" style="padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px">
-    <div id="anna-avatar" style="width:54px;height:54px;border-radius:50%;background:var(--gold2);border:0.5px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden"><img src="anna.jpg" alt="Анна" style="width:100%;height:100%;object-fit:cover"></div>
-    <div style="flex:1;min-width:0">
-      <div style="font-size:15px;font-weight:600">Анна</div>
-      <div style="font-size:11px;color:var(--text2)">AI-нутрициолог · онлайн-консультация</div>
+  <div id="anna-hero" style="position:relative;margin:0 -16px 12px;height:200px;overflow:hidden;background:#1a1a1a">
+    <img src="anna.jpg" alt="Анна" style="width:100%;height:100%;object-fit:cover;object-position:center 25%">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.85) 100%)"></div>
+    <div style="position:absolute;left:16px;bottom:12px;right:16px">
+      <div style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.3px">Анна</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px">AI-нутрициолог · онлайн-консультация</div>
     </div>
   </div>
   <div id="anna-chat" style="display:flex;flex-direction:column;gap:8px;min-height:180px;margin-bottom:10px"></div>
@@ -1600,8 +1604,7 @@ function annaChips() {
   const chips = [
     ['🍽️ Разобрать дневник', () => annaQuick('Проанализируй мой дневник питания за последние дни и дай рекомендации')],
     ['🥑 Составить план', () => annaQuick('Составь мне план питания на день с учётом моего профиля и цели')],
-    ['🧠 Настроение и еда', () => annaQuick('Разбери связь моего настроения и питания')],
-    ['📸 Фото холодильника', () => showOverlay('fridge')]
+    ['🧠 Настроение и еда', () => annaQuick('Разбери связь моего настроения и питания')]
   ];
   chips.forEach(([label, fn]) => {
     const b = document.createElement('div');
@@ -1627,6 +1630,7 @@ function annaBubble(text, who) {
 const _origShowPage = showPage;
 showPage = function (name) {
   _origShowPage(name);
+  document.body.classList.toggle('on-anna', name === 'anna');
   if (name === 'anna' && !annaGreeted) {
     annaGreeted = true;
     annaBubble(ANNA_HELLO, 'a');
