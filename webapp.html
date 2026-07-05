@@ -329,6 +329,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="overlay" id="ov-add">
   <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('add')">←</div><div class="ov-title">Добавить еду</div></div>
   <div class="form-group"><label class="form-lbl">Название блюда</label><input class="form-input" id="f-name" type="text" placeholder="Гречка с курицей"></div>
+  <div id="prod-suggest" style="display:none;margin:-4px 0 9px;background:var(--bg2);border:0.5px solid var(--gold-b);border-radius:var(--rs);max-height:230px;overflow-y:auto"></div>
+  <div class="form-group" id="grams-group" style="display:none"><label class="form-lbl">Порция (грамм)</label><input class="form-input" id="f-grams" type="number" placeholder="100" inputmode="numeric" value="100"></div>
   <div class="form-group">
     <label class="form-lbl">Тип приёма</label>
     <div class="mt-grid">
@@ -558,11 +560,28 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   </div>
 </div>
 
+<div class="page" id="page-anna">
+  <div class="card" style="padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px">
+    <div id="anna-avatar" style="width:54px;height:54px;border-radius:50%;background:var(--gold2);border:0.5px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden">👩‍⚕️</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:15px;font-weight:600">Анна</div>
+      <div style="font-size:11px;color:var(--text2)">AI-нутрициолог · онлайн-консультация</div>
+    </div>
+  </div>
+  <div id="anna-chat" style="display:flex;flex-direction:column;gap:8px;min-height:180px;margin-bottom:10px"></div>
+  <div id="anna-typing" style="display:none;font-size:11px;color:var(--text2);margin-bottom:8px">Анна печатает…</div>
+  <div style="display:flex;gap:7px;position:sticky;bottom:74px">
+    <input class="form-input" id="anna-input" type="text" placeholder="Спроси о питании…" style="flex:1">
+    <button class="btn" style="width:auto;margin-top:0;padding:10px 16px;flex-shrink:0" onclick="sendAnna()">➤</button>
+  </div>
+</div>
+
 <!-- TABS -->
 <div class="tabs">
   <div class="tab active" id="tab-diary" onclick="showPage('diary')"><div class="tab-icon">📋</div><div class="tab-lbl">Дневник</div></div>
   <div class="tab" id="tab-week" onclick="showPage('week')"><div class="tab-icon">📈</div><div class="tab-lbl">Неделя</div></div>
   <div class="tab" id="tab-mind" onclick="showPage('mind')"><div class="tab-icon">🧠</div><div class="tab-lbl">Разум</div></div>
+  <div class="tab" id="tab-anna" onclick="showPage('anna')"><div class="tab-icon">👩‍⚕️</div><div class="tab-lbl">Анна</div></div>
   <div class="tab" id="tab-recipes" onclick="showPage('recipes')"><div class="tab-icon">🍽</div><div class="tab-lbl">Рецепты</div></div>
   <div class="tab" id="tab-profile" onclick="showPage('profile')"><div class="tab-icon">👤</div><div class="tab-lbl">Профиль</div></div>
 </div>
@@ -1500,5 +1519,135 @@ init();
   </div>
 </div>
 
+<script>
+/* ===== Поиск по базе продуктов (1507 позиций, КБЖУ на 100 г) ===== */
+let selProd = null, prodTimer = null;
+const fNameEl = document.getElementById('f-name');
+const prodBox = document.getElementById('prod-suggest');
+const gramsGroup = document.getElementById('grams-group');
+const fGramsEl = document.getElementById('f-grams');
+
+fNameEl.addEventListener('input', () => {
+  selProd = null; gramsGroup.style.display = 'none';
+  const q = fNameEl.value.trim();
+  clearTimeout(prodTimer);
+  if (q.length < 2) { prodBox.style.display = 'none'; return; }
+  prodTimer = setTimeout(async () => {
+    try {
+      const res = await fetch(API + '/api/products?q=' + encodeURIComponent(q.toLowerCase()));
+      const items = await res.json();
+      if (!Array.isArray(items) || !items.length) { prodBox.style.display = 'none'; return; }
+      prodBox.innerHTML = items.slice(0, 8).map((p, i) =>
+        '<div class="prod-item" data-i="' + i + '" style="padding:9px 12px;border-bottom:0.5px solid var(--border);cursor:pointer">' +
+          '<div style="font-size:13px">' + p.name + '</div>' +
+          '<div style="font-size:10px;color:var(--text2)">' + p.calories + ' ккал · Б ' + p.protein + ' · Ж ' + p.fat + ' · У ' + p.carbs + ' — на 100 г</div>' +
+        '</div>').join('');
+      prodBox.style.display = 'block';
+      prodBox.querySelectorAll('.prod-item').forEach(el => el.onclick = () => pickProd(items[+el.dataset.i]));
+    } catch (e) { prodBox.style.display = 'none'; }
+  }, 250);
+});
+
+function pickProd(p) {
+  selProd = p;
+  fNameEl.value = p.name;
+  prodBox.style.display = 'none';
+  gramsGroup.style.display = 'block';
+  if (!fGramsEl.value) fGramsEl.value = 100;
+  recalcProd();
+}
+
+function recalcProd() {
+  if (!selProd) return;
+  const k = (parseFloat(fGramsEl.value) || 100) / 100;
+  document.getElementById('f-kcal').value = Math.round(selProd.calories * k);
+  document.getElementById('f-p').value = (selProd.protein * k).toFixed(1);
+  document.getElementById('f-f').value = (selProd.fat * k).toFixed(1);
+  document.getElementById('f-c').value = (selProd.carbs * k).toFixed(1);
+}
+fGramsEl.addEventListener('input', recalcProd);
+
+/* ===== Чат с Анной ===== */
+let annaBusy = false, annaGreeted = false;
+
+const ANNA_HELLO = '👋 Привет! Я Анна, ваш персональный AI-нутрициолог.\n\n' +
+  'Я изучила ваш профиль и дневник питания (если вы его вели). Готова помочь разобраться с питанием, настроением и целями.\n\n' +
+  'Чем займёмся?\n\n' +
+  '💬 Просто напишите вопрос — например, «почему вечером тянет на сладкое» или «что съесть на завтрак перед тренировкой»\n\n' +
+  '📊 Хотите, чтобы я проанализировала ваш дневник за неделю и дала рекомендации?\n\n' +
+  '🥗 Могу составить план питания на день или неделю с учётом ваших предпочтений и того, что есть в холодильнике (загрузите фото!)\n\n' +
+  '🧘‍♀️ Разберём связь настроения и еды? У меня есть данные вашего журнала эмоций.\n\n' +
+  'Просто начните диалог — я слушаю ❤️';
+
+function annaQuick(text) {
+  document.getElementById('anna-input').value = text;
+  sendAnna();
+}
+
+function annaChips() {
+  const box = document.getElementById('anna-chat');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:95%';
+  const chips = [
+    ['🍽️ Разобрать дневник', () => annaQuick('Проанализируй мой дневник питания за последние дни и дай рекомендации')],
+    ['🥑 Составить план', () => annaQuick('Составь мне план питания на день с учётом моего профиля и цели')],
+    ['🧠 Настроение и еда', () => annaQuick('Разбери связь моего настроения и питания')],
+    ['📸 Фото холодильника', () => showOverlay('fridge')]
+  ];
+  chips.forEach(([label, fn]) => {
+    const b = document.createElement('div');
+    b.textContent = label;
+    b.style.cssText = 'padding:8px 12px;font-size:12px;border-radius:20px;background:var(--gold2);border:0.5px solid var(--gold-b);color:var(--gold);cursor:pointer';
+    b.onclick = fn;
+    wrap.appendChild(b);
+  });
+  box.appendChild(wrap);
+}
+
+function annaBubble(text, who) {
+  const box = document.getElementById('anna-chat');
+  const d = document.createElement('div');
+  d.style.cssText = who === 'u'
+    ? 'align-self:flex-end;max-width:85%;background:var(--gold2);border:0.5px solid var(--gold-b);border-radius:12px 12px 3px 12px;padding:9px 12px;font-size:13px;line-height:1.45;white-space:pre-wrap'
+    : 'align-self:flex-start;max-width:85%;background:var(--bg2);border:0.5px solid var(--border);border-radius:12px 12px 12px 3px;padding:9px 12px;font-size:13px;line-height:1.45;white-space:pre-wrap';
+  d.textContent = text;
+  box.appendChild(d);
+  d.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+const _origShowPage = showPage;
+showPage = function (name) {
+  _origShowPage(name);
+  if (name === 'anna' && !annaGreeted) {
+    annaGreeted = true;
+    annaBubble(ANNA_HELLO, 'a');
+    annaChips();
+  }
+};
+
+async function sendAnna() {
+  if (annaBusy) return;
+  const inp = document.getElementById('anna-input');
+  const msg = inp.value.trim();
+  if (!msg) return;
+  inp.value = '';
+  annaBubble(msg, 'u');
+  annaBusy = true;
+  document.getElementById('anna-typing').style.display = 'block';
+  try {
+    const res = await fetch(API + '/api/anna', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: UID, message: msg })
+    });
+    const data = await res.json();
+    annaBubble(data.reply || 'Анна сейчас недоступна, попробуй через минуту.', 'a');
+  } catch (e) {
+    annaBubble('Ошибка соединения. Попробуй ещё раз.', 'a');
+  }
+  annaBusy = false;
+  document.getElementById('anna-typing').style.display = 'none';
+}
+document.getElementById('anna-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendAnna(); });
+</script>
 </body>
 </html>
