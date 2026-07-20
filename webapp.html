@@ -39,7 +39,7 @@ body{background:
 .ring-card{position:relative;overflow:hidden;
   background:linear-gradient(180deg, rgba(31,32,28,0.94), rgba(21,22,20,0.92)),
              radial-gradient(circle at 18% 20%, rgba(216,179,94,0.08), transparent 34%);
-  border-radius:var(--r-xl);border:1px solid var(--border);padding:20px 18px 16px;margin-bottom:10px;
+  border-radius:var(--r-xl);border:1px solid rgba(216,179,94,0.32);padding:20px 18px 16px;margin-bottom:10px;
   box-shadow:var(--shadow-soft)}
 .ring-card::before{content:'';position:absolute;inset:1px;border-radius:calc(var(--r-xl) - 1px);pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.07)}
 .ring-top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
@@ -61,11 +61,11 @@ body{background:
 .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
 .qa{position:relative;overflow:hidden;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:linear-gradient(180deg, rgba(32,33,30,0.92), rgba(24,25,23,0.92));
-  border-radius:var(--r);border:1px solid rgba(255,255,255,0.07);padding:10px 6px;text-align:center;cursor:pointer;
+  border-radius:var(--r);border:1px solid rgba(216,179,94,0.32);padding:10px 6px;text-align:center;cursor:pointer;
   box-shadow:0 10px 26px rgba(0,0,0,0.22);
   transition:transform 0.18s ease,border-color 0.18s ease,background 0.18s ease,box-shadow 0.18s ease}
 .qa:active{transform:translateY(1px) scale(0.985);background:var(--bg3)}
-.qa.qa-primary{border-color:rgba(216,179,94,0.26);
+.qa.qa-primary{border-color:rgba(216,179,94,0.5);
   background:radial-gradient(circle at 50% 0%, rgba(216,179,94,0.16), transparent 42%),
              linear-gradient(180deg, rgba(38,36,29,0.96), rgba(24,25,23,0.94));
   box-shadow:0 14px 34px rgba(0,0,0,0.28), 0 0 0 1px rgba(216,179,94,0.08)}
@@ -161,6 +161,7 @@ body{background:
   border:1px dashed rgba(255,255,255,0.1)}
 .empty-icon{width:56px;height:56px;margin:0 auto 12px;border-radius:18px;display:flex;align-items:center;justify-content:center;
   font-size:26px;opacity:1;background:var(--gold2);border:1px solid var(--gold-b);color:var(--gold-soft)}
+.empty-icon svg{width:26px;height:26px;display:block}
 .empty-text{font-size:13px;line-height:1.5}
 .loader{text-align:center;padding:30px;color:var(--text2);font-size:13px}
 .hero-banner{position:relative;height:272px;overflow:hidden;margin:0 0 12px;border-radius:var(--r-xl);border:1px solid var(--border);box-shadow:var(--shadow-soft)}
@@ -270,6 +271,13 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
       <rect x="13.4" y="5" width="2.4" height="14"/>
       <rect x="17.4" y="5" width="1.4" height="14"/>
       <rect x="19.6" y="5" width="1" height="14"/>
+    </symbol>
+    <symbol id="ic-scanner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8"/>
+      <path d="M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8"/>
+      <path d="M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16"/>
+      <path d="M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/>
+      <path d="M4 12h16"/>
     </symbol>
     <symbol id="ic-receipt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <path d="M6 3h12v16.5l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3V3z"/>
@@ -1013,20 +1021,77 @@ const PHOTO_CAT_TO_MT = {'Завтрак':'завтрак','Обед':'обед'
 // (см. openPhotoOverlay('barcode'|'receipt'|'fridge') в quick-grid) — режим уходит
 // на backend как доп. поле 'mode' в analyzePhoto(), но сегодня backend его не читает
 // и всегда считает калории блюда (см. отчёт) — это сознательный компромисс, чтобы
-// не трогать backend.
+// не трогать backend. Контент ниже — только текст/иконка в самом overlay.
+const PHOTO_OVERLAY_CONTENT = {
+  food: {
+    icon: 'ic-camera',
+    ovTitle: 'Фото еды',
+    title: '',
+    description: 'Сфоткай еду — и я посчитаю калории, белки, жиры и углеводы',
+    hintTitle: '',
+    hintLines: [],
+    footer: '',
+    buttonLabel: 'Сфоткать еду'
+  },
+  barcode: {
+    icon: 'ic-scanner',
+    ovTitle: 'Штрихкод',
+    title: '🧾 Распознавание чека',
+    description: 'Удобно после еды в ресторане, кафе или столовой — не нужно вспоминать что заказывал. Я прочитаю чек и посчитаю калории всех блюд сразу.',
+    hintTitle: '📸 Сфотографируй чек так, чтобы:',
+    hintLines: ['• Все позиции были видны', '• Текст был чёткий и не размытый', '• Чек был расправлен (без складок)'],
+    footer: '👇 Отправь фото чека:',
+    buttonLabel: 'Сфоткать чек'
+  },
+  receipt: {
+    icon: 'ic-receipt',
+    ovTitle: 'Чек',
+    title: '🧾 Распознавание чека',
+    description: 'Удобно после еды в ресторане, кафе или столовой — не нужно вспоминать что заказывал. Я прочитаю чек и посчитаю калории всех блюд сразу.',
+    hintTitle: '📸 Сфотографируй чек так, чтобы:',
+    hintLines: ['• Все позиции были видны', '• Текст был чёткий и не размытый', '• Чек был расправлен (без складок)'],
+    footer: '👇 Отправь фото чека:',
+    buttonLabel: 'Сфоткать чек'
+  },
+  fridge: {
+    icon: 'ic-fridge',
+    ovTitle: 'Холодильник',
+    title: '🧊 Сфотографируй холодильник',
+    description: 'Я распознаю продукты, дам тебе их подправить и подберу рецепты из базы.',
+    hintTitle: '',
+    hintLines: [],
+    footer: '',
+    buttonLabel: 'Сфоткать холодильник'
+  }
+};
+
 function openPhotoOverlay(mode) {
   photoFile = null;
   photoResult = null;
   photoMealType = 'перекус';
-  photoMode = mode || 'food';
+  photoMode = (mode && PHOTO_OVERLAY_CONTENT[mode]) ? mode : 'food';
   renderPhotoIdle();
   showOverlay('photo');
 }
 
 function renderPhotoIdle() {
+  const c = PHOTO_OVERLAY_CONTENT[photoMode] || PHOTO_OVERLAY_CONTENT.food;
+  const ovTitleEl = document.querySelector('#ov-photo .ov-title');
+  if (ovTitleEl) ovTitleEl.textContent = c.ovTitle;
+
+  let text = '';
+  if (c.title) text += '<b style="display:block;color:var(--text);font-size:15px;margin-bottom:6px">' + c.title + '</b>';
+  text += c.description;
+  if (c.hintTitle) {
+    text += '<div style="margin-top:14px;color:var(--gold-soft);font-weight:600">' + c.hintTitle + '</div>';
+    text += c.hintLines.map(l => '<div style="margin-top:2px">' + l + '</div>').join('');
+  }
+  if (c.footer) text += '<div style="margin-top:12px">' + c.footer + '</div>';
+
   document.getElementById('photo-state').innerHTML =
-    '<div class="empty"><div class="empty-icon">📸</div><div class="empty-text">Сфоткай еду — и я посчитаю калории, белки, жиры и углеводы</div></div>' +
-    '<button class="btn" onclick="document.getElementById(\'photo-file-input\').click()">📸 Сфоткать еду</button>';
+    '<div class="empty"><div class="empty-icon"><svg><use href="#' + c.icon + '"/></svg></div><div class="empty-text">' + text + '</div></div>' +
+    '<button class="btn" onclick="document.getElementById(\'photo-file-input\').click()">' +
+    '<svg style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#' + c.icon + '"/></svg>' + c.buttonLabel + '</button>';
 }
 
 function handlePhotoFile(e) {
