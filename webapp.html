@@ -191,6 +191,16 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
   .onb-slide,.onb-img{transition:none !important;animation:none !important}
   .onb-btn::before{display:none}
 }
+
+/* ===== PHOTO (фото еды в Mini App) ===== */
+.photo-preview-wrap{border-radius:var(--r);overflow:hidden;margin-bottom:10px;border:0.5px solid var(--border);background:var(--bg2)}
+.photo-preview-wrap img{width:100%;max-height:320px;object-fit:cover;display:block}
+.photo-spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--gold-b);border-top-color:var(--gold);margin:0 auto 14px;animation:photo-spin 0.8s linear infinite}
+@keyframes photo-spin{to{transform:rotate(360deg)}}
+.photo-result-name{font-size:15px;font-weight:600;margin-bottom:10px}
+@media (prefers-reduced-motion: reduce){
+  .photo-spinner{animation:none;border-top-color:var(--gold-b)}
+}
 </style>
 </head>
 <body>
@@ -341,7 +351,7 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
     </div>
   </div>
   <div class="quick-grid">
-    <div class="qa" onclick="botAction('m_food')"><div class="qa-icon">📸</div><div class="qa-label">Фото еды</div></div>
+    <div class="qa" onclick="openPhotoOverlay()"><div class="qa-icon">📸</div><div class="qa-label">Фото еды</div></div>
     <div class="qa" onclick="showOverlay('add')"><div class="qa-icon">✍️</div><div class="qa-label">Текст</div></div>
     <div class="qa" onclick="botAction('m_barcode')"><div class="qa-icon">📷</div><div class="qa-label">Штрихкод</div></div>
     <div class="qa" onclick="botAction('m_receipt')"><div class="qa-icon">🧾</div><div class="qa-label">Чек</div></div>
@@ -490,6 +500,13 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
       <div id="ai-food-result" style="margin-top:8px;font-size:12px;color:var(--text2)"></div>
     </div>
   </div>
+</div>
+
+<!-- PHOTO: сфоткать/выбрать фото еды прямо в Mini App, без выхода в чат бота -->
+<div class="overlay" id="ov-photo">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('photo')">←</div><div class="ov-title">Фото еды</div></div>
+  <input type="file" id="photo-file-input" accept="image/*" capture="environment" hidden onchange="handlePhotoFile(event)">
+  <div id="photo-state"></div>
 </div>
 
 <!-- FRIDGE -->
@@ -875,6 +892,112 @@ function selMT(el) {
   document.querySelectorAll('.mt-btn').forEach(b => b.classList.remove('sel'));
   el.classList.add('sel');
   selMealType = el.dataset.type;
+}
+
+// ───── ФОТО ЕДЫ В MINI APP (без выхода в чат бота) ─────
+let photoFile = null;
+let photoResult = null;
+let photoMealType = 'перекус';
+const PHOTO_MT_LABELS = {завтрак:'🌅 Завтрак', обед:'🥗 Обед', ужин:'🌙 Ужин', перекус:'🍎 Перекус'};
+const PHOTO_CAT_TO_MT = {'Завтрак':'завтрак','Обед':'обед','Ужин':'ужин','Перекус':'перекус'};
+
+function openPhotoOverlay() {
+  photoFile = null;
+  photoResult = null;
+  photoMealType = 'перекус';
+  renderPhotoIdle();
+  showOverlay('photo');
+}
+
+function renderPhotoIdle() {
+  document.getElementById('photo-state').innerHTML =
+    '<div class="empty"><div class="empty-icon">📸</div><div class="empty-text">Сфоткай еду — и я посчитаю калории, белки, жиры и углеводы</div></div>' +
+    '<button class="btn" onclick="document.getElementById(\'photo-file-input\').click()">📸 Сфоткать еду</button>';
+}
+
+function handlePhotoFile(e) {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  if (!file.type || !file.type.startsWith('image/')) { toast('Выбери изображение'); return; }
+  if (file.size > 10 * 1024 * 1024) { toast('Фото слишком большое — до 10 МБ'); return; }
+  photoFile = file;
+  photoResult = null;
+  const url = URL.createObjectURL(file);
+  document.getElementById('photo-state').innerHTML =
+    '<div class="photo-preview-wrap"><img src="' + url + '" alt=""></div>' +
+    '<button class="btn" onclick="analyzePhoto()">🔥 Рассчитать калории</button>' +
+    '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Выбрать другое фото</button>';
+}
+
+async function analyzePhoto() {
+  if (!photoFile) return;
+  document.getElementById('photo-state').innerHTML =
+    '<div class="loader"><div class="photo-spinner"></div>Анализирую блюдо...</div>';
+  try {
+    const fd = new FormData();
+    fd.append('photo', photoFile);
+    const res = await fetch(API + '/api/food/analyze-photo', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Не получилось распознать фото');
+    photoResult = data;
+    photoMealType = PHOTO_CAT_TO_MT[data.category] || 'перекус';
+    renderPhotoResult();
+  } catch (e) {
+    document.getElementById('photo-state').innerHTML =
+      '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">' + (e.message || 'Не получилось распознать фото') + '</div></div>' +
+      '<button class="btn" onclick="analyzePhoto()">🔁 Попробовать снова</button>' +
+      '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Выбрать другое фото</button>';
+  }
+}
+
+function renderPhotoResult() {
+  const r = photoResult;
+  const mtBtns = Object.keys(PHOTO_MT_LABELS).map(t =>
+    '<div class="mt-btn' + (photoMealType === t ? ' sel' : '') + '" data-type="' + t + '" onclick="selMTPhoto(this)">' + PHOTO_MT_LABELS[t] + '</div>'
+  ).join('');
+  document.getElementById('photo-state').innerHTML =
+    '<div class="ring-card">' +
+      '<div class="photo-result-name">🍽 ' + r.dishName + '</div>' +
+      '<div class="rec-detail-kcal">' +
+        '<div><div class="rdk-val">' + r.calories + '</div><div class="rdk-lbl">ккал</div></div>' +
+        '<div><div class="rdk-val">' + r.protein + 'г</div><div class="rdk-lbl">белки</div></div>' +
+        '<div><div class="rdk-val">' + r.fat + 'г</div><div class="rdk-lbl">жиры</div></div>' +
+        '<div><div class="rdk-val">' + r.carbs + 'г</div><div class="rdk-lbl">углев</div></div>' +
+      '</div>' +
+      (r.portion ? '<div style="font-size:11px;color:var(--text2);margin-top:8px">⚖️ Порция: ~' + String(r.portion).replace(/\s*г\.?\s*$/i, '').trim() + ' г</div>' : '') +
+      (r.tip ? '<div class="tips-box" style="margin-top:10px">💡 ' + r.tip + '</div>' : '') +
+    '</div>' +
+    '<div class="form-group"><label class="form-lbl">Тип приёма</label><div class="mt-grid">' + mtBtns + '</div></div>' +
+    '<button class="btn" onclick="addPhotoResultToDiary()">✓ Добавить в дневник</button>' +
+    '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Сфоткать другое</button>';
+}
+
+function selMTPhoto(el) {
+  el.parentElement.querySelectorAll('.mt-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  photoMealType = el.dataset.type;
+}
+
+async function addPhotoResultToDiary() {
+  if (!photoResult) return;
+  const uid = tg.initDataUnsafe?.user?.id;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  try {
+    const res = await fetch(API + '/api/diary/add', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: uid, meal_name: photoResult.dishName, calories: photoResult.calories,
+        protein: photoResult.protein, fat: photoResult.fat, carbs: photoResult.carbs,
+        meal_type: photoMealType
+      })
+    });
+    if (res.ok) {
+      toast('✓ ' + photoResult.dishName + ' добавлен в дневник!');
+      hideOverlay('photo');
+      await loadDiary();
+    } else throw new Error();
+  } catch (e) { toast('Ошибка сохранения'); }
 }
 
 function updateRing(eaten, norm) {
