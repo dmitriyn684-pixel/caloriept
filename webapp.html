@@ -163,9 +163,141 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 /* Прячем рекламный баннер сайта только когда открыта вкладка Анны */
 body.on-anna #landing-banner { display: none !important; }
+
+/* ===== ONBOARDING ===== */
+body.onb-lock{overflow:hidden}
+body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
+.onb-screen{display:none;position:fixed;inset:0;z-index:500;background:var(--bg)}
+.onb-screen.active{display:block}
+.onb-slides{position:absolute;inset:0;overflow:hidden;z-index:1}
+.onb-slide{position:absolute;inset:0;opacity:0;transform:translateX(24px);transition:opacity .38s ease,transform .38s ease;pointer-events:none;overflow:hidden}
+.onb-slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.onb-slide.prev{transform:translateX(-24px)}
+.onb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.08);transition:transform 6s ease-out}
+.onb-slide.active .onb-img{transform:scale(1)}
+.onb-overlay{position:absolute;left:0;right:0;bottom:0;padding:160px 20px 148px;background:linear-gradient(to top,var(--bg) 0%,var(--bg) 20%,rgba(20,20,20,0.85) 36%,rgba(20,20,20,0.42) 60%,rgba(20,20,20,0) 100%)}
+.onb-step{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:0.09em;font-weight:600;margin-bottom:10px}
+.onb-title{font-size:22px;font-weight:700;line-height:1.28;margin-bottom:10px;font-family:Georgia,serif;color:#fff}
+.onb-desc{font-size:13.5px;color:rgba(240,237,230,0.82);line-height:1.6}
+.onb-bottom{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 20px 26px}
+.onb-dots{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+.onb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);transition:all .25s ease}
+.onb-dot.active{width:20px;background:var(--gold)}
+.onb-btn{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;width:100%;padding:15px;border-radius:20px;font-size:15px;font-weight:600;border:none;cursor:pointer;background:linear-gradient(135deg,#C9A84C,#EAD08A);color:#141414;box-shadow:0 6px 20px rgba(201,168,76,0.25)}
+.onb-btn:active{transform:scale(0.98)}
+.onb-btn::before{content:'';position:absolute;top:0;left:-60%;width:35%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent);transform:skewX(-18deg);animation:onb-sheen 2.8s ease-in-out infinite}
+@keyframes onb-sheen{0%{left:-60%}55%{left:130%}100%{left:130%}}
+@media (prefers-reduced-motion: reduce){
+  .onb-slide,.onb-img{transition:none !important;animation:none !important}
+  .onb-btn::before{display:none}
+}
 </style>
 </head>
 <body>
+
+<!-- ONBOARDING: показывается только при первом запуске -->
+<div class="onb-screen" id="onb-screen">
+  <div class="onb-slides" id="onb-slides">
+    <div class="onb-slide active" data-i="0">
+      <img class="onb-img" src="onboarding/onboarding-food.webp" alt="" loading="eager">
+      <div class="onb-overlay">
+        <div class="onb-step">Шаг 1 из 4</div>
+        <div class="onb-title">Сфоткай — и узнай калории</div>
+        <div class="onb-desc">Больше не нужно взвешивать и искать продукты вручную. Просто сфоткай еду — нейросеть распознает блюдо и рассчитает калории, белки, жиры и углеводы за секунду.</div>
+      </div>
+    </div>
+    <div class="onb-slide" data-i="1">
+      <img class="onb-img" src="onboarding/onboarding-diary.webp" alt="" loading="lazy">
+      <div class="onb-overlay">
+        <div class="onb-step">Шаг 2 из 4</div>
+        <div class="onb-title">Дневник питания + тренировки</div>
+        <div class="onb-desc">Еда и фитнес в одном месте. Записывай приёмы пищи и тренировки — бот покажет, сколько калорий ты получил и сколько сжёг. Баланс дня всегда перед глазами.</div>
+      </div>
+    </div>
+    <div class="onb-slide" data-i="2">
+      <img class="onb-img" src="onboarding/onboarding-training.webp" alt="" loading="lazy">
+      <div class="onb-overlay">
+        <div class="onb-step">Шаг 3 из 4</div>
+        <div class="onb-title">Умный анализ тела и рациона</div>
+        <div class="onb-desc">Бот видит твой рацион и активность целиком. Мало белка после силовой? Перекос в углеводы перед сном? Слишком много кардио и мало еды? Ты узнаешь об этом раньше, чем упрёшься в плато.</div>
+      </div>
+    </div>
+    <div class="onb-slide" data-i="3">
+      <img class="onb-img" src="onboarding/onboarding-goal.webp" alt="" loading="lazy">
+      <div class="onb-overlay">
+        <div class="onb-step">Шаг 4 из 4</div>
+        <div class="onb-title">Цель — и план к ней</div>
+        <div class="onb-desc">Хочешь похудеть, набрать мышцы или подсушиться? Бот рассчитает твою норму калорий с учётом тренировок, подберёт баланс БЖУ и будет вести тебя к цели каждый день — без жёстких диет и убийственных тренировок.</div>
+      </div>
+    </div>
+  </div>
+  <div class="onb-bottom">
+    <div class="onb-dots" id="onb-dots">
+      <span class="onb-dot active"></span><span class="onb-dot"></span><span class="onb-dot"></span><span class="onb-dot"></span>
+    </div>
+    <button class="onb-btn" id="onb-btn" type="button" onclick="onbAdvance()"><span id="onb-btn-label">Дальше</span></button>
+  </div>
+</div>
+<script>
+(function(){
+  var ONB_KEY = 'caloriept:onboardingCompleted';
+  var screenEl = document.getElementById('onb-screen');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.onb-slide'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.onb-dot'));
+  var btnLabel = document.getElementById('onb-btn-label');
+  var slidesWrap = document.getElementById('onb-slides');
+  var idx = 0;
+
+  function render() {
+    slides.forEach(function (s, i) {
+      s.classList.remove('active', 'prev');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('prev');
+    });
+    dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+    btnLabel.textContent = idx === slides.length - 1 ? 'Начать бесплатно' : 'Дальше';
+  }
+
+  window.onbAdvance = function () {
+    if (idx < slides.length - 1) { idx++; render(); }
+    else { onbComplete(); }
+  };
+  window.onbPrev = function () {
+    if (idx > 0) { idx--; render(); }
+  };
+  window.onbComplete = function () {
+    localStorage.setItem(ONB_KEY, 'true');
+    document.body.classList.remove('onb-lock');
+    screenEl.classList.remove('active');
+  };
+  // Для теста в dev — вызвать в консоли браузера: resetOnboarding()
+  window.resetOnboarding = function () {
+    localStorage.removeItem(ONB_KEY);
+    location.reload();
+  };
+
+  var touchStartX = null, touchStartY = null;
+  slidesWrap.addEventListener('touchstart', function (e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  slidesWrap.addEventListener('touchend', function (e) {
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) onbAdvance(); else onbPrev();
+    }
+    touchStartX = null; touchStartY = null;
+  }, { passive: true });
+
+  if (localStorage.getItem(ONB_KEY) !== 'true') {
+    document.body.classList.add('onb-lock');
+    screenEl.classList.add('active');
+    render();
+  }
+})();
+</script>
 
 <div class="hdr">
   <div class="hdr-logo">CaloriePT AI 2.0</div>
