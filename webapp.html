@@ -69,9 +69,10 @@ body{background:
   background:radial-gradient(circle at 50% 0%, rgba(216,179,94,0.16), transparent 42%),
              linear-gradient(180deg, rgba(38,36,29,0.96), rgba(24,25,23,0.94));
   box-shadow:0 14px 34px rgba(0,0,0,0.28), 0 0 0 1px rgba(216,179,94,0.08)}
-.qa-icon{font-size:24px;margin-bottom:6px;filter:saturate(0.92)}
-.qa-label{font-size:10px;color:var(--text2);line-height:1.2}
-.qa.qa-primary .qa-label{color:var(--text);font-weight:700}
+.qa-icon{margin-bottom:6px;color:var(--gold-soft);display:flex;align-items:center;justify-content:center}
+.qa-icon svg{width:23px;height:23px;display:block}
+.qa-label{font-size:10px;color:var(--gold-soft);line-height:1.2;font-weight:600}
+.qa.qa-primary .qa-label{color:var(--gold-soft);font-weight:700}
 .sec{margin-bottom:10px}
 .sec-head{display:flex;justify-content:space-between;align-items:center;margin:16px 2px 10px}
 .sec-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.16em;font-weight:600}
@@ -162,7 +163,7 @@ body{background:
   font-size:26px;opacity:1;background:var(--gold2);border:1px solid var(--gold-b);color:var(--gold-soft)}
 .empty-text{font-size:13px;line-height:1.5}
 .loader{text-align:center;padding:30px;color:var(--text2);font-size:13px}
-.hero-banner{position:relative;height:220px;overflow:hidden;margin:0 0 12px;border-radius:var(--r-xl);border:1px solid var(--border);box-shadow:var(--shadow-soft)}
+.hero-banner{position:relative;height:272px;overflow:hidden;margin:0 0 12px;border-radius:var(--r-xl);border:1px solid var(--border);box-shadow:var(--shadow-soft)}
 .hero-banner img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}
 .hero-banner-overlay{position:absolute;inset:0;
   background:
@@ -188,7 +189,8 @@ body{background:
   backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
   box-shadow:0 18px 50px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08)}
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:8px 0;border-radius:20px;transition:background 0.15s,box-shadow 0.15s}
-.tab-icon{font-size:19px;color:var(--text2)}
+.tab-icon{color:var(--text2);display:flex;align-items:center;justify-content:center}
+.tab-icon svg{width:20px;height:20px;display:block}
 .tab-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.03em}
 .tab.active{background:var(--gold2);box-shadow:inset 0 0 0 1px var(--gold-b)}
 .tab.active .tab-icon,.tab.active .tab-lbl{color:var(--gold-soft)}
@@ -247,6 +249,68 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 </style>
 </head>
 <body>
+
+<!-- ICON SPRITE: premium line-icons вместо эмодзи, единый стиль, monochrome/gold -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <symbol id="ic-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="7" width="18" height="12" rx="2.5"/>
+      <rect x="9" y="4" width="6" height="3" rx="1"/>
+      <circle cx="12" cy="13" r="3.4"/>
+    </symbol>
+    <symbol id="ic-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 3.5h9l3 3v13.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15.5a1 1 0 0 1 1-1z"/>
+      <path d="M15 3.5v3h3"/>
+      <path d="M8 11h8M8 14.5h8M8 18h5"/>
+    </symbol>
+    <symbol id="ic-barcode" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <rect x="4" y="5" width="1.4" height="14"/>
+      <rect x="7" y="5" width="2.2" height="14"/>
+      <rect x="11" y="5" width="1.2" height="14"/>
+      <rect x="13.4" y="5" width="2.4" height="14"/>
+      <rect x="17.4" y="5" width="1.4" height="14"/>
+      <rect x="19.6" y="5" width="1" height="14"/>
+    </symbol>
+    <symbol id="ic-receipt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 3h12v16.5l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3V3z"/>
+      <path d="M8.5 8h7M8.5 11.5h7M8.5 15h4.5"/>
+    </symbol>
+    <symbol id="ic-fridge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5.5" y="2.5" width="13" height="19" rx="2"/>
+      <path d="M5.5 8.5h13"/>
+      <path d="M8.5 4.5v2M8.5 11v2.5"/>
+    </symbol>
+    <symbol id="ic-dish" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 5.6C4 4.2 5.5 3 7.3 3H12v16.5H7.3C5.5 19.5 4 18.3 4 16.9V5.6z"/>
+      <path d="M20 5.6c0-1.4-1.5-2.6-3.3-2.6H12v16.5h4.7c1.8 0 3.3-1.2 3.3-2.6V5.6z"/>
+      <path d="M12 5v14.5"/>
+    </symbol>
+    <symbol id="ic-journal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="3" width="14" height="18" rx="2"/>
+      <path d="M8.5 3v18" stroke-opacity=".5"/>
+      <path d="M11.5 9h5M11.5 12.5h5M11.5 16h3.2"/>
+    </symbol>
+    <symbol id="ic-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 20V4M4 20h16"/>
+      <rect x="7" y="13" width="3" height="7" rx="0.8" fill="currentColor" stroke="none"/>
+      <rect x="12" y="9" width="3" height="11" rx="0.8" fill="currentColor" stroke="none"/>
+      <rect x="17" y="6" width="3" height="14" rx="0.8" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="ic-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 5.2a3 3 0 0 0-3 3c0 .4.06.8.18 1.16A2.8 2.8 0 0 0 4 11.9c0 1.16.68 2.16 1.66 2.62A2.9 2.9 0 0 0 8 18.6M8 5.2c.9 0 1.7.34 2.3.9M8 5.2v13.4M16 5.2a3 3 0 0 1 3 3c0 .4-.06.8-.18 1.16A2.8 2.8 0 0 1 20 11.9c0 1.16-.68 2.16-1.66 2.62A2.9 2.9 0 0 1 16 18.6M16 5.2c-.9 0-1.7.34-2.3.9M16 5.2v13.4"/>
+    </symbol>
+    <symbol id="ic-avatar-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8.2" r="3.6"/>
+      <path d="M8.6 6.4c-.6 1-.9 2.2-.6 3.4"/>
+      <path d="M15.4 6.4c.6 1 .9 2.2.6 3.4"/>
+      <path d="M4.8 19.5c.6-3.4 3.4-5.6 7.2-5.6s6.6 2.2 7.2 5.6"/>
+    </symbol>
+    <symbol id="ic-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8.2" r="3.6"/>
+      <path d="M4.8 19.5c.6-3.4 3.4-5.6 7.2-5.6s6.6 2.2 7.2 5.6"/>
+    </symbol>
+  </defs>
+</svg>
 
 <!-- ONBOARDING: показывается только при первом запуске -->
 <div class="onb-screen" id="onb-screen">
@@ -394,12 +458,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
     </div>
   </div>
   <div class="quick-grid">
-    <div class="qa qa-primary" onclick="openPhotoOverlay()"><div class="qa-icon">📸</div><div class="qa-label">Фото еды</div></div>
-    <div class="qa" onclick="showOverlay('add')"><div class="qa-icon">✍️</div><div class="qa-label">Текст</div></div>
-    <div class="qa" onclick="botAction('m_barcode')"><div class="qa-icon">📷</div><div class="qa-label">Штрихкод</div></div>
-    <div class="qa" onclick="botAction('m_receipt')"><div class="qa-icon">🧾</div><div class="qa-label">Чек</div></div>
-    <div class="qa" onclick="showOverlay('fridge')"><div class="qa-icon">🧊</div><div class="qa-label">Холодильник</div></div>
-    <div class="qa" onclick="showPage('recipes')"><div class="qa-icon">🍳</div><div class="qa-label">Рецепты</div></div>
+    <div class="qa qa-primary" onclick="openPhotoOverlay('food')"><div class="qa-icon"><svg><use href="#ic-camera"/></svg></div><div class="qa-label">Фото еды</div></div>
+    <div class="qa" onclick="showOverlay('add')"><div class="qa-icon"><svg><use href="#ic-note"/></svg></div><div class="qa-label">Текст</div></div>
+    <div class="qa" onclick="openPhotoOverlay('barcode')"><div class="qa-icon"><svg><use href="#ic-barcode"/></svg></div><div class="qa-label">Штрихкод</div></div>
+    <div class="qa" onclick="openPhotoOverlay('receipt')"><div class="qa-icon"><svg><use href="#ic-receipt"/></svg></div><div class="qa-label">Чек</div></div>
+    <div class="qa" onclick="openPhotoOverlay('fridge')"><div class="qa-icon"><svg><use href="#ic-fridge"/></svg></div><div class="qa-label">Холодильник</div></div>
+    <div class="qa" onclick="showPage('recipes')"><div class="qa-icon"><svg><use href="#ic-dish"/></svg></div><div class="qa-label">Рецепты</div></div>
   </div>
   <div class="sec">
     <div class="sec-head"><div class="sec-title">Приёмы пищи</div><div class="sec-action" onclick="showOverlay('add')">+ Добавить</div></div>
@@ -774,12 +838,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" id="tab-diary" onclick="showPage('diary')"><div class="tab-icon">📋</div><div class="tab-lbl">Дневник</div></div>
-  <div class="tab" id="tab-week" onclick="showPage('week')"><div class="tab-icon">📈</div><div class="tab-lbl">Неделя</div></div>
-  <div class="tab" id="tab-mind" onclick="showPage('mind')"><div class="tab-icon">🧠</div><div class="tab-lbl">Разум</div></div>
-  <div class="tab" id="tab-anna" onclick="showPage('anna')"><div class="tab-icon">👩‍⚕️</div><div class="tab-lbl">Анна</div></div>
-  <div class="tab" id="tab-recipes" onclick="showPage('recipes')"><div class="tab-icon">🍽</div><div class="tab-lbl">Рецепты</div></div>
-  <div class="tab" id="tab-profile" onclick="showPage('profile')"><div class="tab-icon">👤</div><div class="tab-lbl">Профиль</div></div>
+  <div class="tab active" id="tab-diary" onclick="showPage('diary')"><div class="tab-icon"><svg><use href="#ic-journal"/></svg></div><div class="tab-lbl">Дневник</div></div>
+  <div class="tab" id="tab-week" onclick="showPage('week')"><div class="tab-icon"><svg><use href="#ic-chart"/></svg></div><div class="tab-lbl">Неделя</div></div>
+  <div class="tab" id="tab-mind" onclick="showPage('mind')"><div class="tab-icon"><svg><use href="#ic-brain"/></svg></div><div class="tab-lbl">Разум</div></div>
+  <div class="tab" id="tab-anna" onclick="showPage('anna')"><div class="tab-icon"><svg><use href="#ic-avatar-f"/></svg></div><div class="tab-lbl">Анна</div></div>
+  <div class="tab" id="tab-recipes" onclick="showPage('recipes')"><div class="tab-icon"><svg><use href="#ic-dish"/></svg></div><div class="tab-lbl">Рецепты</div></div>
+  <div class="tab" id="tab-profile" onclick="showPage('profile')"><div class="tab-icon"><svg><use href="#ic-user"/></svg></div><div class="tab-lbl">Профиль</div></div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -941,13 +1005,20 @@ function selMT(el) {
 let photoFile = null;
 let photoResult = null;
 let photoMealType = 'перекус';
+let photoMode = 'food';
 const PHOTO_MT_LABELS = {завтрак:'🌅 Завтрак', обед:'🥗 Обед', ужин:'🌙 Ужин', перекус:'🍎 Перекус'};
 const PHOTO_CAT_TO_MT = {'Завтрак':'завтрак','Обед':'обед','Ужин':'ужин','Перекус':'перекус'};
 
-function openPhotoOverlay() {
+// Штрихкод/Чек/Холодильник заходят в тот же in-app photo flow, что и «Фото еды»
+// (см. openPhotoOverlay('barcode'|'receipt'|'fridge') в quick-grid) — режим уходит
+// на backend как доп. поле 'mode' в analyzePhoto(), но сегодня backend его не читает
+// и всегда считает калории блюда (см. отчёт) — это сознательный компромисс, чтобы
+// не трогать backend.
+function openPhotoOverlay(mode) {
   photoFile = null;
   photoResult = null;
   photoMealType = 'перекус';
+  photoMode = mode || 'food';
   renderPhotoIdle();
   showOverlay('photo');
 }
@@ -980,6 +1051,7 @@ async function analyzePhoto() {
   try {
     const fd = new FormData();
     fd.append('photo', photoFile);
+    fd.append('mode', photoMode);
     const res = await fetch(API + '/api/food/analyze-photo', { method: 'POST', body: fd });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Не получилось распознать фото');
@@ -1068,7 +1140,7 @@ function updateMacros(p, f, c, norm) {
 function renderDiary() {
   const list = document.getElementById('diary-list');
   if (!DIARY.length) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text"><b style="color:var(--text);font-size:15px">Пока пусто</b><br>Сфоткай еду — AI рассчитает калории и добавит первый приём.</div></div>';
+    list.innerHTML = '';
     updateRing(0, USER.daily_calories || 2000); return;
   }
   let html = '<div class="card">';
