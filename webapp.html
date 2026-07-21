@@ -159,12 +159,57 @@ body{background:
 .mt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .mt-btn{padding:8px;border-radius:var(--rs);border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;text-align:center}
 .mt-btn.sel{border-color:var(--gold-b);background:var(--gold2);color:var(--gold)}
-.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;align-items:end;height:80px;margin-bottom:6px}
+/* WEEK PAGE — premium wellness analytics */
+.week-hero-header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:18px 4px 14px}
+.week-hero-header h2{margin:4px 0 0;font-size:26px;line-height:1.05;letter-spacing:-0.03em;color:var(--text);font-family:Georgia,serif}
+.week-hero-header p{margin:8px 0 0;max-width:230px;font-size:12.5px;line-height:1.4;color:var(--text2)}
+.section-kicker{font-size:11px;letter-spacing:.18em;color:var(--gold-soft);text-transform:uppercase}
+.week-pill{flex:0 0 auto;height:30px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;
+  color:#C8FF9A;background:rgba(143,214,107,.12);border:1px solid rgba(143,214,107,.22);font-size:12px;font-weight:700;
+  box-shadow:0 0 16px rgba(143,214,107,.1)}
+
+.week-chart-card{position:relative;overflow:hidden;border-radius:var(--r-xl);padding:20px 18px 18px;margin-bottom:10px;
+  background:radial-gradient(circle at 18% 0%, rgba(143,214,107,.08), transparent 34%),
+             linear-gradient(180deg, rgba(28,30,26,.94), rgba(16,17,15,.94));
+  border:1px solid rgba(216,179,94,.24);
+  box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06)}
+.week-chart-card::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+             linear-gradient(180deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:44px 44px;opacity:.3}
+.week-chart-top{position:relative;z-index:1;display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:18px}
+.week-chart-title{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text3)}
+.week-average-pill{position:relative;height:30px;padding:0 12px;border-radius:999px;color:var(--gold-soft);
+  background:rgba(216,179,94,.11);border:1px solid rgba(216,179,94,.22);font-size:12.5px;font-weight:800;
+  display:inline-flex;align-items:center;box-shadow:0 0 18px rgba(216,179,94,.08)}
+
+.week-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:108px;margin-bottom:6px}
 .wbar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
-.wbar-bg{flex:1;width:100%;background:var(--bg3);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end}
-.wbar-fill{width:100%;border-radius:4px;background:var(--gold2);border:0.5px solid var(--gold-b)}
-.wbar-fill.today{background:rgba(201,168,76,0.3);border-color:var(--gold)}
-.wday{font-size:9px;color:var(--text3);text-align:center}
+.wbar-bg{flex:1;width:100%;background:rgba(255,255,255,.05);border-radius:999px;overflow:hidden;display:flex;align-items:flex-end}
+.wbar-fill{width:100%;max-width:22px;margin:0 auto;border-radius:999px 999px 5px 5px;
+  background:linear-gradient(180deg, #C8FF9A 0%, #8FD66B 42%, #3E8F45 100%);
+  box-shadow:0 0 14px rgba(143,214,107,.2), inset 0 1px 0 rgba(255,255,255,.18);
+  opacity:.88;transform-origin:bottom;animation:weekBarRise .55s ease-out both}
+.wbar-fill.today{background:linear-gradient(180deg, #F0CF7A 0%, #8FD66B 54%, #3E8F45 100%);
+  box-shadow:0 0 18px rgba(143,214,107,.24), 0 0 14px rgba(216,179,94,.14);opacity:1}
+.wbar-fill.empty{height:3px !important;background:rgba(216,179,94,.32);box-shadow:none;opacity:.6;animation:none}
+@keyframes weekBarRise{from{transform:scaleY(.18);opacity:.45}to{transform:scaleY(1);opacity:.88}}
+@media (prefers-reduced-motion: reduce){.wbar-fill{animation:none}}
+.week-day-labels{position:relative;z-index:1;display:flex;justify-content:space-between;padding:0 1px}
+.wday{font-size:9px;color:var(--text3);text-align:center;text-transform:uppercase;letter-spacing:.03em}
+
+.week-insight{position:relative;z-index:1;margin-top:16px;display:flex;gap:10px;align-items:flex-start;
+  padding:13px 14px;border-radius:18px;background:rgba(143,214,107,.07);border:1px solid rgba(143,214,107,.14);
+  color:var(--text2);font-size:12.5px;line-height:1.4}
+.week-insight p{margin:0}
+.week-insight-dot{flex-shrink:0;width:8px;height:8px;margin-top:4px;border-radius:999px;background:#8FD66B;box-shadow:0 0 14px rgba(143,214,107,.4)}
+
+.week-summary-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.week-summary-chip{min-height:60px;padding:10px 8px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);text-align:center}
+.week-summary-chip span{display:block;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}
+.week-summary-chip strong{display:block;margin-top:6px;color:#C8FF9A;font-size:14px;text-shadow:0 0 12px rgba(143,214,107,.24)}
+
+.motivation-section-title{margin:20px 4px 12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text3)}
 .profile-hero{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--gold-b);padding:14px;margin-bottom:10px}
 .profile-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .avatar{width:46px;height:46px;border-radius:50%;background:var(--gold2);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:var(--gold);flex-shrink:0}
@@ -259,15 +304,24 @@ body{background:
 .tab.active .tab-icon,.tab.active .tab-lbl{color:var(--gold-soft)}
 .toast{position:fixed;bottom:104px;left:50%;transform:translateX(-50%);background:var(--bg3);border:0.5px solid var(--gold-b);color:var(--text);font-size:12px;padding:8px 16px;border-radius:20px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
-.moto-banner{position:relative;border-radius:16px;overflow:hidden;margin-bottom:10px;cursor:pointer}
-.moto-banner img{width:100%;height:160px;object-fit:cover;display:block}
-.moto-banner-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.3),rgba(0,0,0,0.7))}
-.moto-banner-text{position:absolute;bottom:0;left:0;right:0;padding:14px 16px}
-.moto-banner-quote{font-size:14px;font-weight:600;color:#fff;line-height:1.4;font-family:Georgia,serif}
-.moto-banner-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em}
+.moto-banner{position:relative;overflow:hidden;min-height:150px;border-radius:26px;margin-bottom:14px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.08);box-shadow:0 16px 42px rgba(0,0,0,.32);background:#111}
+.moto-banner img{width:100%;height:160px;min-height:150px;object-fit:cover;display:block;
+  filter:saturate(.92) contrast(1.04);transform:scale(1.04);animation:motivationSlowPan 14s ease-in-out infinite alternate}
+.moto-banner-overlay{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.74)),
+             radial-gradient(circle at 12% 86%, rgba(216,179,94,.18), transparent 34%)}
+.moto-banner::before{content:'';position:absolute;left:18px;bottom:18px;z-index:2;width:38px;height:2px;border-radius:999px;
+  background:linear-gradient(90deg, #8FD66B, #F0CF7A);box-shadow:0 0 14px rgba(143,214,107,.24)}
+.moto-banner-text{position:absolute;left:20px;right:20px;bottom:24px;z-index:3}
+.moto-banner-quote{font-size:16px;font-weight:700;color:#fff;line-height:1.22;font-family:Georgia,serif;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.moto-banner-sub{font-size:10.5px;color:rgba(247,241,228,.7);margin-top:6px;text-transform:uppercase;letter-spacing:0.14em}
+@keyframes motivationSlowPan{from{transform:scale(1.04) translateY(0)}to{transform:scale(1.08) translateY(-4px)}}
+@media (prefers-reduced-motion: reduce){.moto-banner img{animation:none}}
 
 /* Прячем рекламный баннер сайта только когда открыта вкладка Анны */
 body.on-anna #landing-banner { display: none !important; }
+body.on-week #landing-banner { display: none !important; }
 
 /* ===== ONBOARDING ===== */
 body.onb-lock{overflow:hidden}
@@ -550,13 +604,35 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 
 <!-- WEEK -->
 <div class="page" id="page-week">
-  <div class="ring-card">
-    <div class="sec-head" style="margin-bottom:10px"><div class="sec-title">Калории за 7 дней</div><div class="sec-action" id="week-avg"></div></div>
-    <div class="week-grid" id="week-bars"></div>
-    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3)" id="week-days"></div>
+  <div class="week-hero-header">
+    <div>
+      <div class="section-kicker">АНАЛИТИКА</div>
+      <h2>Неделя в динамике</h2>
+      <p>Смотри, как меняется питание, активность и баланс калорий.</p>
+    </div>
+    <span class="week-pill">7 дней</span>
   </div>
+
+  <div class="week-chart-card">
+    <div class="week-chart-top">
+      <div class="week-chart-title">Калории за 7 дней</div>
+      <span class="week-average-pill" id="week-avg">Среднее: 0 ккал</span>
+    </div>
+    <div class="week-grid" id="week-bars"></div>
+    <div class="week-day-labels" id="week-days"></div>
+    <div class="week-insight" id="week-insight">
+      <span class="week-insight-dot"></span>
+      <p id="week-insight-text">Неделя только начинается. Добавь первый приём — график оживёт.</p>
+    </div>
+    <div class="week-summary-grid">
+      <div class="week-summary-chip"><span>Лучший день</span><strong id="week-best-day">—</strong></div>
+      <div class="week-summary-chip"><span>Среднее</span><strong id="week-avg-chip">0 ккал</strong></div>
+      <div class="week-summary-chip"><span>Записей</span><strong id="week-logged-days">0/7</strong></div>
+    </div>
+  </div>
+
   <div class="sec">
-    <div class="sec-head"><div class="sec-title">Мотивация</div></div>
+    <div class="motivation-section-title">Мотивация</div>
     <div id="moto-banners"></div>
   </div>
 </div>
@@ -1422,37 +1498,66 @@ function renderMotoBanners() {
 
 function renderWeek() {
   renderMotoBanners();
-  if (!WEEK.length) return;
   const norm = USER.daily_calories || 2000;
-  const maxVal = Math.max(...WEEK.map(d=>d.total_calories||0), norm);
+  const dayNames = ['вс','пн','вт','ср','чт','пт','сб'];
+  const todayStr = new Date().toISOString().slice(0,10);
   const barsEl = document.getElementById('week-bars');
   const daysEl = document.getElementById('week-days');
-  const todayStr = new Date().toISOString().slice(0,10);
-  const dayNames = ['вс','пн','вт','ср','чт','пт','сб'];
+
+  // Нет данных недели — рисуем плоскую неделю за последние 7 дней вместо пустоты.
+  let data = WEEK;
+  if (!data.length) {
+    data = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      data.push({ date: d.toISOString().slice(0, 10), total_calories: 0 });
+    }
+  }
+
+  const maxVal = Math.max(...data.map(d => d.total_calories || 0), norm);
+  const avg = Math.round(data.reduce((s, d) => s + (d.total_calories || 0), 0) / data.length);
+  document.getElementById('week-avg').textContent = 'Среднее: ' + avg + ' ккал';
+  const avgChipEl = document.getElementById('week-avg-chip');
+  if (avgChipEl) avgChipEl.textContent = avg + ' ккал';
+
   barsEl.innerHTML = ''; daysEl.innerHTML = '';
-  const avg = Math.round(WEEK.reduce((s,d)=>s+(d.total_calories||0),0)/WEEK.length);
-  document.getElementById('week-avg').textContent = 'Среднее: '+avg+' ккал';
-  WEEK.forEach(d => {
-    const pct = Math.min((d.total_calories||0)/maxVal*100,100);
+  let bestDay = null, loggedDays = 0;
+  data.forEach(d => {
+    const cal = d.total_calories || 0;
+    if (cal > 0) {
+      loggedDays++;
+      if (!bestDay || cal > bestDay.total_calories) bestDay = d;
+    }
+    const pct = Math.min(cal / maxVal * 100, 100);
     const isToday = d.date === todayStr;
     const date = new Date(d.date);
     const wrap = document.createElement('div');
     wrap.className = 'wbar-wrap';
-    wrap.innerHTML = '<div class="wbar-bg"><div class="wbar-fill'+(isToday?' today':'')+'" style="height:'+pct+'%"></div></div>';
+    wrap.innerHTML = '<div class="wbar-bg"><div class="wbar-fill' + (isToday ? ' today' : '') + (cal <= 0 ? ' empty' : '') + '" style="height:' + pct + '%"></div></div>';
     barsEl.appendChild(wrap);
     const lbl = document.createElement('div');
     lbl.className = 'wday';
     lbl.textContent = dayNames[date.getDay()];
     daysEl.appendChild(lbl);
   });
-  if (FAVS.length) {
-    let html = '';
-    FAVS.forEach(f => {
-      var fname = f.meal_name || f.name || 'Блюдо'; html += '<div class="rec-card" onclick="addFavToDiary('+f.id+')"><div><div class="rec-name">'+fname+'</div><div class="rec-meta">Б:'+Math.round(f.protein||0)+' Ж:'+Math.round(f.fat||0)+' У:'+Math.round(f.carbs||0)+'</div></div><div><div class="rec-kcal">'+f.calories+'</div><div class="rec-unit">ккал</div></div></div>';
-    });
-    document.getElementById('fav-list').innerHTML = html;
-  } else {
-    document.getElementById('fav-list').innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-text">Сохрани блюда в избранное через бота</div></div>';
+
+  const bestDayEl = document.getElementById('week-best-day');
+  if (bestDayEl) bestDayEl.textContent = bestDay ? dayNames[new Date(bestDay.date).getDay()] : '—';
+  const loggedEl = document.getElementById('week-logged-days');
+  if (loggedEl) loggedEl.textContent = loggedDays + '/' + data.length;
+
+  const insightEl = document.getElementById('week-insight-text');
+  if (insightEl) {
+    const todayEntry = data.find(d => d.date === todayStr);
+    const todayPct = todayEntry && norm > 0 ? (todayEntry.total_calories || 0) / norm : 0;
+    if (avg <= 0) {
+      insightEl.textContent = 'Неделя только начинается. Добавь первый приём — график оживёт.';
+    } else if (todayPct >= 0.85 && todayPct <= 1.05) {
+      insightEl.textContent = 'Сегодня ты почти попал в норму — хороший день для стабильного режима.';
+    } else {
+      insightEl.textContent = 'Среднее за неделю помогает видеть тренд, а не оценивать день по одному приёму.';
+    }
   }
 }
 
@@ -2180,6 +2285,7 @@ const _origShowPage = showPage;
 showPage = function (name) {
   _origShowPage(name);
   document.body.classList.toggle('on-anna', name === 'anna');
+  document.body.classList.toggle('on-week', name === 'week');
   if (name === 'anna' && !annaGreeted) {
     annaGreeted = true;
     annaBubble(ANNA_HELLO, 'a');
