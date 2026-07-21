@@ -697,6 +697,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 .photo-spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--gold-b);border-top-color:var(--gold);margin:0 auto 14px;animation:photo-spin 0.8s linear infinite}
 @keyframes photo-spin{to{transform:rotate(360deg)}}
 .photo-result-name{font-size:15px;font-weight:600;margin-bottom:10px}
+.vision-unavailable{position:relative;overflow:hidden;padding:22px 18px;margin-bottom:14px;border:1px solid var(--gold-b);border-radius:22px;background:linear-gradient(145deg,rgba(201,168,76,.16),rgba(32,30,27,.96) 55%);box-shadow:0 14px 34px rgba(0,0,0,.2)}
+.vision-unavailable:before{content:'';position:absolute;width:150px;height:150px;right:-70px;top:-80px;border-radius:50%;background:radial-gradient(circle,rgba(234,208,138,.22),transparent 68%)}
+.vision-unavailable-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;margin-bottom:15px;border-radius:16px;background:rgba(201,168,76,.16);color:var(--gold-soft);font-size:23px}
+.vision-unavailable-title{position:relative;font-size:18px;font-weight:650;line-height:1.25;color:var(--text);margin-bottom:8px}
+.vision-unavailable-text{position:relative;font-size:13px;line-height:1.6;color:var(--text2)}
+.vision-unavailable-retry{display:inline-flex;margin-top:12px;padding:6px 9px;border-radius:999px;background:rgba(201,168,76,.12);color:var(--gold-soft);font-size:11px}
 @media (prefers-reduced-motion: reduce){
   .photo-spinner{animation:none;border-top-color:var(--gold-b)}
 }
@@ -1791,6 +1797,10 @@ async function analyzePhoto() {
     fd.append('mode', photoMode);
     const res = await fetch(API + '/api/food/analyze-photo', { method: 'POST', body: fd });
     const data = await res.json();
+    if (!res.ok && data.error === 'vision_unavailable') {
+      renderVisionUnavailable('food', data);
+      return;
+    }
     if (!res.ok) throw new Error(data.error || 'Не получилось распознать фото');
     photoResult = data;
     photoMealType = PHOTO_CAT_TO_MT[data.category] || 'перекус';
@@ -1805,6 +1815,31 @@ async function analyzePhoto() {
       '<button class="btn" onclick="analyzePhoto()">🔁 Попробовать снова</button>' +
       '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Выбрать другое фото</button>';
   }
+}
+
+function renderVisionUnavailable(mode, data) {
+  const isFridge = mode === 'fridge';
+  const retrySec = Math.max(0, Number(data && data.retryAfterSec) || 0);
+  const retryText = retrySec
+    ? '<div class="vision-unavailable-retry">Обычно доступ восстановится через ' + Math.max(1, Math.ceil(retrySec / 60)) + ' мин.</div>'
+    : '';
+  const description = isFridge
+    ? 'Попробуй ещё раз через пару минут или добавь продукты вручную.'
+    : 'Попробуй ещё раз через пару минут. Можно пока ввести блюдо текстом.';
+  const manualLabel = isFridge ? 'Добавить продукты вручную' : 'Ввести текстом';
+  const manualAction = isFridge
+    ? "hideOverlay('photo');showOverlay('fridge')"
+    : "hideOverlay('photo');showOverlay('add')";
+
+  document.getElementById('photo-state').innerHTML =
+    '<div class="vision-unavailable">' +
+      '<div class="vision-unavailable-icon">◌</div>' +
+      '<div class="vision-unavailable-title">Фото-анализ временно перегружен</div>' +
+      '<div class="vision-unavailable-text">' + description + '</div>' +
+      retryText +
+    '</div>' +
+    '<button class="btn" onclick="analyzePhoto()">Попробовать ещё раз</button>' +
+    '<button class="btn btn-sec" onclick="' + manualAction + '">' + manualLabel + '</button>';
 }
 
 function logPhotoCorrection(originalGuess, correctedDish, source) {
@@ -1994,6 +2029,10 @@ async function analyzeFridgePhoto() {
     fd.append('photo', photoFile);
     const res = await fetch(API + '/api/fridge/analyze-photo', { method: 'POST', body: fd });
     const data = await res.json();
+    if (!res.ok && data.error === 'vision_unavailable') {
+      renderVisionUnavailable('fridge', data);
+      return;
+    }
     if (!res.ok) throw new Error(data.error || 'Не получилось распознать продукты');
     fridgeProducts = (data.products || []).map(p => ({ name: p.name, confidence: p.confidence, needsConfirmation: p.needsConfirmation }));
     fridgeRecipes = [];
