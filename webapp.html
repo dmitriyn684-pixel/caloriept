@@ -223,8 +223,107 @@ body{background:
 .cat-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
 .cat-tab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .cat-tab.active{border-color:var(--gold-b);background:var(--gold2);color:var(--gold)}
-.mind-emo-btn{padding:6px 12px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;}
-.mind-emo-btn.active{border-color:var(--gold-b);background:var(--gold2);color:var(--gold);}
+/* MIND PAGE — premium AI wellness journal */
+.mind-hero-header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:18px 4px 14px}
+.mind-hero-header h2{margin:4px 0 0;font-size:26px;line-height:1.05;letter-spacing:-0.03em;color:var(--text);font-family:Georgia,serif}
+.mind-hero-header p{margin:8px 0 0;max-width:230px;font-size:12.5px;line-height:1.4;color:var(--text2)}
+.mind-pill{flex:0 0 auto;height:30px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;
+  color:#C8FF9A;background:rgba(143,214,107,.12);border:1px solid rgba(143,214,107,.22);font-size:12px;font-weight:700;
+  box-shadow:0 0 16px rgba(143,214,107,.1)}
+
+.mind-icon-badge{width:36px;height:36px;border-radius:14px;display:grid;place-items:center;flex-shrink:0;
+  color:#C8FF9A;background:rgba(143,214,107,.10);border:1px solid rgba(143,214,107,.22);box-shadow:0 0 18px rgba(143,214,107,.10)}
+.mind-icon-badge svg{width:19px;height:19px;display:block}
+
+.mind-insight-card{position:relative;overflow:hidden;border-radius:var(--r-xl);padding:20px;margin-bottom:16px;
+  background:radial-gradient(circle at 18% 0%, rgba(143,214,107,.08), transparent 34%),
+             radial-gradient(circle at 88% 12%, rgba(216,179,94,.08), transparent 34%),
+             linear-gradient(180deg, rgba(28,30,26,.94), rgba(16,17,15,.94));
+  border:1px solid rgba(216,179,94,.22);
+  box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06)}
+.mind-insight-card::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg, transparent 0%, rgba(255,255,255,.04) 48%, transparent 72%);
+  transform:translateX(-120%);animation:mindCardSheen 8s ease-in-out infinite}
+@keyframes mindCardSheen{0%,62%{transform:translateX(-120%);opacity:0}72%{opacity:1}100%{transform:translateX(120%);opacity:0}}
+@media (prefers-reduced-motion: reduce){.mind-insight-card::before{animation:none}}
+.mind-insight-title{position:relative;z-index:1;display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:19px;line-height:1.2;color:var(--text);font-weight:800}
+.mind-insight-desc{position:relative;z-index:1;font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.mind-insight-footnote{position:relative;z-index:1;font-size:12px;color:var(--text2);line-height:1.5}
+
+.mind-pattern-list{position:relative;z-index:1;display:grid;gap:10px;margin:16px 0}
+.mind-pattern-row{display:flex;align-items:flex-start;gap:10px;padding:12px 13px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}
+.mind-pattern-icon{width:10px;height:10px;flex-shrink:0;margin-top:6px;border-radius:999px;background:#F0CF7A;box-shadow:0 0 14px rgba(240,207,122,.24)}
+.mind-pattern-row.calm .mind-pattern-icon{background:#8FD66B;box-shadow:0 0 14px rgba(143,214,107,.24)}
+.mind-pattern-row p{margin:0;color:var(--text2);font-size:13px;line-height:1.4}
+.mind-pattern-row strong{color:var(--text)}
+
+.mind-journal-card{margin-top:18px;margin-bottom:16px;border-radius:var(--r-xl);padding:20px;
+  background:linear-gradient(180deg, rgba(28,30,26,.94), rgba(16,17,15,.94));
+  border:1px solid rgba(216,179,94,.20);box-shadow:0 18px 46px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.06)}
+.mind-journal-card.mind-saved-pulse{animation:mindSavedPulse .9s ease-out}
+@keyframes mindSavedPulse{
+  0%{box-shadow:0 0 0 rgba(143,214,107,0), 0 18px 46px rgba(0,0,0,.30)}
+  35%{box-shadow:0 0 34px rgba(143,214,107,.22), 0 18px 46px rgba(0,0,0,.30)}
+  100%{box-shadow:0 0 0 rgba(143,214,107,0), 0 18px 46px rgba(0,0,0,.30)}
+}
+@media (prefers-reduced-motion: reduce){.mind-journal-card.mind-saved-pulse{animation:none}}
+.mind-form-title{display:flex;align-items:center;gap:10px;margin:0 0 16px;color:var(--text);font-size:18px;font-weight:800}
+.mind-question{margin-top:16px;color:var(--text2);font-size:12.5px;line-height:1.4}
+.mind-textarea{width:100%;min-height:78px;margin-top:8px;padding:13px 14px;border-radius:18px;
+  background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);color:var(--text);
+  font-size:14px;line-height:1.45;outline:none;resize:vertical;font-family:inherit;box-sizing:border-box}
+.mind-textarea:focus{border-color:rgba(143,214,107,.34);box-shadow:0 0 0 3px rgba(143,214,107,.10)}
+.mind-textarea::placeholder{color:var(--text3)}
+
+.mind-chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.mind-emo-btn{min-height:34px;padding:0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.035);color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease}
+.mind-emo-btn:active{transform:scale(.97)}
+.mind-emo-btn.active{color:#0E100E;background:linear-gradient(135deg, #C8FF9A, #8FD66B);
+  border-color:rgba(200,255,154,.42);box-shadow:0 0 18px rgba(143,214,107,.16);font-weight:800}
+
+.mind-save-btn{position:relative;overflow:hidden;width:100%;min-height:54px;margin-top:20px;border:0;
+  border-radius:20px;color:#161914;background:linear-gradient(135deg, #F0CF7A, #D8B35E 52%, #8FD66B);
+  font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;
+  box-shadow:0 16px 34px rgba(216,179,94,.18), inset 0 1px 0 rgba(255,255,255,.32)}
+.mind-save-btn::before{content:'';position:absolute;inset:0;transform:translateX(-120%);
+  background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.30) 48%, transparent 72%);
+  animation:mindButtonSheen 4.5s ease-in-out infinite}
+@keyframes mindButtonSheen{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@media (prefers-reduced-motion: reduce){.mind-save-btn::before{animation:none}}
+
+.mind-history-title{margin:4px 4px 12px;font-size:16px;color:var(--text);font-weight:800}
+.mind-history-card{position:relative;padding:16px 16px 14px 20px;border-radius:20px;margin-bottom:10px;
+  background:linear-gradient(180deg, rgba(28,30,26,.94), rgba(18,19,17,.94));
+  border:1px solid rgba(255,255,255,.07);box-shadow:0 12px 32px rgba(0,0,0,.24)}
+.mind-history-card::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:999px;
+  background:linear-gradient(180deg, #8FD66B, #F0CF7A)}
+.mind-history-date{font-size:11px;color:var(--text3)}
+.mind-history-food{margin-top:4px;color:var(--text);font-size:14.5px;font-weight:700}
+.mind-history-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.mind-history-tag{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.05);color:var(--text2);font-size:11.5px}
+.mind-history-insight{margin-top:8px;font-size:12.5px;color:var(--gold-soft);line-height:1.4;font-style:italic}
+.mind-history-empty{color:var(--text2);font-size:13px;text-align:center;padding:20px}
+
+.mira-card{position:relative;overflow:hidden;margin-top:6px;padding:22px 20px 20px;border-radius:var(--r-xl);text-align:center;
+  background:radial-gradient(circle at 50% 0%, rgba(143,214,107,.10), transparent 34%),
+             radial-gradient(circle at 84% 20%, rgba(216,179,94,.12), transparent 32%),
+             linear-gradient(180deg, #171A2D, #10121F);
+  border:1px solid rgba(216,179,94,.18);
+  box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.07)}
+.mira-orb{width:46px;height:46px;margin:0 auto 14px;border-radius:999px;
+  background:radial-gradient(circle at 34% 28%, rgba(255,255,255,.42), transparent 28%),
+             conic-gradient(from 180deg, #8FD66B, #F0CF7A, #8D7CFF, #8FD66B);
+  box-shadow:0 0 28px rgba(143,214,107,.18), inset 0 -8px 18px rgba(0,0,0,.34);
+  animation:miraOrbRotate 9s linear infinite}
+@keyframes miraOrbRotate{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.mira-orb{animation:none}}
+.mira-card h3{margin:0;color:var(--text);font-size:19px;font-weight:900}
+.mira-card p{margin:10px auto 0;max-width:300px;color:rgba(247,241,228,.72);font-size:13px;line-height:1.45}
+.mira-btn{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-top:16px;width:100%;min-height:52px;border:0;box-sizing:border-box;
+  border-radius:20px;color:#111;background:linear-gradient(135deg, #F0CF7A, #D8B35E);
+  font-size:15px;font-weight:900;text-decoration:none}
 .rec-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px 13px;margin-bottom:7px;cursor:pointer;transition:background 0.15s;display:flex;justify-content:space-between;align-items:center}
 .rec-card:active{background:var(--bg3)}
 .rec-name{font-size:13px;font-weight:500}
@@ -322,6 +421,7 @@ body{background:
 /* Прячем рекламный баннер сайта только когда открыта вкладка Анны */
 body.on-anna #landing-banner { display: none !important; }
 body.on-week #landing-banner { display: none !important; }
+body.on-mind #landing-banner { display: none !important; }
 
 /* ===== ONBOARDING ===== */
 body.onb-lock{overflow:hidden}
@@ -1064,6 +1164,9 @@ async function saveMindEntry() {
       selectedEmotion = '';
       selectedReason = '';
       document.querySelectorAll('.mind-emo-btn').forEach(b => b.classList.remove('active'));
+      const formEl = document.getElementById('mind-form');
+      formEl.classList.add('mind-saved-pulse');
+      setTimeout(() => formEl.classList.remove('mind-saved-pulse'), 900);
       await loadMindHistory();
     }
   } catch(e) { toast('Ошибка сохранения'); }
@@ -1077,19 +1180,19 @@ async function loadMindHistory() {
     const data = await res.json();
     const el = document.getElementById('mind-history');
     if (!data.entries || !data.entries.length) {
-      el.innerHTML = '<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px;">Записей пока нет.<br>Сделай первую запись!</div>';
+      el.innerHTML = '<div class="mind-history-empty">Записей пока нет.<br>Сделай первую запись!</div>';
       return;
     }
-    el.innerHTML = '<div style="font-size:13px;font-weight:600;color:var(--text1);margin-bottom:10px;">📚 Последние записи</div>' +
+    el.innerHTML = '<div class="mind-history-title">Последние записи</div>' +
       data.entries.slice(0,7).map(e => `
-        <div style="background:var(--bg2);border-radius:12px;padding:12px;margin-bottom:8px;border:0.5px solid var(--border);">
-          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">${e.date}</div>
-          <div style="font-size:13px;color:var(--text1);margin-bottom:4px;">🍽 ${e.food}</div>
-          <div style="display:flex;gap:8px;">
-            <span style="font-size:11px;background:var(--bg3);padding:3px 8px;border-radius:10px;color:var(--text2);">${e.emotion}</span>
-            <span style="font-size:11px;background:var(--bg3);padding:3px 8px;border-radius:10px;color:var(--text2);">${e.reason}</span>
+        <div class="mind-history-card">
+          <div class="mind-history-date">${e.date}</div>
+          <div class="mind-history-food">${e.food}</div>
+          <div class="mind-history-tags">
+            <span class="mind-history-tag">${e.emotion}</span>
+            <span class="mind-history-tag">${e.reason}</span>
           </div>
-          ${e.insight ? `<div style="font-size:12px;color:var(--gold);margin-top:6px;">💡 ${e.insight}</div>` : ''}
+          ${e.insight ? `<div class="mind-history-insight">${e.insight}</div>` : ''}
         </div>
       `).join('');
   } catch(e) { console.log('Mind history error', e); }
@@ -2108,70 +2211,73 @@ init();
 </script>
 <!-- PAGE: MIND -->
 <div class="page" id="page-mind">
+  <div class="mind-hero-header">
+    <div>
+      <div class="section-kicker">AI-ДНЕВНИК</div>
+      <h2>Разум и питание</h2>
+      <p>Замечай связь между эмоциями, выбором еды и самочувствием.</p>
+    </div>
+    <span class="mind-pill">3 вопроса</span>
+  </div>
+
   <div class="sec">
 
     <!-- Объяснение концепции -->
-    <div style="background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:16px;border:0.5px solid var(--border);">
-      <div style="font-size:16px;font-weight:700;color:var(--text1);margin-bottom:8px;">🧠 Еда и мышление — одна система</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;">
-        Твой кишечник и мозг связаны напрямую через блуждающий нерв. Учёные называют это осью <b style="color:var(--gold)">«микробиота → кишечник → мозг»</b>. Это значит:
+    <div class="mind-insight-card">
+      <div class="mind-insight-title"><span class="mind-icon-badge"><svg><use href="#ic-brain"/></svg></span>Еда и мышление — одна система</div>
+      <div class="mind-insight-desc">
+        Твой кишечник и мозг связаны напрямую через блуждающий нерв. Учёные называют это осью <b style="color:var(--gold-soft)">«микробиота → кишечник → мозг»</b>. Это значит:
       </div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
-        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😰 <b>Тревога</b> → тянет к сладкому и мучному (быстрый дофамин)</div>
-        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😤 <b>Раздражение</b> → жирная еда или пропуск приёма пищи</div>
-        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😴 <b>Усталость</b> → переедание вечером (накопленный стресс)</div>
-        <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:12px;color:var(--text1);">😌 <b>Спокойствие</b> → осознанный выбор еды</div>
+      <div class="mind-pattern-list">
+        <div class="mind-pattern-row"><span class="mind-pattern-icon"></span><p><strong>Тревога</strong> → тянет к сладкому и мучному (быстрый дофамин)</p></div>
+        <div class="mind-pattern-row"><span class="mind-pattern-icon"></span><p><strong>Раздражение</strong> → жирная еда или пропуск приёма пищи</p></div>
+        <div class="mind-pattern-row"><span class="mind-pattern-icon"></span><p><strong>Усталость</strong> → переедание вечером (накопленный стресс)</p></div>
+        <div class="mind-pattern-row calm"><span class="mind-pattern-icon"></span><p><strong>Спокойствие</strong> → осознанный выбор еды</p></div>
       </div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.5;">
+      <div class="mind-insight-footnote">
         Дневник ниже помогает замечать свои паттерны. Всего 3 вопроса в день — и через неделю ты увидишь связь между состоянием и едой.
       </div>
     </div>
 
     <!-- Форма записи -->
-    <div id="mind-form" style="background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:16px;border:0.5px solid var(--border);">
-      <div style="font-size:13px;font-weight:600;color:var(--text1);margin-bottom:12px;">📝 Запись дня</div>
+    <div id="mind-form" class="mind-journal-card">
+      <div class="mind-form-title"><span class="mind-icon-badge"><svg><use href="#ic-note"/></svg></span>Запись дня</div>
 
-      <div style="margin-bottom:12px;">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">1. Что ты ел(а) сегодня? (кратко)</div>
-        <textarea id="mind-food" placeholder="Например: каша утром, суп и курица днём, творог вечером..." style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:10px;color:var(--text1);font-size:13px;resize:none;height:70px;box-sizing:border-box;"></textarea>
+      <div class="mind-question">1. Что ты ел(а) сегодня? (кратко)</div>
+      <textarea id="mind-food" class="mind-textarea" placeholder="Например: каша утром, суп и курица днём, творог вечером..."></textarea>
+
+      <div class="mind-question">2. Какое состояние было ДО еды?</div>
+      <div class="mind-chip-grid" id="mind-emotion-btns">
+        <button onclick="selectEmotion(this,'тревога')" class="mind-emo-btn">Тревога</button>
+        <button onclick="selectEmotion(this,'спокойствие')" class="mind-emo-btn">Спокойствие</button>
+        <button onclick="selectEmotion(this,'раздражение')" class="mind-emo-btn">Раздражение</button>
+        <button onclick="selectEmotion(this,'пустота')" class="mind-emo-btn">Пустота</button>
+        <button onclick="selectEmotion(this,'радость')" class="mind-emo-btn">Радость</button>
+        <button onclick="selectEmotion(this,'усталость')" class="mind-emo-btn">Усталость</button>
       </div>
 
-      <div style="margin-bottom:12px;">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">2. Какое состояние было ДО еды?</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="mind-emotion-btns">
-          <button onclick="selectEmotion(this,'тревога')" class="mind-emo-btn">😰 Тревога</button>
-          <button onclick="selectEmotion(this,'спокойствие')" class="mind-emo-btn">😌 Спокойствие</button>
-          <button onclick="selectEmotion(this,'раздражение')" class="mind-emo-btn">😤 Раздражение</button>
-          <button onclick="selectEmotion(this,'пустота')" class="mind-emo-btn">😶 Пустота</button>
-          <button onclick="selectEmotion(this,'радость')" class="mind-emo-btn">😊 Радость</button>
-          <button onclick="selectEmotion(this,'усталость')" class="mind-emo-btn">😴 Усталость</button>
-        </div>
+      <div class="mind-question">3. Что повлияло на выбор еды?</div>
+      <div class="mind-chip-grid" id="mind-reason-btns">
+        <button onclick="selectReason(this,'голод')" class="mind-emo-btn">Голод</button>
+        <button onclick="selectReason(this,'стресс')" class="mind-emo-btn">Стресс</button>
+        <button onclick="selectReason(this,'привычка')" class="mind-emo-btn">Привычка</button>
+        <button onclick="selectReason(this,'компания')" class="mind-emo-btn">Компания</button>
+        <button onclick="selectReason(this,'скука')" class="mind-emo-btn">Скука</button>
+        <button onclick="selectReason(this,'эмоция')" class="mind-emo-btn">Эмоция</button>
       </div>
 
-      <div style="margin-bottom:16px;">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">3. Что повлияло на выбор еды?</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="mind-reason-btns">
-          <button onclick="selectReason(this,'голод')" class="mind-emo-btn">🤤 Голод</button>
-          <button onclick="selectReason(this,'стресс')" class="mind-emo-btn">⚡ Стресс</button>
-          <button onclick="selectReason(this,'привычка')" class="mind-emo-btn">🔄 Привычка</button>
-          <button onclick="selectReason(this,'компания')" class="mind-emo-btn">👥 Компания</button>
-          <button onclick="selectReason(this,'скука')" class="mind-emo-btn">😑 Скука</button>
-          <button onclick="selectReason(this,'эмоция')" class="mind-emo-btn">💔 Эмоция</button>
-        </div>
-      </div>
-
-      <button onclick="saveMindEntry()" style="width:100%;background:var(--gold);color:#000;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;">✨ Сохранить запись</button>
+      <button onclick="saveMindEntry()" class="mind-save-btn">Сохранить запись</button>
     </div>
 
     <!-- История записей -->
     <div id="mind-history"></div>
 
     <!-- CTA на психолога -->
-    <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:16px;padding:20px;margin-top:8px;text-align:center;border:0.5px solid var(--border);">
-      <div style="font-size:20px;margin-bottom:8px;">🧠</div>
-      <div style="font-size:14px;font-weight:700;color:#e0e0ff;margin-bottom:6px;">Хочешь разобраться глубже?</div>
-      <div style="font-size:12px;color:#9090aa;margin-bottom:14px;">Мира — AI-психолог, который поможет понять связь между эмоциями, мышлением и едой. Доступна 24/7.</div>
-      <a href="https://t.me/psy_mind_rf_bot" style="display:block;background:var(--gold);color:#000;border-radius:12px;padding:12px;font-size:13px;font-weight:600;text-decoration:none;">💬 Поговорить с Мирой</a>
+    <div class="mira-card">
+      <div class="mira-orb"></div>
+      <h3>Хочешь разобраться глубже?</h3>
+      <p>Мира — AI-психолог, который поможет понять связь между эмоциями, мышлением и едой. Доступна 24/7.</p>
+      <a href="https://t.me/psy_mind_rf_bot" class="mira-btn">Поговорить с Мирой</a>
     </div>
 
   </div>
@@ -2286,6 +2392,7 @@ showPage = function (name) {
   _origShowPage(name);
   document.body.classList.toggle('on-anna', name === 'anna');
   document.body.classList.toggle('on-week', name === 'week');
+  document.body.classList.toggle('on-mind', name === 'mind');
   if (name === 'anna' && !annaGreeted) {
     annaGreeted = true;
     annaBubble(ANNA_HELLO, 'a');
