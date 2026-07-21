@@ -210,15 +210,63 @@ body{background:
 .week-summary-chip strong{display:block;margin-top:6px;color:#C8FF9A;font-size:14px;text-shadow:0 0 12px rgba(143,214,107,.24)}
 
 .motivation-section-title{margin:20px 4px 12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text3)}
-.profile-hero{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--gold-b);padding:14px;margin-bottom:10px}
-.profile-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.avatar{width:46px;height:46px;border-radius:50%;background:var(--gold2);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:var(--gold);flex-shrink:0}
-.profile-name{font-size:15px;font-weight:500}
-.profile-goal{font-size:11px;color:var(--text2);margin-top:2px}
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.stat-box{background:var(--bg3);border-radius:var(--rs);padding:9px 11px;border:0.5px solid var(--border)}
-.stat-val{font-size:19px;font-weight:500}
-.stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
+/* PROFILE PAGE — premium personal health dashboard */
+.profile-hero{position:relative;overflow:hidden;margin-top:12px;padding:20px;border-radius:var(--r-xl);
+  background:radial-gradient(circle at 18% 0%, rgba(143,214,107,.08), transparent 34%),
+             radial-gradient(circle at 86% 20%, rgba(216,179,94,.10), transparent 34%),
+             linear-gradient(180deg, rgba(28,30,26,.94), rgba(16,17,15,.94));
+  border:1px solid rgba(216,179,94,.22);
+  box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06)}
+.profile-top{position:relative;z-index:1;display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.avatar{width:58px;height:58px;border-radius:20px;flex-shrink:0;display:grid;place-items:center;
+  color:#F0CF7A;font-weight:900;font-size:20px;
+  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.18), transparent 30%),
+             linear-gradient(135deg, rgba(216,179,94,.22), rgba(143,214,107,.12));
+  border:1px solid rgba(216,179,94,.3);
+  animation:profileAvatarGlow 5s ease-in-out infinite}
+@keyframes profileAvatarGlow{
+  0%,100%{box-shadow:0 0 18px rgba(216,179,94,.12)}
+  50%{box-shadow:0 0 26px rgba(143,214,107,.2)}
+}
+@media (prefers-reduced-motion: reduce){.avatar{animation:none}}
+.profile-name{color:var(--text);font-size:18px;font-weight:800;letter-spacing:-0.01em}
+.profile-goal{display:inline-flex;align-items:center;height:24px;margin-top:6px;padding:0 10px;border-radius:999px;
+  color:#C8FF9A;background:rgba(143,214,107,.12);border:1px solid rgba(143,214,107,.22);font-size:11.5px;font-weight:700}
+.stat-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-box{background:rgba(255,255,255,.045);border-radius:18px;padding:13px 14px;border:1px solid rgba(255,255,255,.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.stat-box.streak{background:rgba(216,179,94,.07);border-color:rgba(216,179,94,.22)}
+.stat-val{color:var(--text);font-size:23px;line-height:1;font-weight:900;letter-spacing:-0.02em}
+.stat-box.streak .stat-val{color:var(--gold-soft);text-shadow:0 0 12px rgba(216,179,94,.24)}
+.stat-lbl{color:var(--text3);font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;margin-top:6px}
+.profile-insight{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin-top:16px;
+  padding:11px 13px;border-radius:14px;background:rgba(143,214,107,.06);border:1px solid rgba(143,214,107,.14);
+  color:var(--text2);font-size:12px;line-height:1.4}
+.profile-insight-dot{flex-shrink:0;width:7px;height:7px;border-radius:999px;background:#8FD66B;box-shadow:0 0 12px rgba(143,214,107,.4)}
+
+.profile-section-title{margin:24px 4px 12px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(216,179,94,.72)}
+.profile-menu-group{overflow:hidden;border-radius:var(--r-xl);
+  background:linear-gradient(180deg, rgba(28,30,26,.94), rgba(18,19,17,.94));
+  border:1px solid rgba(216,179,94,.14);
+  box-shadow:0 14px 38px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.05)}
+.profile-menu-group.tone-fresh{background:radial-gradient(circle at 12% 0%, rgba(143,214,107,.07), transparent 40%),
+  linear-gradient(180deg, rgba(28,30,26,.94), rgba(18,19,17,.94))}
+.profile-menu-item{position:relative;min-height:64px;display:grid;grid-template-columns:40px 1fr 16px;gap:12px;
+  align-items:center;padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.055);cursor:pointer;
+  transition:background .16s ease, transform .16s ease}
+.profile-menu-item:last-child{border-bottom:0}
+.profile-menu-item:active{transform:scale(.992);background:rgba(143,214,107,.05)}
+.profile-menu-icon{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;flex-shrink:0;
+  transition:box-shadow .2s ease}
+.profile-menu-icon svg{width:18px;height:18px;display:block}
+.profile-menu-icon.tone-green{color:#C8FF9A;background:rgba(143,214,107,.10);border:1px solid rgba(143,214,107,.2);box-shadow:0 0 16px rgba(143,214,107,.1)}
+.profile-menu-icon.tone-gold{color:var(--gold-soft);background:rgba(216,179,94,.10);border:1px solid rgba(216,179,94,.22);box-shadow:0 0 16px rgba(216,179,94,.1)}
+.profile-menu-icon.tone-muted{color:var(--text2);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);box-shadow:none}
+.profile-menu-title{color:var(--text);font-size:14.5px;font-weight:700;line-height:1.25;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.profile-menu-subtitle{margin-top:3px;color:var(--text3);font-size:11.5px;line-height:1.3}
+.profile-ai-badge{display:inline-flex;align-items:center;height:17px;padding:0 6px;border-radius:999px;
+  background:rgba(143,214,107,.16);color:#C8FF9A;font-size:9px;font-weight:800;letter-spacing:.04em}
+.profile-menu-chevron{color:rgba(216,179,94,.45);font-size:19px;text-align:right}
 /* RECIPE SPECIFIC */
 #recipes-hero img{object-position:center 12%}
 
@@ -613,6 +661,7 @@ body.on-anna #landing-banner { display: none !important; }
 body.on-week #landing-banner { display: none !important; }
 body.on-mind #landing-banner { display: none !important; }
 body.on-recipes #landing-banner { display: none !important; }
+body.on-profile #landing-banner { display: none !important; }
 
 /* ===== ONBOARDING ===== */
 body.onb-lock{overflow:hidden}
@@ -726,6 +775,51 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
     </symbol>
     <symbol id="ic-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 12h15M13 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="ic-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="5" width="16" height="15" rx="2"/>
+      <path d="M4 9.5h16"/>
+      <path d="M8 3v4M16 3v4"/>
+    </symbol>
+    <symbol id="ic-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8"/>
+      <circle cx="12" cy="12" r="4.4"/>
+      <circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="ic-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="5"/>
+      <path d="M12 17a5 5 0 0 0 5-5"/>
+      <path d="M12 12l3-2"/>
+    </symbol>
+    <symbol id="ic-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+    </symbol>
+    <symbol id="ic-health" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="5"/>
+      <path d="M12 8v8M8 12h8"/>
+    </symbol>
+    <symbol id="ic-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 17h11c-1-1-1-1.6-1-4.2V11a4.5 4.5 0 0 0-9 0v1.8c0 2.6 0 3.2-1 4.2z"/>
+      <path d="M10.4 20a1.8 1.8 0 0 0 3.2 0"/>
+    </symbol>
+    <symbol id="ic-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 4v11M8 11l4 4 4-4"/>
+      <path d="M5 18.5h14"/>
+    </symbol>
+    <symbol id="ic-party" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3c.6 3.2 2 5.6 5.5 6.2C14 9.8 12.6 12.2 12 15.4c-.6-3.2-2-5.6-5.5-6.2C10 8.6 11.4 6.2 12 3z"/>
+      <circle cx="18.2" cy="17" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="6.2" cy="18" r="0.9" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="ic-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="9" width="16" height="11" rx="1.5"/>
+      <path d="M4 13h16"/>
+      <path d="M12 9v11"/>
+      <path d="M12 9c-1.4-2.8-2.9-3.8-4.3-2.9S6.2 9 8 9M12 9c1.4-2.8 2.9-3.8 4.3-2.9S17.8 9 16 9"/>
+    </symbol>
+    <symbol id="ic-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+      <path d="M12 3.5l2.4 5.3 5.8.6-4.4 3.9 1.3 5.7L12 15.9l-5.1 3.1 1.3-5.7-4.4-3.9 5.8-.6L12 3.5z"/>
     </symbol>
   </defs>
 </svg>
@@ -974,40 +1068,108 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
       <div class="stat-box"><div class="stat-val" id="p-w">—</div><div class="stat-lbl">Вес</div></div>
       <div class="stat-box"><div class="stat-val" id="p-h">—</div><div class="stat-lbl">Рост</div></div>
       <div class="stat-box"><div class="stat-val" id="p-k">2000</div><div class="stat-lbl">Норма ккал</div></div>
-      <div class="stat-box"><div class="stat-val" id="p-s">0</div><div class="stat-lbl">Стрик 🔥</div></div>
+      <div class="stat-box streak"><div class="stat-val" id="p-s">0</div><div class="stat-lbl">Стрик</div></div>
     </div>
+    <div class="profile-insight"><span class="profile-insight-dot"></span><span id="profile-insight-text">Профиль настроен. Анна учитывает эти данные в рекомендациях.</span></div>
   </div>
   <div class="sec">
-    <div class="sec-head"><div class="sec-title">Анализ и инсайты</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="aiPatterns()"><div class="row-left"><span style="font-size:18px">🧠</span><div class="row-text"><div class="row-name">Анализ паттернов питания</div><div class="row-meta">ИИ найдёт закономерности за 30 дней</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="aiMyCard()"><div class="row-left"><span style="font-size:18px">📊</span><div class="row-text"><div class="row-name">Моя карточка</div><div class="row-meta">Полная сводка по питанию</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="showOverlay('holiday')"><div class="row-left"><span style="font-size:18px">🎉</span><div class="row-text"><div class="row-name">Режим праздника</div><div class="row-meta">Советы как не набрать вес на праздниках</div></div></div><div class="row-icon">›</div></div>
+    <div class="profile-section-title">Анализ и инсайты</div>
+    <div class="profile-menu-group">
+      <div class="profile-menu-item" onclick="aiPatterns()">
+        <span class="profile-menu-icon tone-green"><svg><use href="#ic-brain"/></svg></span>
+        <div><div class="profile-menu-title">Анализ паттернов питания <span class="profile-ai-badge">AI</span></div><div class="profile-menu-subtitle">ИИ найдёт закономерности за 30 дней</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="aiMyCard()">
+        <span class="profile-menu-icon tone-green"><svg><use href="#ic-journal"/></svg></span>
+        <div><div class="profile-menu-title">Моя карточка</div><div class="profile-menu-subtitle">Полная сводка по питанию</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="showOverlay('holiday')">
+        <span class="profile-menu-icon tone-gold"><svg><use href="#ic-party"/></svg></span>
+        <div><div class="profile-menu-title">Режим праздника</div><div class="profile-menu-subtitle">Советы как не набрать вес на праздниках</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
     </div>
-    <div class="sec-head"><div class="sec-title">Дневник осознанности</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="showOverlay('mood')"><div class="row-left"><span style="font-size:18px">&#128212;</span><div class="row-text"><div class="row-name">Добавить запись</div><div class="row-meta">Что ел и как себя чувствовал</div></div></div><div class="row-icon">&#8250;</div></div>
-      <div class="row" onclick="loadMoodHistory()"><div class="row-left"><span style="font-size:18px">&#128200;</span><div class="row-text"><div class="row-name">История и паттерны</div><div class="row-meta">Записи за последние 7 дней</div></div></div><div class="row-icon">&#8250;</div></div>
+
+    <div class="profile-section-title">Дневник осознанности</div>
+    <div class="profile-menu-group">
+      <div class="profile-menu-item" onclick="showOverlay('mood')">
+        <span class="profile-menu-icon tone-gold"><svg><use href="#ic-note"/></svg></span>
+        <div><div class="profile-menu-title">Добавить запись</div><div class="profile-menu-subtitle">Что ел и как себя чувствовал</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="loadMoodHistory()">
+        <span class="profile-menu-icon tone-gold"><svg><use href="#ic-chart"/></svg></span>
+        <div><div class="profile-menu-title">История и паттерны</div><div class="profile-menu-subtitle">Записи за последние 7 дней</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
     </div>
-    <div class="sec-head"><div class="sec-title">Питание от ИИ</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="aiMenu()"><div class="row-left"><span style="font-size:18px">🍽</span><div class="row-text"><div class="row-name">Меню на сегодня</div><div class="row-meta">ИИ составит план под твою норму</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="aiWeekPlan()"><div class="row-left"><span style="font-size:18px">📅</span><div class="row-text"><div class="row-name">План питания на неделю</div><div class="row-meta">Персональный рацион на 7 дней</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="aiRecipeByCalories()"><div class="row-left"><span style="font-size:18px">🎯</span><div class="row-text"><div class="row-name">Рецепт по остатку калорий</div><div class="row-meta">Что приготовить чтобы попасть в норму</div></div></div><div class="row-icon">›</div></div>
+
+    <div class="profile-section-title">Питание от ИИ</div>
+    <div class="profile-menu-group tone-fresh">
+      <div class="profile-menu-item" onclick="aiMenu()">
+        <span class="profile-menu-icon tone-green"><svg><use href="#ic-dish"/></svg></span>
+        <div><div class="profile-menu-title">Меню на сегодня <span class="profile-ai-badge">AI</span></div><div class="profile-menu-subtitle">ИИ составит план под твою норму</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="aiWeekPlan()">
+        <span class="profile-menu-icon tone-green"><svg><use href="#ic-calendar"/></svg></span>
+        <div><div class="profile-menu-title">План питания на неделю</div><div class="profile-menu-subtitle">Персональный рацион на 7 дней</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="aiRecipeByCalories()">
+        <span class="profile-menu-icon tone-green"><svg><use href="#ic-target"/></svg></span>
+        <div><div class="profile-menu-title">Рецепт по остатку калорий</div><div class="profile-menu-subtitle">Что приготовить чтобы попасть в норму</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
     </div>
-    <div class="sec-head"><div class="sec-title">Настройки</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="showOverlay('weight')"><div class="row-left"><span style="font-size:18px">⚖️</span><div class="row-text"><div class="row-name">Обновить вес</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="showProfileEdit()"><div class="row-left"><span style="font-size:18px">⚙️</span><div class="row-text"><div class="row-name">Изменить цель / профиль</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="showOverlay('conditions')"><div class="row-left"><span style="font-size:18px">🏥</span><div class="row-text"><div class="row-name">Особые состояния здоровья</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('toggle_reminders')"><div class="row-left"><span style="font-size:18px">⏰</span><div class="row-text"><div class="row-name">Напоминания</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="botAction('export')"><div class="row-left"><span style="font-size:18px">📥</span><div class="row-text"><div class="row-name">Скачать дневник CSV</div></div></div><div class="row-icon">›</div></div>
+
+    <div class="profile-section-title">Настройки</div>
+    <div class="profile-menu-group tone-muted">
+      <div class="profile-menu-item" onclick="showOverlay('weight')">
+        <span class="profile-menu-icon tone-muted"><svg><use href="#ic-scale"/></svg></span>
+        <div><div class="profile-menu-title">Обновить вес</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="showProfileEdit()">
+        <span class="profile-menu-icon tone-muted"><svg><use href="#ic-gear"/></svg></span>
+        <div><div class="profile-menu-title">Изменить цель / профиль</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="showOverlay('conditions')">
+        <span class="profile-menu-icon tone-muted"><svg><use href="#ic-health"/></svg></span>
+        <div><div class="profile-menu-title">Особые состояния здоровья</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="botAction('toggle_reminders')">
+        <span class="profile-menu-icon tone-muted"><svg><use href="#ic-bell"/></svg></span>
+        <div><div class="profile-menu-title">Напоминания</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="botAction('export')">
+        <span class="profile-menu-icon tone-muted"><svg><use href="#ic-download"/></svg></span>
+        <div><div class="profile-menu-title">Скачать дневник CSV</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
     </div>
-    <div class="sec-head"><div class="sec-title">Сообщество</div></div>
-    <div class="card" style="margin-bottom:10px">
-      <div class="row" onclick="showOverlay('specialists')"><div class="row-left"><span style="font-size:18px">👨‍⚕️</span><div class="row-text"><div class="row-name">Специалисты</div><div class="row-meta">Диетологи, тренеры, врачи</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="showOverlay('referral')"><div class="row-left"><span style="font-size:18px">🎁</span><div class="row-text"><div class="row-name">Пригласить друга</div><div class="row-meta">Получи бонусы за рефералов</div></div></div><div class="row-icon">›</div></div>
-      <div class="row" onclick="showOverlay('ecosystem')"><div class="row-left"><span style="font-size:18px">🌟</span><div class="row-text"><div class="row-name">Экосистема DimkoFF</div></div></div><div class="row-icon">›</div></div>
+    <div class="profile-section-title">Сообщество</div>
+    <div class="profile-menu-group tone-muted">
+      <div class="profile-menu-item" onclick="showOverlay('specialists')">
+        <span class="profile-menu-icon tone-gold"><svg><use href="#ic-user"/></svg></span>
+        <div><div class="profile-menu-title">Специалисты</div><div class="profile-menu-subtitle">Диетологи, тренеры, врачи</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="showOverlay('referral')">
+        <span class="profile-menu-icon tone-gold"><svg><use href="#ic-gift"/></svg></span>
+        <div><div class="profile-menu-title">Пригласить друга</div><div class="profile-menu-subtitle">Получи бонусы за рефералов</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
+      <div class="profile-menu-item" onclick="showOverlay('ecosystem')">
+        <span class="profile-menu-icon tone-gold"><svg><use href="#ic-star"/></svg></span>
+        <div><div class="profile-menu-title">Экосистема DimkoFF</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
     </div>
   </div>
 </div>
@@ -1969,6 +2131,10 @@ function renderProfile() {
   document.getElementById('p-k').textContent = USER.daily_calories||2000;
   document.getElementById('p-s').textContent = USER.streak||0;
   document.getElementById('streak-val').textContent = USER.streak||0;
+  const insightEl = document.getElementById('profile-insight-text');
+  if (insightEl) {
+    insightEl.textContent = 'AI ведёт цель: ' + (GOAL_LABELS[USER.goal]||USER.goal||'—') + ' · норма ' + (USER.daily_calories||2000) + ' ккал';
+  }
 }
 
 async function saveFood() {
@@ -2597,6 +2763,7 @@ showPage = function (name) {
   document.body.classList.toggle('on-week', name === 'week');
   document.body.classList.toggle('on-mind', name === 'mind');
   document.body.classList.toggle('on-recipes', name === 'recipes');
+  document.body.classList.toggle('on-profile', name === 'profile');
 };
 
 async function sendAnna() {
