@@ -1795,9 +1795,10 @@ async function analyzePhoto() {
     const fd = new FormData();
     fd.append('photo', photoFile);
     fd.append('mode', photoMode);
+    fd.append('user_id', UID);
     const res = await fetch(API + '/api/food/analyze-photo', { method: 'POST', body: fd });
     const data = await res.json();
-    if (!res.ok && data.error === 'vision_unavailable') {
+    if (!res.ok && (data.error === 'vision_unavailable' || data.error === 'vision_daily_limit')) {
       renderVisionUnavailable('food', data);
       return;
     }
@@ -1819,27 +1820,37 @@ async function analyzePhoto() {
 
 function renderVisionUnavailable(mode, data) {
   const isFridge = mode === 'fridge';
+  const isDailyLimit = data && data.error === 'vision_daily_limit';
+  const isGlobalLimit = isDailyLimit && data.limitType === 'global';
   const retrySec = Math.max(0, Number(data && data.retryAfterSec) || 0);
-  const retryText = retrySec
+  const retryText = retrySec && !isDailyLimit
     ? '<div class="vision-unavailable-retry">Обычно доступ восстановится через ' + Math.max(1, Math.ceil(retrySec / 60)) + ' мин.</div>'
     : '';
+  const title = isGlobalLimit
+    ? 'Сегодня фото-анализ перегружен'
+    : isDailyLimit
+      ? 'На сегодня лимит фото-анализа закончился'
+      : isFridge
+        ? 'Фото холодильника временно недоступно'
+        : 'Фото сейчас перегружено';
   const description = isFridge
-    ? 'Попробуй ещё раз через пару минут или добавь продукты вручную.'
-    : 'Попробуй ещё раз через пару минут. Можно пока ввести блюдо текстом.';
+    ? 'Можешь добавить продукты вручную — я всё равно подберу рецепты.'
+    : 'Напиши блюдо текстом: например, «овсянка 250 г на молоке». Я найду продукт в базе и посчитаю КБЖУ.';
   const manualLabel = isFridge ? 'Добавить продукты вручную' : 'Ввести текстом';
   const manualAction = isFridge
     ? "hideOverlay('photo');showOverlay('fridge')"
     : "hideOverlay('photo');showOverlay('add')";
+  const laterLabel = isDailyLimit && !isGlobalLimit ? 'Попробовать завтра' : 'Повторить позже';
 
   document.getElementById('photo-state').innerHTML =
     '<div class="vision-unavailable">' +
       '<div class="vision-unavailable-icon">◌</div>' +
-      '<div class="vision-unavailable-title">Фото-анализ временно перегружен</div>' +
+      '<div class="vision-unavailable-title">' + title + '</div>' +
       '<div class="vision-unavailable-text">' + description + '</div>' +
       retryText +
     '</div>' +
-    '<button class="btn" onclick="analyzePhoto()">Попробовать ещё раз</button>' +
-    '<button class="btn btn-sec" onclick="' + manualAction + '">' + manualLabel + '</button>';
+    '<button class="btn" onclick="' + manualAction + '">' + manualLabel + '</button>' +
+    '<button class="btn btn-sec" onclick="hideOverlay(\'photo\')">' + laterLabel + '</button>';
 }
 
 function logPhotoCorrection(originalGuess, correctedDish, source) {
@@ -2027,9 +2038,10 @@ async function analyzeFridgePhoto() {
   try {
     const fd = new FormData();
     fd.append('photo', photoFile);
+    fd.append('user_id', UID);
     const res = await fetch(API + '/api/fridge/analyze-photo', { method: 'POST', body: fd });
     const data = await res.json();
-    if (!res.ok && data.error === 'vision_unavailable') {
+    if (!res.ok && (data.error === 'vision_unavailable' || data.error === 'vision_daily_limit')) {
       renderVisionUnavailable('fridge', data);
       return;
     }
