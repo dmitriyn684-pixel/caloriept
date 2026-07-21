@@ -220,9 +220,25 @@ body{background:
 .stat-val{font-size:19px;font-weight:500}
 .stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
 /* RECIPE SPECIFIC */
-.cat-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
-.cat-tab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.cat-tab.active{border-color:var(--gold-b);background:var(--gold2);color:var(--gold)}
+#recipes-hero img{object-position:center 12%}
+
+.cat-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding:2px 2px 4px}
+.cat-tab{position:relative;display:inline-flex;align-items:center;gap:7px;padding:9px 15px 9px 13px;border-radius:999px;
+  border:1px solid rgba(216,179,94,.16);background:rgba(255,255,255,.04);color:var(--text2);font-size:12.5px;font-weight:600;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease,color .16s ease}
+.cat-tab::before{content:'';width:6px;height:6px;border-radius:999px;flex-shrink:0;
+  background:rgba(216,179,94,.55);box-shadow:0 0 6px rgba(216,179,94,.3);transition:background .16s ease,box-shadow .16s ease}
+.cat-tab:active{transform:scale(.96)}
+.cat-tab.active{color:#161914;font-weight:800;background:linear-gradient(135deg,#C8FF9A,#8FD66B);
+  border-color:rgba(240,207,122,.55);box-shadow:0 0 0 1px rgba(240,207,122,.32), 0 0 18px rgba(143,214,107,.22);
+  animation:catTabGlow 4.5s ease-in-out infinite}
+.cat-tab.active::before{background:#161914;box-shadow:none}
+@keyframes catTabGlow{
+  0%,100%{box-shadow:0 0 0 1px rgba(240,207,122,.32), 0 0 18px rgba(143,214,107,.22)}
+  50%{box-shadow:0 0 0 1px rgba(240,207,122,.44), 0 0 24px rgba(143,214,107,.3)}
+}
+@media (prefers-reduced-motion: reduce){.cat-tab.active{animation:none}}
 /* MIND PAGE — premium AI wellness journal */
 .mind-hero-header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:18px 4px 14px}
 .mind-hero-header h2{margin:4px 0 0;font-size:26px;line-height:1.05;letter-spacing:-0.03em;color:var(--text);font-family:Georgia,serif}
@@ -485,14 +501,27 @@ body{background:
   animation:mindButtonSheen 5.5s ease-in-out infinite}
 @media (prefers-reduced-motion: reduce){.anna-send-btn::before{animation:none}}
 
-.rec-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px 13px;margin-bottom:7px;cursor:pointer;transition:background 0.15s;display:flex;justify-content:space-between;align-items:center}
-.rec-card:active{background:var(--bg3)}
-.rec-name{font-size:13px;font-weight:500}
-.rec-meta{font-size:10px;color:var(--text2);margin-top:3px}
-.rec-kcal{font-size:16px;font-weight:500;color:var(--gold);text-align:right}
-.rec-unit{font-size:9px;color:var(--text3)}
-.rec-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.tag{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border)}
+.rec-card{position:relative;overflow:hidden;
+  background:linear-gradient(180deg, rgba(28,30,26,.94), rgba(18,19,17,.94));
+  border-radius:20px;border:1px solid rgba(216,179,94,.18);padding:14px 15px;margin-bottom:10px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  box-shadow:0 10px 26px rgba(0,0,0,.22);
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease;
+  animation:recipeCardIn .35s ease-out both}
+.rec-card:active{transform:scale(.985);border-color:rgba(216,179,94,.3)}
+@keyframes recipeCardIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){.rec-card{animation:none}}
+.rec-name{color:var(--text);font-size:15px;font-weight:800;line-height:1.28;letter-spacing:-0.01em}
+.rec-meta{font-size:11px;color:var(--text3);margin-top:5px;letter-spacing:.02em}
+.rec-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.tag{font-size:10.5px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.045);color:var(--text2);border:1px solid rgba(255,255,255,.08)}
+.rec-kcal-block{position:relative;flex-shrink:0;text-align:center;padding:10px 13px;border-radius:16px;
+  background:radial-gradient(circle at 50% 0%, rgba(216,179,94,.16), transparent 70%), rgba(216,179,94,.06);
+  border:1px solid rgba(216,179,94,.22);animation:recKcalGlow 6s ease-in-out infinite}
+@keyframes recKcalGlow{0%,100%{box-shadow:0 0 0 rgba(216,179,94,0)}50%{box-shadow:0 0 16px rgba(216,179,94,.14)}}
+@media (prefers-reduced-motion: reduce){.rec-kcal-block{animation:none}}
+.rec-kcal{font-size:18px;font-weight:800;color:var(--gold-soft);text-shadow:0 0 12px rgba(216,179,94,.22);line-height:1}
+.rec-unit{font-size:9px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
 /* RECIPE DETAIL */
 .rec-detail-kcal{background:var(--gold2);border:0.5px solid var(--gold-b);border-radius:var(--r);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
 .rdk-val{font-size:16px;font-weight:600;color:var(--gold)}
@@ -583,6 +612,7 @@ body{background:
 body.on-anna #landing-banner { display: none !important; }
 body.on-week #landing-banner { display: none !important; }
 body.on-mind #landing-banner { display: none !important; }
+body.on-recipes #landing-banner { display: none !important; }
 
 /* ===== ONBOARDING ===== */
 body.onb-lock{overflow:hidden}
@@ -903,23 +933,23 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 
 <!-- RECIPES -->
 <div class="page" id="page-recipes">
-  <div style="position:relative;border-radius:16px;overflow:hidden;margin-bottom:12px">
-    <img src="https://dmitriyn684-pixel.github.io/caloriept/hero_girl.webp" style="width:100%;object-fit:contain;display:block;background:#1a1a1a" alt="recipes">
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(20,20,20,0.8))"></div>
-    <div style="position:absolute;bottom:14px;left:16px;right:16px">
-      <div style="font-size:18px;font-weight:600;color:#fff;font-family:Georgia,serif;line-height:1.3">Вкусно, просто<br><em style="color:var(--gold)">и полезно</em></div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;text-transform:uppercase;letter-spacing:0.05em">95 рецептов на каждый день</div>
+  <div class="hero-banner" id="recipes-hero">
+    <img src="https://dmitriyn684-pixel.github.io/caloriept/hero_girl.webp" alt="Рецепты" loading="lazy">
+    <div class="hero-banner-overlay"></div>
+    <div class="hero-banner-text">
+      <div class="hero-banner-title">Вкусно, просто<br><em>и полезно</em></div>
+      <div class="hero-banner-sub">95 рецептов на каждый день</div>
     </div>
   </div>
   <div class="sec" style="margin-top:0">
     <div class="sec-head"><div class="sec-title">Рецепты</div></div>
     <div class="cat-tabs">
-      <div class="cat-tab active" onclick="filterRecipes('завтрак',this)">🌅 Завтрак</div>
-      <div class="cat-tab" onclick="filterRecipes('салат',this)">🥗 Салаты</div>
-      <div class="cat-tab" onclick="filterRecipes('суп',this)">🍲 Супы</div>
-      <div class="cat-tab" onclick="filterRecipes('ужин',this)">🍽 Ужин</div>
-      <div class="cat-tab" onclick="filterRecipes('веганское',this)">🌱 Веганские</div>
-      <div class="cat-tab" onclick="filterRecipes('специальное',this)">💚 Спец. питание</div>
+      <div class="cat-tab active" onclick="filterRecipes('завтрак',this)">Завтрак</div>
+      <div class="cat-tab" onclick="filterRecipes('салат',this)">Салаты</div>
+      <div class="cat-tab" onclick="filterRecipes('суп',this)">Супы</div>
+      <div class="cat-tab" onclick="filterRecipes('ужин',this)">Ужин</div>
+      <div class="cat-tab" onclick="filterRecipes('веганское',this)">Веганские</div>
+      <div class="cat-tab" onclick="filterRecipes('специальное',this)">Спец. питание</div>
     </div>
     <div id="recipes-list"></div>
   </div>
@@ -1877,9 +1907,9 @@ function renderRecipes() {
   let html = '';
   filtered.forEach(r => {
     const tags = (r.tags||[]).slice(0,3).map(t=>'<span class="tag">'+t+'</span>').join('');
-    html += '<div class="rec-card" onclick="showRecipe('+r.id+')"><div style="flex:1;min-width:0"><div class="rec-name">'+r.name+'</div><div class="rec-meta">'+r.time_minutes+' мин · '+r.difficulty+'</div><div class="rec-tags">'+tags+'</div></div><div style="text-align:right;flex-shrink:0;margin-left:10px"><div class="rec-kcal">'+r.calories+'</div><div class="rec-unit">ккал</div></div></div>';
+    html += '<div class="rec-card" onclick="showRecipe('+r.id+')"><div style="flex:1;min-width:0"><div class="rec-name">'+r.name+'</div><div class="rec-meta">'+r.time_minutes+' мин · '+r.difficulty+'</div><div class="rec-tags">'+tags+'</div></div><div class="rec-kcal-block"><div class="rec-kcal">'+r.calories+'</div><div class="rec-unit">ккал</div></div></div>';
   });
-  document.getElementById('recipes-list').innerHTML = html || '<div class="empty"><div class="empty-icon">🍽</div><div class="empty-text">Рецепты не найдены</div></div>';
+  document.getElementById('recipes-list').innerHTML = html || '<div class="empty"><div class="empty-icon"><svg><use href="#ic-dish"/></svg></div><div class="empty-text">Рецепты не найдены</div></div>';
 }
 
 function showRecipe(id) {
@@ -2566,6 +2596,7 @@ showPage = function (name) {
   document.body.classList.toggle('on-anna', name === 'anna');
   document.body.classList.toggle('on-week', name === 'week');
   document.body.classList.toggle('on-mind', name === 'mind');
+  document.body.classList.toggle('on-recipes', name === 'recipes');
 };
 
 async function sendAnna() {
