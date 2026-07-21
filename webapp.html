@@ -229,10 +229,21 @@ body{background:
 .mind-hero-header p{margin:8px 0 0;max-width:230px;font-size:12.5px;line-height:1.4;color:var(--text2)}
 .mind-pill{flex:0 0 auto;height:30px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;
   color:#C8FF9A;background:rgba(143,214,107,.12);border:1px solid rgba(143,214,107,.22);font-size:12px;font-weight:700;
-  box-shadow:0 0 16px rgba(143,214,107,.1)}
+  box-shadow:0 0 16px rgba(143,214,107,.1);animation:mindPillGlow 5s ease-in-out infinite}
+@keyframes mindPillGlow{
+  0%,100%{box-shadow:0 0 16px rgba(143,214,107,.1);border-color:rgba(143,214,107,.22)}
+  50%{box-shadow:0 0 22px rgba(143,214,107,.22);border-color:rgba(200,255,154,.34)}
+}
+@media (prefers-reduced-motion: reduce){.mind-pill{animation:none}}
 
 .mind-icon-badge{width:36px;height:36px;border-radius:14px;display:grid;place-items:center;flex-shrink:0;
-  color:#C8FF9A;background:rgba(143,214,107,.10);border:1px solid rgba(143,214,107,.22);box-shadow:0 0 18px rgba(143,214,107,.10)}
+  color:#C8FF9A;background:rgba(143,214,107,.10);border:1px solid rgba(143,214,107,.22);box-shadow:0 0 18px rgba(143,214,107,.10);
+  animation:mindBadgeGlow 5s ease-in-out infinite}
+@keyframes mindBadgeGlow{
+  0%,100%{box-shadow:0 0 18px rgba(143,214,107,.10)}
+  50%{box-shadow:0 0 24px rgba(143,214,107,.22)}
+}
+@media (prefers-reduced-motion: reduce){.mind-icon-badge{animation:none}}
 .mind-icon-badge svg{width:19px;height:19px;display:block}
 
 .mind-insight-card{position:relative;overflow:hidden;border-radius:var(--r-xl);padding:20px;margin-bottom:16px;
@@ -240,7 +251,9 @@ body{background:
              radial-gradient(circle at 88% 12%, rgba(216,179,94,.08), transparent 34%),
              linear-gradient(180deg, rgba(28,30,26,.94), rgba(16,17,15,.94));
   border:1px solid rgba(216,179,94,.22);
-  box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06)}
+  box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:transform .22s ease, box-shadow .22s ease}
+.mind-insight-card:hover{transform:translateY(-2px);box-shadow:0 22px 50px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.07)}
 .mind-insight-card::before{content:'';position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(100deg, transparent 0%, rgba(255,255,255,.04) 48%, transparent 72%);
   transform:translateX(-120%);animation:mindCardSheen 8s ease-in-out infinite}
@@ -255,11 +268,14 @@ body{background:
 .mind-pattern-icon{width:10px;height:10px;flex-shrink:0;margin-top:6px;border-radius:999px;background:#F0CF7A;box-shadow:0 0 14px rgba(240,207,122,.24)}
 .mind-pattern-row.calm .mind-pattern-icon{background:#8FD66B;box-shadow:0 0 14px rgba(143,214,107,.24)}
 .mind-pattern-row p{margin:0;color:var(--text2);font-size:13px;line-height:1.4}
-.mind-pattern-row strong{color:var(--text)}
+.mind-pattern-row strong{color:var(--gold-soft)}
+.mind-pattern-row.calm strong{color:#8FD66B}
 
 .mind-journal-card{margin-top:18px;margin-bottom:16px;border-radius:var(--r-xl);padding:20px;
   background:linear-gradient(180deg, rgba(28,30,26,.94), rgba(16,17,15,.94));
-  border:1px solid rgba(216,179,94,.20);box-shadow:0 18px 46px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.06)}
+  border:1px solid rgba(216,179,94,.20);box-shadow:0 18px 46px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:transform .22s ease, box-shadow .22s ease}
+.mind-journal-card:hover{transform:translateY(-2px);box-shadow:0 22px 50px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.07)}
 .mind-journal-card.mind-saved-pulse{animation:mindSavedPulse .9s ease-out}
 @keyframes mindSavedPulse{
   0%{box-shadow:0 0 0 rgba(143,214,107,0), 0 18px 46px rgba(0,0,0,.30)}
@@ -269,40 +285,69 @@ body{background:
 @media (prefers-reduced-motion: reduce){.mind-journal-card.mind-saved-pulse{animation:none}}
 .mind-form-title{display:flex;align-items:center;gap:10px;margin:0 0 16px;color:var(--text);font-size:18px;font-weight:800}
 .mind-question{margin-top:16px;color:var(--text2);font-size:12.5px;line-height:1.4}
+.mind-q-num{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;margin-right:7px;
+  border-radius:6px;background:rgba(216,179,94,.14);color:var(--gold-soft);font-size:10.5px;font-weight:800}
+.mind-q-muted{color:var(--text3)}
 .mind-textarea{width:100%;min-height:78px;margin-top:8px;padding:13px 14px;border-radius:18px;
   background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);color:var(--text);
-  font-size:14px;line-height:1.45;outline:none;resize:vertical;font-family:inherit;box-sizing:border-box}
-.mind-textarea:focus{border-color:rgba(143,214,107,.34);box-shadow:0 0 0 3px rgba(143,214,107,.10)}
+  font-size:14px;line-height:1.45;outline:none;resize:vertical;font-family:inherit;box-sizing:border-box;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease}
+.mind-textarea:focus{border-color:rgba(143,214,107,.4);background:rgba(255,255,255,.05);
+  box-shadow:0 0 0 3px rgba(143,214,107,.12), 0 0 20px rgba(143,214,107,.08)}
 .mind-textarea::placeholder{color:var(--text3)}
 
-.mind-chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.mind-emo-btn{min-height:34px;padding:0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.035);color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit;
-  transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease}
-.mind-emo-btn:active{transform:scale(.97)}
-.mind-emo-btn.active{color:#0E100E;background:linear-gradient(135deg, #C8FF9A, #8FD66B);
-  border-color:rgba(200,255,154,.42);box-shadow:0 0 18px rgba(143,214,107,.16);font-weight:800}
+.mind-chip-grid{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+.mind-emo-btn{position:relative;min-height:36px;padding:0 15px 0 27px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:var(--text2);
+  font-size:13px;cursor:pointer;font-family:inherit;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease,box-shadow .16s ease}
+.mind-emo-btn::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.2);transition:background .16s ease,box-shadow .16s ease}
+.mind-emo-btn:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.06)}
+.mind-emo-btn:active{transform:scale(.96)}
+#mind-emotion-btns .mind-emo-btn{border-color:rgba(143,214,107,.16)}
+#mind-emotion-btns .mind-emo-btn::before{background:rgba(143,214,107,.5);box-shadow:0 0 6px rgba(143,214,107,.3)}
+#mind-reason-btns .mind-emo-btn{border-color:rgba(216,179,94,.16)}
+#mind-reason-btns .mind-emo-btn::before{background:rgba(216,179,94,.55);box-shadow:0 0 6px rgba(216,179,94,.3)}
+.mind-emo-btn.active{color:#0E100E;font-weight:800;background:linear-gradient(135deg, #C8FF9A, #8FD66B);
+  border-color:rgba(240,207,122,.6);box-shadow:0 0 0 1px rgba(240,207,122,.35), 0 0 18px rgba(143,214,107,.26);
+  animation:mindChipPop .32s ease}
+.mind-emo-btn.active::before{background:#161914;box-shadow:0 0 5px rgba(255,255,255,.5)}
+@keyframes mindChipPop{0%{transform:scale(.88)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.mind-emo-btn.active{animation:none}}
 
 .mind-save-btn{position:relative;overflow:hidden;width:100%;min-height:54px;margin-top:20px;border:0;
   border-radius:20px;color:#161914;background:linear-gradient(135deg, #F0CF7A, #D8B35E 52%, #8FD66B);
   font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;
-  box-shadow:0 16px 34px rgba(216,179,94,.18), inset 0 1px 0 rgba(255,255,255,.32)}
+  transition:transform .16s ease, box-shadow .3s ease;
+  box-shadow:0 16px 34px rgba(216,179,94,.18), inset 0 1px 0 rgba(255,255,255,.32);
+  animation:mindSaveBreathe 4s ease-in-out infinite}
+.mind-save-btn:active{transform:scale(.98)}
+@keyframes mindSaveBreathe{
+  0%,100%{box-shadow:0 16px 34px rgba(216,179,94,.18), inset 0 1px 0 rgba(255,255,255,.32)}
+  50%{box-shadow:0 16px 34px rgba(216,179,94,.28), inset 0 1px 0 rgba(255,255,255,.32), 0 0 22px rgba(143,214,107,.16)}
+}
 .mind-save-btn::before{content:'';position:absolute;inset:0;transform:translateX(-120%);
   background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.30) 48%, transparent 72%);
   animation:mindButtonSheen 4.5s ease-in-out infinite}
 @keyframes mindButtonSheen{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-@media (prefers-reduced-motion: reduce){.mind-save-btn::before{animation:none}}
+@media (prefers-reduced-motion: reduce){.mind-save-btn::before{animation:none}.mind-save-btn{animation:none}}
 
 .mind-history-title{margin:4px 4px 12px;font-size:16px;color:var(--text);font-weight:800}
-.mind-history-card{position:relative;padding:16px 16px 14px 20px;border-radius:20px;margin-bottom:10px;
-  background:linear-gradient(180deg, rgba(28,30,26,.94), rgba(18,19,17,.94));
-  border:1px solid rgba(255,255,255,.07);box-shadow:0 12px 32px rgba(0,0,0,.24)}
+.mind-history-card{position:relative;overflow:hidden;padding:16px 16px 14px 20px;border-radius:20px;margin-bottom:10px;
+  background:radial-gradient(circle at 92% 0%, rgba(216,179,94,.07), transparent 38%),
+             linear-gradient(180deg, rgba(28,30,26,.94), rgba(18,19,17,.94));
+  border:1px solid rgba(255,255,255,.07);box-shadow:0 12px 32px rgba(0,0,0,.24);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+.mind-history-card:hover{transform:translateY(-2px);border-color:rgba(216,179,94,.2);box-shadow:0 16px 38px rgba(0,0,0,.3)}
 .mind-history-card::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:999px;
-  background:linear-gradient(180deg, #8FD66B, #F0CF7A)}
-.mind-history-date{font-size:11px;color:var(--text3)}
-.mind-history-food{margin-top:4px;color:var(--text);font-size:14.5px;font-weight:700}
+  background:linear-gradient(180deg, #8FD66B, #F0CF7A);box-shadow:0 0 10px rgba(143,214,107,.4)}
+.mind-history-date{font-size:11px;color:var(--text3);letter-spacing:.04em}
+.mind-history-food{margin-top:4px;color:var(--text);font-size:15px;font-weight:800;letter-spacing:-0.01em}
 .mind-history-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
-.mind-history-tag{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.05);color:var(--text2);font-size:11.5px}
+.mind-history-tag{padding:4px 10px;border-radius:999px;font-size:11.5px}
+.mind-history-tag:first-of-type{background:rgba(143,214,107,.12);color:#C8FF9A;border:1px solid rgba(143,214,107,.2)}
+.mind-history-tag:last-of-type:not(:first-of-type){background:rgba(216,179,94,.12);color:var(--gold-soft);border:1px solid rgba(216,179,94,.22)}
 .mind-history-insight{margin-top:8px;font-size:12.5px;color:var(--gold-soft);line-height:1.4;font-style:italic}
 .mind-history-empty{color:var(--text2);font-size:13px;text-align:center;padding:20px}
 
@@ -312,18 +357,33 @@ body{background:
              linear-gradient(180deg, #171A2D, #10121F);
   border:1px solid rgba(216,179,94,.18);
   box-shadow:0 18px 46px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.07)}
-.mira-orb{width:46px;height:46px;margin:0 auto 14px;border-radius:999px;
+.mira-orb-wrap{position:relative;width:46px;height:46px;margin:0 auto 14px}
+.mira-orb-wrap::before{content:'';position:absolute;inset:-10px;border-radius:999px;
+  background:radial-gradient(circle, rgba(143,214,107,.22), rgba(216,179,94,.1) 55%, transparent 75%);
+  filter:blur(2px);animation:miraHaloPulse 5s ease-in-out infinite}
+@keyframes miraHaloPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+@media (prefers-reduced-motion: reduce){.mira-orb-wrap::before{animation:none}}
+.mira-orb{position:relative;width:46px;height:46px;margin:0;border-radius:999px;
   background:radial-gradient(circle at 34% 28%, rgba(255,255,255,.42), transparent 28%),
              conic-gradient(from 180deg, #8FD66B, #F0CF7A, #8D7CFF, #8FD66B);
   box-shadow:0 0 28px rgba(143,214,107,.18), inset 0 -8px 18px rgba(0,0,0,.34);
   animation:miraOrbRotate 9s linear infinite}
 @keyframes miraOrbRotate{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion: reduce){.mira-orb{animation:none}}
-.mira-card h3{margin:0;color:var(--text);font-size:19px;font-weight:900}
+.mira-card h3{position:relative;margin:0 0 12px;color:var(--text);font-size:19px;font-weight:900;display:inline-block}
+.mira-card h3::after{content:'';position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);width:34px;height:2px;
+  border-radius:999px;background:linear-gradient(90deg, #8FD66B, #F0CF7A);box-shadow:0 0 10px rgba(143,214,107,.3)}
 .mira-card p{margin:10px auto 0;max-width:300px;color:rgba(247,241,228,.72);font-size:13px;line-height:1.45}
 .mira-btn{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-top:16px;width:100%;min-height:52px;border:0;box-sizing:border-box;
   border-radius:20px;color:#111;background:linear-gradient(135deg, #F0CF7A, #D8B35E);
-  font-size:15px;font-weight:900;text-decoration:none}
+  font-size:15px;font-weight:900;text-decoration:none;cursor:pointer;
+  transition:transform .16s ease;
+  box-shadow:0 14px 30px rgba(216,179,94,.2), 0 0 0 1px rgba(143,214,107,.12)}
+.mira-btn:active{transform:scale(.98)}
+.mira-btn::before{content:'';position:absolute;inset:0;transform:translateX(-120%);
+  background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.34) 48%, transparent 72%);
+  animation:mindButtonSheen 5s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.mira-btn::before{animation:none}}
 .rec-card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);padding:12px 13px;margin-bottom:7px;cursor:pointer;transition:background 0.15s;display:flex;justify-content:space-between;align-items:center}
 .rec-card:active{background:var(--bg3)}
 .rec-name{font-size:13px;font-weight:500}
@@ -2243,10 +2303,10 @@ init();
     <div id="mind-form" class="mind-journal-card">
       <div class="mind-form-title"><span class="mind-icon-badge"><svg><use href="#ic-note"/></svg></span>Запись дня</div>
 
-      <div class="mind-question">1. Что ты ел(а) сегодня? (кратко)</div>
+      <div class="mind-question"><span class="mind-q-num">1</span>Что ты ел(а) сегодня? <span class="mind-q-muted">(кратко)</span></div>
       <textarea id="mind-food" class="mind-textarea" placeholder="Например: каша утром, суп и курица днём, творог вечером..."></textarea>
 
-      <div class="mind-question">2. Какое состояние было ДО еды?</div>
+      <div class="mind-question"><span class="mind-q-num">2</span>Какое состояние было ДО еды?</div>
       <div class="mind-chip-grid" id="mind-emotion-btns">
         <button onclick="selectEmotion(this,'тревога')" class="mind-emo-btn">Тревога</button>
         <button onclick="selectEmotion(this,'спокойствие')" class="mind-emo-btn">Спокойствие</button>
@@ -2256,7 +2316,7 @@ init();
         <button onclick="selectEmotion(this,'усталость')" class="mind-emo-btn">Усталость</button>
       </div>
 
-      <div class="mind-question">3. Что повлияло на выбор еды?</div>
+      <div class="mind-question"><span class="mind-q-num">3</span>Что повлияло на выбор еды?</div>
       <div class="mind-chip-grid" id="mind-reason-btns">
         <button onclick="selectReason(this,'голод')" class="mind-emo-btn">Голод</button>
         <button onclick="selectReason(this,'стресс')" class="mind-emo-btn">Стресс</button>
@@ -2274,7 +2334,7 @@ init();
 
     <!-- CTA на психолога -->
     <div class="mira-card">
-      <div class="mira-orb"></div>
+      <div class="mira-orb-wrap"><div class="mira-orb"></div></div>
       <h3>Хочешь разобраться глубже?</h3>
       <p>Мира — AI-психолог, который поможет понять связь между эмоциями, мышлением и едой. Доступна 24/7.</p>
       <a href="https://t.me/psy_mind_rf_bot" class="mira-btn">Поговорить с Мирой</a>
