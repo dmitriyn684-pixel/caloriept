@@ -1766,9 +1766,32 @@ function renderPhotoResult() {
   const mtBtns = Object.keys(PHOTO_MT_LABELS).map(t =>
     '<div class="mt-btn' + (photoMealType === t ? ' sel' : '') + '" data-type="' + t + '" onclick="selMTPhoto(this)">' + PHOTO_MT_LABELS[t] + '</div>'
   ).join('');
+  const CONF_DOT = { 'высокая': '🟢', 'средняя': '🟡', 'низкая': '🔴' };
+  const confDot = CONF_DOT[(r.confidence || '').toLowerCase()] || '🟡';
+  const compBlock = (r.composition && r.composition.length)
+    ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">' +
+        '<div style="font-size:11px;color:var(--text2);margin-bottom:6px">📋 Состав на 1 порцию:</div>' +
+        r.composition.map(i => '<div style="font-size:12px;color:var(--text);padding:2px 0">• ' + i + '</div>').join('') +
+      '</div>'
+    : '';
+  const eatenBefore = DIARY.reduce((s, x) => s + (x.calories || 0), 0);
+  const norm = USER.daily_calories || 2000;
+  const previewTotal = eatenBefore + (r.calories || 0);
+  const pct = Math.min(100, Math.round(previewTotal / norm * 100));
+  const rem = norm - previewTotal;
+  const remLine = rem < 0
+    ? '<span style="color:var(--red)">⚠️ Превышение: ' + Math.abs(rem) + ' ккал (норма ' + norm + ')</span>'
+    : '<span style="color:var(--text2)">✅ Осталось: ' + rem + ' ккал (из ' + norm + ')</span>';
+  const streakLine = (USER.streak || 0) > 1
+    ? '<div style="font-size:11px;color:var(--gold-soft);margin-top:4px">🔥 Стрик: ' + USER.streak + ' дней!</div>'
+    : '';
   document.getElementById('photo-state').innerHTML =
     '<div class="ring-card">' +
       '<div class="photo-result-name">🍽 ' + r.dishName + '</div>' +
+      '<div style="display:flex;gap:10px;font-size:11px;color:var(--text2);margin:-4px 0 8px">' +
+        '<span>' + (r.categoryEmoji || '🍽') + ' ' + (r.category || '') + '</span>' +
+        '<span>' + confDot + ' ' + (r.confidence || '') + '</span>' +
+      '</div>' +
       '<div class="rec-detail-kcal">' +
         '<div><div class="rdk-val">' + r.calories + '</div><div class="rdk-lbl">ккал</div></div>' +
         '<div><div class="rdk-val">' + r.protein + 'г</div><div class="rdk-lbl">белки</div></div>' +
@@ -1776,6 +1799,16 @@ function renderPhotoResult() {
         '<div><div class="rdk-val">' + r.carbs + 'г</div><div class="rdk-lbl">углев</div></div>' +
       '</div>' +
       (r.portion ? '<div style="font-size:11px;color:var(--text2);margin-top:8px">⚖️ Порция: ~' + String(r.portion).replace(/\s*г\.?\s*$/i, '').trim() + ' г</div>' : '') +
+      compBlock +
+      '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">' +
+        '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px">' +
+          '<span>Съедено сегодня с этим блюдом: <b style="color:var(--text)">' + previewTotal + ' ккал</b></span>' +
+          '<span>' + pct + '%</span>' +
+        '</div>' +
+        '<div class="macro-bar"><div class="macro-fill" style="width:' + pct + '%"></div></div>' +
+        '<div style="font-size:11px;margin-top:4px">' + remLine + '</div>' +
+        streakLine +
+      '</div>' +
       (r.tip ? '<div class="tips-box" style="margin-top:10px">💡 ' + r.tip + '</div>' : '') +
     '</div>' +
     '<div class="form-group"><label class="form-lbl">Тип приёма</label><div class="mt-grid">' + mtBtns + '</div></div>' +
