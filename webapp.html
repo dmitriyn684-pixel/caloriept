@@ -67,16 +67,40 @@ body{background:
 .ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2}
 .ring-pct{font-size:16px;font-weight:800;color:#C8FF9A;text-shadow:0 0 14px rgba(143,214,107,.45)}
 .ring-info{flex:1}
-.ring-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:3px}
+.ring-lbl-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+.ring-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:0}
 .ring-num{font-size:34px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:var(--text)}
 .ring-sub{font-size:11px;color:var(--text2);margin-top:4px}
-.ring-badge{display:inline-block;margin-top:7px;font-size:11px;color:var(--gold-soft);background:var(--gold2);padding:4px 10px;border-radius:999px;border:1px solid var(--gold-b)}
+.ring-badge{display:inline-block;margin-top:7px;font-size:11px;color:var(--gold-soft);background:var(--gold2);padding:4px 10px;border-radius:999px;border:1px solid var(--gold-b);transition:color .2s,background .2s,border-color .2s,box-shadow .2s}
+.nutritionScoreBadge{display:inline-flex;align-items:center;height:20px;padding:0 9px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.03em;white-space:nowrap;
+  color:#C8FF9A;background:rgba(143,214,107,.12);border:1px solid rgba(143,214,107,.22);box-shadow:0 0 18px rgba(143,214,107,.08)}
+.nutritionScoreBadge.neutral{color:var(--text2);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);box-shadow:none}
+.nutritionScoreBadge.protein{color:#AFC6FF;background:rgba(175,198,255,.11);border-color:rgba(175,198,255,.22);box-shadow:0 0 18px rgba(175,198,255,.08)}
+.nutritionScoreBadge.amber{color:#F0CF7A;background:rgba(240,207,122,.11);border-color:rgba(240,207,122,.24);box-shadow:0 0 18px rgba(240,207,122,.08)}
+.remainingBadge.low{color:#C8FF9A;background:rgba(143,214,107,.12);border-color:rgba(143,214,107,.22)}
+.remainingBadge.mid{color:#F0CF7A;background:rgba(240,207,122,.12);border-color:rgba(240,207,122,.24)}
+.remainingBadge.done{color:#E8FFC8;background:rgba(143,214,107,.18);border-color:rgba(200,255,154,.32);box-shadow:0 0 20px rgba(143,214,107,.14)}
+.remainingBadge.over{color:#F0CF7A;background:rgba(201,120,53,.14);border-color:rgba(240,207,122,.28)}
 .macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .macro{position:relative;background:rgba(255,255,255,0.045);border-radius:var(--rs);padding:11px 6px 9px;text-align:center;border:1px solid rgba(255,255,255,0.06);overflow:hidden}
-.macro-val{font-size:17px;font-weight:800}
+.macro-val{font-size:17px;font-weight:800;color:#C8FF9A;text-shadow:0 0 14px rgba(143,214,107,.28)}
 .macro-name{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
 .macro-bar{height:3px;border-radius:999px;background:rgba(255,255,255,0.06);margin-top:6px;overflow:hidden}
-.macro-fill{height:100%;border-radius:999px;transition:width 0.5s}
+.macro-fill{height:100%;border-radius:999px;transition:width 0.45s ease;background:linear-gradient(90deg,#3E8F45,#8FD66B,#C8FF9A);box-shadow:0 0 12px rgba(143,214,107,.22)}
+.meal-added-pulse{animation:mealAddedPulse .9s ease-out}
+.meal-added-pulse::after{content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(100deg, transparent 0%, rgba(143,214,107,.22) 45%, transparent 72%);
+  animation:mealAddedSweep .9s ease-out;pointer-events:none}
+@keyframes mealAddedPulse{
+  0%{box-shadow:0 0 0 0 rgba(143,214,107,0), var(--shadow-soft)}
+  35%{box-shadow:0 0 0 1px rgba(143,214,107,.32), 0 0 38px rgba(143,214,107,.22), var(--shadow-soft)}
+  100%{box-shadow:0 0 0 0 rgba(143,214,107,0), var(--shadow-soft)}
+}
+@keyframes mealAddedSweep{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
+@media (prefers-reduced-motion: reduce){
+  .meal-added-pulse{animation:none}
+  .meal-added-pulse::after{display:none}
+}
 .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
 .qa{position:relative;overflow:hidden;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:linear-gradient(180deg, rgba(32,33,30,0.92), rgba(24,25,23,0.92));
@@ -480,23 +504,23 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
     <div class="hero-banner-sub">Питание · Здоровье · Результат</div>
   </div>
 </div>
-  <div class="ring-card">
+  <div class="ring-card" id="today-card">
     <div class="ring-top">
       <div class="ring-wrap">
         <div class="progressOrb" id="progress-orb" style="--progress:0;--progress-deg:0deg"></div>
         <div class="ring-center"><div class="ring-pct" id="ring-pct">0%</div></div>
       </div>
       <div class="ring-info">
-        <div class="ring-lbl">Съедено сегодня</div>
+        <div class="ring-lbl-row"><div class="ring-lbl">Съедено сегодня</div><div class="nutritionScoreBadge neutral" id="nutrition-score">Хороший старт</div></div>
         <div class="ring-num" id="kcal-eaten">0</div>
         <div class="ring-sub">из <span id="kcal-norm">2000</span> ккал</div>
-        <div class="ring-badge" id="kcal-badge">осталось 2000</div>
+        <div class="ring-badge remainingBadge low" id="kcal-badge">осталось 2000</div>
       </div>
     </div>
     <div class="macros">
-      <div class="macro"><div class="macro-val" style="color:var(--blue)" id="m-p">0г</div><div class="macro-name">Белки</div><div class="macro-bar"><div class="macro-fill" id="bar-p" style="width:0%;background:var(--blue)"></div></div></div>
-      <div class="macro"><div class="macro-val" style="color:var(--orange)" id="m-f">0г</div><div class="macro-name">Жиры</div><div class="macro-bar"><div class="macro-fill" id="bar-f" style="width:0%;background:var(--orange)"></div></div></div>
-      <div class="macro"><div class="macro-val" style="color:var(--gold)" id="m-c">0г</div><div class="macro-name">Углеводы</div><div class="macro-bar"><div class="macro-fill" id="bar-c" style="width:0%;background:var(--gold)"></div></div></div>
+      <div class="macro"><div class="macro-val" id="m-p">0г</div><div class="macro-name">Белки</div><div class="macro-bar"><div class="macro-fill" id="bar-p" style="width:0%"></div></div></div>
+      <div class="macro"><div class="macro-val" id="m-f">0г</div><div class="macro-name">Жиры</div><div class="macro-bar"><div class="macro-fill" id="bar-f" style="width:0%"></div></div></div>
+      <div class="macro"><div class="macro-val" id="m-c">0г</div><div class="macro-name">Углеводы</div><div class="macro-bar"><div class="macro-fill" id="bar-c" style="width:0%"></div></div></div>
     </div>
   </div>
   <div class="quick-grid">
@@ -1210,6 +1234,7 @@ async function addPhotoResultToDiary() {
       toast('✓ ' + photoResult.dishName + ' добавлен в дневник!');
       hideOverlay('photo');
       await loadDiary();
+      pulseTodayCard();
     } else throw new Error();
   } catch (e) { toast('Ошибка сохранения'); }
 }
@@ -1225,26 +1250,75 @@ function updateRing(eaten, norm) {
   document.getElementById('ring-pct').textContent = pct + '%';
   document.getElementById('kcal-eaten').textContent = eaten.toLocaleString('ru');
   document.getElementById('kcal-norm').textContent = norm.toLocaleString('ru');
-  const rem = norm - eaten;
+  updateRemainingBadge(eaten, norm);
+}
+
+// Живая пилюля "Осталось ..." — мягко меняет тон по ходу дня, без агрессивного красного.
+function updateRemainingBadge(eaten, norm) {
   const badge = document.getElementById('kcal-badge');
-  badge.textContent = rem >= 0 ? 'осталось ' + rem : 'превышение ' + Math.abs(rem);
-  badge.style.color = rem >= 0 ? 'var(--gold)' : 'var(--red)';
+  if (!badge) return;
+  const remaining = Math.max(0, norm - eaten);
+  const pct = norm > 0 ? eaten / norm : 0;
+  badge.classList.remove('low', 'mid', 'done', 'over');
+  if (pct >= 1.05) {
+    badge.textContent = 'Норма закрыта';
+    badge.classList.add('over');
+  } else if (pct >= 0.95) {
+    badge.textContent = 'Норма почти закрыта';
+    badge.classList.add('done');
+  } else {
+    badge.textContent = 'осталось ' + remaining;
+    badge.classList.add(pct >= 0.65 ? 'mid' : 'low');
+  }
 }
 
 function updateMacros(p, f, c, norm) {
   document.getElementById('m-p').textContent = Math.round(p) + 'г';
   document.getElementById('m-f').textContent = Math.round(f) + 'г';
   document.getElementById('m-c').textContent = Math.round(c) + 'г';
-  document.getElementById('bar-p').style.width = Math.min(p/(norm*0.03)*100,100)+'%';
-  document.getElementById('bar-f').style.width = Math.min(f/(norm*0.025)*100,100)+'%';
-  document.getElementById('bar-c').style.width = Math.min(c/(norm*0.075)*100,100)+'%';
+  const proteinGoal = Math.max(1, Math.round((norm * 0.30) / 4));
+  const fatGoal = Math.max(1, Math.round((norm * 0.25) / 9));
+  const carbsGoal = Math.max(1, Math.round((norm * 0.45) / 4));
+  document.getElementById('bar-p').style.width = Math.min(100, p / proteinGoal * 100) + '%';
+  document.getElementById('bar-f').style.width = Math.min(100, f / fatGoal * 100) + '%';
+  document.getElementById('bar-c').style.width = Math.min(100, c / carbsGoal * 100) + '%';
+}
+
+// Nutrition score — простая эвристика по дню, без AI/backend, мягкие формулировки.
+function getNutritionScore(eaten, norm, protein, fat, carbs) {
+  const pct = norm > 0 ? eaten / norm : 0;
+  if (pct === 0) return { text: 'Хороший старт', tone: 'neutral' };
+  if (protein < 30 && eaten > 400) return { text: 'Нужен белок', tone: 'protein' };
+  if (pct >= 0.85 && pct <= 1.05) return { text: 'Баланс дня', tone: 'good' };
+  if (pct > 1.05) return { text: 'Норма закрыта', tone: 'amber' };
+  if (pct >= 0.65) return { text: 'Почти норма', tone: 'good' };
+  return { text: 'Хороший старт', tone: 'neutral' };
+}
+
+function updateNutritionBadge(eaten, norm, protein, fat, carbs) {
+  const el = document.getElementById('nutrition-score');
+  if (!el) return;
+  const score = getNutritionScore(eaten, norm, protein, fat, carbs);
+  el.textContent = score.text;
+  el.classList.remove('neutral', 'protein', 'good', 'amber');
+  el.classList.add(score.tone);
+}
+
+// Короткий зелёный success-эффект на карточке "Съедено сегодня" после добавления еды.
+function pulseTodayCard() {
+  const card = document.getElementById('today-card');
+  if (!card) return;
+  card.classList.add('meal-added-pulse');
+  setTimeout(() => card.classList.remove('meal-added-pulse'), 900);
 }
 
 function renderDiary() {
   const list = document.getElementById('diary-list');
   if (!DIARY.length) {
     list.innerHTML = '';
-    updateRing(0, USER.daily_calories || 2000); return;
+    updateRing(0, USER.daily_calories || 2000);
+    updateNutritionBadge(0, USER.daily_calories || 2000, 0, 0, 0);
+    return;
   }
   let html = '<div class="card">';
   DIARY.forEach(r => {
@@ -1260,6 +1334,7 @@ function renderDiary() {
   const totCa = DIARY.reduce((s,r)=>s+(r.carbs||0),0);
   updateRing(totC, norm);
   updateMacros(totP, totF, totCa, norm);
+  updateNutritionBadge(totC, norm, totP, totF, totCa);
 }
 
 const MOTO_BANNERS = [
@@ -1439,7 +1514,7 @@ async function addRecipeToDiary(id) {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({user_id: uid, meal_name: r.name, calories: r.calories, protein: r.protein, fat: r.fat, carbs: r.carbs, meal_type: 'другое'})
     });
-    if (res.ok) { toast('✓ '+r.name+' добавлен в дневник!'); hideOverlay('recipe'); await loadDiary(); }
+    if (res.ok) { toast('✓ '+r.name+' добавлен в дневник!'); hideOverlay('recipe'); await loadDiary(); pulseTodayCard(); }
     else throw new Error();
   } catch(e) { toast('Ошибка — попробуй снова'); }
 }
@@ -1477,6 +1552,7 @@ async function saveFood() {
       ['f-name','f-kcal','f-p','f-f','f-c'].forEach(id => document.getElementById(id).value='');
       hideOverlay('add');
       await loadDiary();
+      pulseTodayCard();
     } else throw new Error();
   } catch(e) { toast('Ошибка сохранения'); }
 }
@@ -1512,7 +1588,7 @@ async function addFavToDiary(favId) {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({user_id:uid, fav_id:favId})
     });
-    if (res.ok) { toast('✓ Добавлено в дневник!'); await loadDiary(); showPage('diary'); }
+    if (res.ok) { toast('✓ Добавлено в дневник!'); await loadDiary(); showPage('diary'); pulseTodayCard(); }
     else throw new Error();
   } catch(e) { toast('Ошибка'); }
 }
