@@ -1644,6 +1644,8 @@ let photoFile = null;
 let photoResult = null;
 let photoMealType = 'перекус';
 let photoMode = 'food';
+let fridgeProducts = [];
+let fridgeRecipes = [];
 const PHOTO_MT_LABELS = {завтрак:'🌅 Завтрак', обед:'🥗 Обед', ужин:'🌙 Ужин', перекус:'🍎 Перекус'};
 const PHOTO_CAT_TO_MT = {'Завтрак':'завтрак','Обед':'обед','Ужин':'ужин','Перекус':'перекус'};
 
@@ -1658,8 +1660,12 @@ const PHOTO_OVERLAY_CONTENT = {
     ovTitle: 'Фото еды',
     title: '',
     description: 'Сфоткай еду — и я посчитаю калории, белки, жиры и углеводы',
-    hintTitle: '',
-    hintLines: [],
+    hintTitle: '📸 Совет для точного результата:',
+    hintLines: [
+      '• Снимай сверху или под углом 45°, блюдо — в центре кадра',
+      '• Без сильной тени и лишних предметов на тарелке',
+      '• Каша, пюре, творог и супы визуально похожи — если не угадаю, уточню детали'
+    ],
     footer: '',
     buttonLabel: 'Сфоткать еду'
   },
@@ -1724,15 +1730,50 @@ function renderPhotoIdle() {
     '<svg style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#' + c.icon + '"/></svg>' + c.buttonLabel + '</button>';
 }
 
-function handlePhotoFile(e) {
+// Сжимаем фото перед отправкой: iOS-камера легко даёт 4032x3024 / 8-12 МБ,
+// а модели хватает 1600px по длинной стороне. Маленькие фото не трогаем —
+// пере-кодирование без нужды только портит качество ("сжимать до мыла").
+function compressImage(file, maxSide, quality) {
+  return new Promise((resolve) => {
+    if (!file.type || !file.type.startsWith('image/') || file.type === 'image/gif') {
+      resolve(file); return;
+    }
+    if (file.size < 700 * 1024) { resolve(file); return; }
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      let width = img.naturalWidth, height = img.naturalHeight;
+      const longSide = Math.max(width, height);
+      if (longSide > maxSide) {
+        const scale = maxSide / longSide;
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(url);
+      canvas.toBlob((blob) => {
+        if (!blob) { resolve(file); return; }
+        resolve(new File([blob], (file.name || 'photo').replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }));
+      }, 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+
+async function handlePhotoFile(e) {
   const file = e.target.files && e.target.files[0];
   e.target.value = '';
   if (!file) return;
   if (!file.type || !file.type.startsWith('image/')) { toast('Выбери изображение'); return; }
   if (file.size > 10 * 1024 * 1024) { toast('Фото слишком большое — до 10 МБ'); return; }
-  photoFile = file;
+  const compressed = await compressImage(file, 1600, 0.85);
+  photoFile = compressed;
   photoResult = null;
-  const url = URL.createObjectURL(file);
+  const url = URL.createObjectURL(compressed);
   document.getElementById('photo-state').innerHTML =
     '<div class="photo-preview-wrap"><img src="' + url + '" alt=""></div>' +
     '<button class="btn" onclick="analyzePhoto()">🔥 Рассчитать калории</button>' +
@@ -1741,6 +1782,7 @@ function handlePhotoFile(e) {
 
 async function analyzePhoto() {
   if (!photoFile) return;
+  if (photoMode === 'fridge') { return analyzeFridgePhoto(); }
   document.getElementById('photo-state').innerHTML =
     '<div class="loader"><div class="photo-spinner"></div>Анализирую блюдо...</div>';
   try {
@@ -1752,13 +1794,108 @@ async function analyzePhoto() {
     if (!res.ok) throw new Error(data.error || 'Не получилось распознать фото');
     photoResult = data;
     photoMealType = PHOTO_CAT_TO_MT[data.category] || 'перекус';
-    renderPhotoResult();
+    if (data.needsConfirmation && data.candidates && data.candidates.length > 1) {
+      renderPhotoConfirmation();
+    } else {
+      renderPhotoResult();
+    }
   } catch (e) {
     document.getElementById('photo-state').innerHTML =
       '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">' + (e.message || 'Не получилось распознать фото') + '</div></div>' +
       '<button class="btn" onclick="analyzePhoto()">🔁 Попробовать снова</button>' +
       '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Выбрать другое фото</button>';
   }
+}
+
+function logPhotoCorrection(originalGuess, correctedDish, source) {
+  // Best-effort — сбой лога не должен мешать пользователю сохранить еду
+  try {
+    fetch(API + '/api/food/correction', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: tg.initDataUnsafe?.user?.id,
+        photoMode: 'food', originalGuess, correctedDish, source
+      })
+    }).catch(() => {});
+  } catch (e) {}
+}
+
+function renderPhotoConfirmation() {
+  const r = photoResult;
+  const candidates = r.candidates || [];
+  const q = r.clarificationQuestion
+    ? '<div style="font-size:12px;color:var(--gold-soft);margin:8px 0 14px">❓ ' + r.clarificationQuestion + '</div>'
+    : '';
+  const cards = candidates.map((c, i) => {
+    const pct = Math.round((c.confidence || 0) * 100);
+    const perLabel = c.per ? (' / ' + c.per) : '';
+    const srcLabel = c.source === 'products.db' ? 'база продуктов' : 'оценка ИИ';
+    return (
+      '<div class="ring-card" style="margin-bottom:10px;cursor:pointer" onclick="pickPhotoCandidate(' + i + ')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' +
+          '<div class="photo-result-name" style="margin-bottom:0">' + c.name + '</div>' +
+          '<div style="font-size:11px;color:var(--text2);white-space:nowrap">' + pct + '%</div>' +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--text2);margin-top:4px">' +
+          (c.category || '') + ' · ' + c.calories + ' ккал' + perLabel + ' · ' + srcLabel +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+  document.getElementById('photo-state').innerHTML =
+    '<div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px">Я нашёл несколько похожих вариантов</div>' +
+    '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">Выбери точный вариант — так дневник будет считать калории точнее.</div>' +
+    q + cards +
+    '<button class="btn btn-sec" onclick="renderPhotoManualEdit()">✏️ Другое / указать вручную</button>';
+}
+
+function pickPhotoCandidate(i) {
+  const r = photoResult;
+  const c = (r.candidates || [])[i];
+  if (!r || !c) return;
+  const original = r.bestGuess || r.dishName;
+  r.dishName = c.name;
+  r.calories = c.calories;
+  r.protein = c.protein;
+  r.fat = c.fat;
+  r.carbs = c.carbs;
+  r.confidence = i === 0 ? r.confidence : 'выбрано вручную';
+  photoMealType = PHOTO_CAT_TO_MT[c.category] || photoMealType;
+  if (i !== 0 && c.name !== original) {
+    logPhotoCorrection(original, c.name, c.source || 'user_pick');
+  }
+  renderPhotoResult();
+}
+
+function renderPhotoManualEdit() {
+  const r = photoResult || {};
+  document.getElementById('photo-state').innerHTML =
+    '<div class="form-group"><label class="form-lbl">Название блюда</label><input class="form-input" id="pe-name" type="text" value="' + (r.dishName || '').replace(/"/g, '&quot;') + '"></div>' +
+    '<div class="form-group"><label class="form-lbl">Вес / порция (г)</label><input class="form-input" id="pe-portion" type="text" value="' + (r.portion || '').toString().replace(/"/g, '&quot;') + '"></div>' +
+    '<div class="form-group"><label class="form-lbl">Калории</label><input class="form-input" id="pe-cal" type="number" value="' + (r.calories || 0) + '"></div>' +
+    '<div class="form-group"><label class="form-lbl">Белки (г)</label><input class="form-input" id="pe-prot" type="number" step="0.1" value="' + (r.protein || 0) + '"></div>' +
+    '<div class="form-group"><label class="form-lbl">Жиры (г)</label><input class="form-input" id="pe-fat" type="number" step="0.1" value="' + (r.fat || 0) + '"></div>' +
+    '<div class="form-group"><label class="form-lbl">Углеводы (г)</label><input class="form-input" id="pe-carbs" type="number" step="0.1" value="' + (r.carbs || 0) + '"></div>' +
+    '<button class="btn" onclick="savePhotoManualEdit()">✓ Сохранить</button>' +
+    '<button class="btn btn-sec" onclick="renderPhotoResult()">Отмена</button>';
+}
+
+function savePhotoManualEdit() {
+  const r = photoResult;
+  if (!r) return;
+  const original = r.bestGuess || r.dishName;
+  const name = (document.getElementById('pe-name').value || '').trim() || r.dishName;
+  r.dishName = name;
+  r.portion = document.getElementById('pe-portion').value || r.portion;
+  r.calories = parseFloat(document.getElementById('pe-cal').value) || 0;
+  r.protein = parseFloat(document.getElementById('pe-prot').value) || 0;
+  r.fat = parseFloat(document.getElementById('pe-fat').value) || 0;
+  r.carbs = parseFloat(document.getElementById('pe-carbs').value) || 0;
+  r.confidence = 'исправлено вручную';
+  if (name !== original) {
+    logPhotoCorrection(original, name, 'manual_edit');
+  }
+  renderPhotoResult();
 }
 
 function renderPhotoResult() {
@@ -1813,6 +1950,7 @@ function renderPhotoResult() {
     '</div>' +
     '<div class="form-group"><label class="form-lbl">Тип приёма</label><div class="mt-grid">' + mtBtns + '</div></div>' +
     '<button class="btn" onclick="addPhotoResultToDiary()">✓ Добавить в дневник</button>' +
+    '<button class="btn btn-sec" onclick="renderPhotoManualEdit()">✏️ Изменить</button>' +
     '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Сфоткать другое</button>';
 }
 
@@ -1842,6 +1980,98 @@ async function addPhotoResultToDiary() {
       pulseTodayCard();
     } else throw new Error();
   } catch (e) { toast('Ошибка сохранения'); }
+}
+
+// ───── ХОЛОДИЛЬНИК (фото из Mini App) ─────
+// Раньше openPhotoOverlay('fridge') слал фото в /api/food/analyze-photo, который
+// жёстко считает mode="food" — для холодильника это бессмысленно (не считаем калории
+// у фото холодильника). Отдельный эндпоинт: только список продуктов + подбор рецептов.
+async function analyzeFridgePhoto() {
+  document.getElementById('photo-state').innerHTML =
+    '<div class="loader"><div class="photo-spinner"></div>Распознаю продукты...</div>';
+  try {
+    const fd = new FormData();
+    fd.append('photo', photoFile);
+    const res = await fetch(API + '/api/fridge/analyze-photo', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Не получилось распознать продукты');
+    fridgeProducts = (data.products || []).map(p => ({ name: p.name, confidence: p.confidence, needsConfirmation: p.needsConfirmation }));
+    fridgeRecipes = [];
+    renderFridgeResult();
+  } catch (e) {
+    document.getElementById('photo-state').innerHTML =
+      '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">' + (e.message || 'Не получилось распознать продукты') + '</div></div>' +
+      '<button class="btn" onclick="analyzePhoto()">🔁 Попробовать снова</button>' +
+      '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Сфоткать другое</button>';
+  }
+}
+
+function renderFridgeResult() {
+  const rows = fridgeProducts.map((p, i) => {
+    const mark = p.needsConfirmation ? '❓' : '✓';
+    return (
+      '<div class="row"><div class="row-left"><span style="font-size:16px">' + mark + '</span>' +
+        '<div class="row-text"><div class="row-name">' + p.name + '</div></div></div>' +
+        '<div class="row-icon" style="cursor:pointer" onclick="removeFridgeProduct(' + i + ')">✕</div></div>'
+    );
+  }).join('');
+  document.getElementById('photo-state').innerHTML =
+    '<div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px">Я нашёл продукты в холодильнике</div>' +
+    '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">Убери лишнее или добавь недостающее, затем подбери рецепты.</div>' +
+    '<div class="ring-card" style="padding:6px 4px">' +
+      (rows || '<div style="padding:14px;text-align:center;color:var(--text2);font-size:13px">Список пуст — добавь продукт</div>') +
+    '</div>' +
+    '<div class="form-group" style="margin-top:10px"><label class="form-lbl">Добавить продукт</label>' +
+      '<input class="form-input" id="fridge-add-input" type="text" placeholder="например, лук репчатый"></div>' +
+    '<button class="btn btn-sec" onclick="addFridgeProduct()">+ Добавить продукт</button>' +
+    '<button class="btn" style="margin-top:8px" onclick="matchFridgeRecipes()"' + (fridgeProducts.length ? '' : ' disabled') + '>➡️ Подобрать рецепты</button>';
+}
+
+function removeFridgeProduct(i) {
+  fridgeProducts.splice(i, 1);
+  renderFridgeResult();
+}
+
+function addFridgeProduct() {
+  const input = document.getElementById('fridge-add-input');
+  const name = (input.value || '').trim();
+  if (!name) return;
+  fridgeProducts.push({ name, confidence: 1, needsConfirmation: false });
+  renderFridgeResult();
+}
+
+async function matchFridgeRecipes() {
+  if (!fridgeProducts.length) return;
+  document.getElementById('photo-state').innerHTML =
+    '<div class="loader"><div class="photo-spinner"></div>Подбираю рецепты...</div>';
+  try {
+    const res = await fetch(API + '/api/fridge/match-recipes', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ products: fridgeProducts.map(p => p.name) })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Не получилось подобрать рецепты');
+    fridgeRecipes = data.recipes || [];
+    renderFridgeRecipes();
+  } catch (e) {
+    toast(e.message || 'Не получилось подобрать рецепты');
+    renderFridgeResult();
+  }
+}
+
+function renderFridgeRecipes() {
+  const cards = fridgeRecipes.map(r =>
+    '<div class="ring-card" style="margin-bottom:10px">' +
+      '<div class="photo-result-name">' + r.name + '</div>' +
+      '<div style="font-size:12px;color:var(--text2);margin-top:2px">' +
+        '🔥 ' + (r.calories || '?') + ' ккал · совпало ' + r.matchCount + '/' + r.totalIngredients + ' ингредиентов' +
+      '</div>' +
+    '</div>'
+  ).join('');
+  document.getElementById('photo-state').innerHTML =
+    '<div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px">Топ рецептов для твоего холодильника</div>' +
+    (cards || '<div class="empty"><div class="empty-text">Пока не нашлось рецептов под эти продукты — попробуй добавить ещё пару ингредиентов.</div></div>') +
+    '<button class="btn btn-sec" onclick="renderFridgeResult()">⬅️ К продуктам</button>';
 }
 
 function updateRing(eaten, norm) {
