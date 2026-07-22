@@ -594,7 +594,63 @@ body{background:
 .holiday-tip:last-child{margin-bottom:0}
 /* FRIDGE */
 .fridge-hero{text-align:center;padding:20px 10px;color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:10px}
-.fridge-icon{font-size:48px;margin-bottom:10px}
+.fridge-hero strong{display:block;color:var(--text);font-family:Georgia,serif;font-size:20px;line-height:1.2;margin-bottom:7px}
+.fridge-hero span{display:block;max-width:300px;margin:0 auto}
+.fridge-icon{width:54px;height:54px;margin:0 auto 12px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:var(--gold2);border:1px solid var(--gold-b);color:var(--gold-soft)}
+.fridge-icon svg{width:26px;height:26px}
+.fridge-divider{margin:14px 0;text-align:center;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em}
+.fridge-product-status{width:22px;height:22px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:11px;font-weight:800;color:#C8FF9A;background:rgba(143,214,107,.12);border:1px solid rgba(143,214,107,.22)}
+.fridge-product-status.review{color:var(--gold-soft);background:var(--gold2);border-color:var(--gold-b)}
+.fridge-recipe-card{position:relative;width:100%;margin:0 0 10px;padding:15px;text-align:left;font:inherit;color:inherit;cursor:pointer;border-radius:20px;border:1px solid rgba(216,179,94,.18);background:linear-gradient(180deg,rgba(28,30,26,.96),rgba(17,18,16,.96));box-shadow:0 12px 28px rgba(0,0,0,.24);transition:transform .16s ease,border-color .16s ease}
+.fridge-recipe-card:active{transform:scale(.985);border-color:rgba(216,179,94,.34)}
+.fridge-recipe-card::after{content:'›';position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-size:22px}
+.fridge-recipe-card-content{padding-right:28px;min-width:0}
+.fridge-recipe-card-title{font-size:15px;font-weight:800;line-height:1.3;color:var(--text)}
+.fridge-recipe-card-meta{font-size:11px;line-height:1.45;color:var(--text2);margin-top:6px}
+.fridge-recipe-detail{padding-bottom:12px;max-width:100%;overflow-wrap:anywhere}
+.fridge-recipe-back{appearance:none;border:0;background:transparent;color:var(--gold-soft);font:inherit;font-size:12px;font-weight:700;padding:4px 0 12px;cursor:pointer}
+.fridge-recipe-title{font-family:Georgia,serif;font-size:25px;line-height:1.12;color:var(--text);letter-spacing:-.02em;margin-bottom:8px}
+.fridge-recipe-description{font-size:12.5px;line-height:1.55;color:var(--text2);margin-bottom:13px}
+.fridge-recipe-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.fridge-recipe-pill{display:inline-flex;align-items:center;min-height:29px;padding:5px 10px;border-radius:999px;font-size:10.5px;color:var(--gold-soft);background:var(--gold2);border:1px solid var(--gold-b)}
+.fridge-recipe-pill.green{color:#C8FF9A;background:rgba(143,214,107,.1);border-color:rgba(143,214,107,.22)}
+.fridge-recipe-section{margin:0 0 12px;padding:14px;border-radius:18px;background:rgba(255,255,255,.026);border:1px solid rgba(255,255,255,.075)}
+.fridge-recipe-section-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:9px}
+.fridge-ingredient-chips{display:flex;flex-wrap:wrap;gap:6px}
+.fridge-ingredient-chip{padding:5px 9px;border-radius:999px;font-size:11px;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.fridge-ingredient-chip.matched{color:#C8FF9A;background:rgba(143,214,107,.09);border-color:rgba(143,214,107,.2)}
+.fridge-ingredient-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.065);font-size:12px;line-height:1.35}
+.fridge-ingredient-row:last-child{border-bottom:0}
+.fridge-ingredient-amount{color:var(--text3);text-align:right}
+.fridge-steps{display:grid;gap:10px}
+.fridge-step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font-size:12.5px;line-height:1.5;color:var(--text2)}
+.fridge-step-number{width:28px;height:28px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#171914;font-size:11px;font-weight:900;background:linear-gradient(135deg,var(--gold-soft),#8FD66B);box-shadow:0 6px 16px rgba(143,214,107,.12)}
+/* FREQUENT FOODS */
+.frequent-foods-section{margin-top:14px}
+.frequent-foods-head{align-items:flex-end}
+.frequent-foods-subtitle,.shopping-subtitle{font-size:11px;line-height:1.4;color:var(--text3);margin-top:4px}
+.frequent-food-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 14px;margin-bottom:8px;border-radius:18px;background:linear-gradient(180deg,rgba(28,30,26,.92),rgba(18,19,17,.92));border:1px solid rgba(216,179,94,.14)}
+.frequent-food-name{font-size:13px;font-weight:800;color:var(--text);line-height:1.3}
+.frequent-food-meta{font-size:10.5px;color:var(--text2);line-height:1.45;margin-top:4px}
+.frequent-food-count{font-size:10px;color:var(--text3);margin-top:3px}
+.frequent-food-add{appearance:none;white-space:nowrap;border-radius:12px;border:1px solid rgba(216,179,94,.24);background:var(--gold2);color:var(--gold-soft);padding:8px 10px;font:inherit;font-size:10.5px;font-weight:800;cursor:pointer}
+.frequent-food-add:disabled{opacity:.55;cursor:default}
+.frequent-food-empty,.shopping-empty{padding:12px 13px;border-radius:16px;background:rgba(255,255,255,.025);border:1px dashed rgba(255,255,255,.08);font-size:11.5px;line-height:1.45;color:var(--text3)}
+/* SHOPPING LIST */
+.shopping-section{padding:14px;margin-bottom:14px;border-radius:20px;background:linear-gradient(180deg,rgba(28,30,26,.92),rgba(17,18,16,.92));border:1px solid rgba(216,179,94,.16)}
+.shopping-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:11px}
+.shopping-clear{appearance:none;border:0;background:transparent;color:var(--gold-soft);font:inherit;font-size:10px;font-weight:700;cursor:pointer;padding:2px 0;white-space:nowrap}
+.shopping-clear[hidden]{display:none}
+.shopping-item{display:grid;grid-template-columns:26px minmax(0,1fr) 26px;gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.shopping-item:last-child{border-bottom:0}
+.shopping-check,.shopping-remove{appearance:none;width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font:inherit}
+.shopping-check{border:1px solid rgba(143,214,107,.24);background:rgba(143,214,107,.07);color:transparent;font-weight:900}
+.shopping-item.checked .shopping-check{background:rgba(143,214,107,.18);color:#C8FF9A}
+.shopping-name{font-size:12.5px;color:var(--text);line-height:1.3}
+.shopping-source{font-size:9.5px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shopping-item.checked .shopping-name{text-decoration:line-through;color:var(--text3)}
+.shopping-remove{border:0;background:transparent;color:var(--text3);font-size:17px}
+@media (max-width:380px){.frequent-food-card{grid-template-columns:1fr}.frequent-food-add{width:100%}.shopping-header{display:block}.shopping-clear{margin-top:8px}}
 /* EMPTY */
 .empty{text-align:center;padding:34px 22px;color:var(--text2);border-radius:var(--r-xl);
   background:radial-gradient(circle at 50% 0%, rgba(216,179,94,0.08), transparent 42%), rgba(255,255,255,0.025);
@@ -979,6 +1035,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
     <div class="qa" onclick="openPhotoOverlay('fridge')"><div class="qa-icon"><svg><use href="#ic-fridge"/></svg></div><div class="qa-label">Холодильник</div></div>
     <div class="qa" onclick="showPage('recipes')"><div class="qa-icon"><svg><use href="#ic-dish"/></svg></div><div class="qa-label">Рецепты</div></div>
   </div>
+  <div class="sec frequent-foods-section" id="frequent-foods-section" hidden>
+    <div class="sec-head frequent-foods-head">
+      <div><div class="sec-title">Часто едите</div><div class="frequent-foods-subtitle">Добавьте привычное блюдо в один тап.</div></div>
+    </div>
+    <div id="frequent-foods-list"></div>
+  </div>
   <div class="sec">
     <div class="sec-head"><div class="sec-title">Приёмы пищи</div><div class="sec-action" onclick="showOverlay('add')">+ Добавить</div></div>
     <div id="diary-list"><div class="loader">Загрузка...</div></div>
@@ -1040,6 +1102,13 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
       <div class="hero-banner-title">Вкусно, просто<br><em>и полезно</em></div>
       <div class="hero-banner-sub">95 рецептов на каждый день</div>
     </div>
+  </div>
+  <div class="sec shopping-section">
+    <div class="shopping-header">
+      <div><div class="sec-title">Список покупок</div><div class="shopping-subtitle">Продукты, которых не хватило для рецептов.</div></div>
+      <button class="shopping-clear" id="shopping-clear" type="button" onclick="clearCheckedShoppingItems()">Очистить купленное</button>
+    </div>
+    <div id="shopping-list"></div>
   </div>
   <div class="sec" style="margin-top:0">
     <div class="sec-head"><div class="sec-title">Рецепты</div></div>
@@ -1222,12 +1291,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 
 <!-- FRIDGE -->
 <div class="overlay" id="ov-fridge">
-  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('fridge')">←</div><div class="ov-title">🧊 Холодильник</div></div>
-  <div class="fridge-hero"><div class="fridge-icon">🧊</div>Сфотографируй содержимое холодильника — ИИ подберёт рецепты из того что есть</div>
-  <button class="btn" onclick="botAction('m_fridge')">📸 Сфотографировать холодильник</button>
-  <div style="margin:14px 0;text-align:center;font-size:11px;color:var(--text3)">— или введи продукты вручную —</div>
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('fridge')">←</div><div class="ov-title">Холодильник</div></div>
+  <div class="fridge-hero"><div class="fridge-icon"><svg><use href="#ic-fridge"/></svg></div><strong>Сфотографируй холодильник</strong><span>Открой дверцу полностью и сфотографируй полки так, чтобы продукты были видны.</span></div>
+  <button class="btn" onclick="hideOverlay('fridge');openPhotoOverlay('fridge')">Подобрать рецепты из холодильника</button>
+  <div class="fridge-divider">или добавь продукты вручную</div>
   <div class="form-group"><label class="form-lbl">Продукты через запятую</label><input class="form-input" id="fridge-text" type="text" placeholder="яйца, курица, помидоры, рис"></div>
-  <button class="btn" onclick="fridgeText()">🍳 Подобрать рецепт</button>
+  <button class="btn" onclick="fridgeText()">Подобрать рецепты</button>
 </div>
 
 <!-- WEIGHT -->
@@ -1515,6 +1584,15 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1523,7 +1601,7 @@ function showPage(name) {
   if (tab) tab.classList.add('active');
 
   if (name === 'week') renderWeek();
-  if (name === 'recipes') renderRecipes();
+  if (name === 'recipes') { renderRecipes(); renderShoppingList(); }
   if (name === 'mind') loadMindHistory();
 }
 
@@ -1652,20 +1730,19 @@ let photoMealType = 'перекус';
 let photoMode = 'food';
 let fridgeProducts = [];
 let fridgeRecipes = [];
+let frequentFoods = [];
+const SHOPPING_LIST_KEY = 'caloriept:shoppingList';
 const PHOTO_MT_LABELS = {завтрак:'🌅 Завтрак', обед:'🥗 Обед', ужин:'🌙 Ужин', перекус:'🍎 Перекус'};
 const PHOTO_CAT_TO_MT = {'Завтрак':'завтрак','Обед':'обед','Ужин':'ужин','Перекус':'перекус'};
 
-// Штрихкод/Чек/Холодильник заходят в тот же in-app photo flow, что и «Фото еды»
-// (см. openPhotoOverlay('barcode'|'receipt'|'fridge') в quick-grid) — режим уходит
-// на backend как доп. поле 'mode' в analyzePhoto(), но сегодня backend его не читает
-// и всегда считает калории блюда (см. отчёт) — это сознательный компромисс, чтобы
-// не трогать backend. Контент ниже — только текст/иконка в самом overlay.
+// Все фото-сценарии используют общий overlay, но холодильник отправляется в
+// отдельный endpoint и ведёт к проверке продуктов и подбору рецептов без КБЖУ.
 const PHOTO_OVERLAY_CONTENT = {
   food: {
     icon: 'ic-camera',
     ovTitle: 'Фото еды',
     title: '',
-    description: 'Сфоткай еду — и я посчитаю калории, белки, жиры и углеводы',
+    description: 'Сфотографируй блюдо — я определю состав и посчитаю КБЖУ.',
     hintTitle: '📸 Совет для точного результата:',
     hintLines: [
       '• Снимай сверху или под углом 45°, блюдо — в центре кадра',
@@ -1673,7 +1750,7 @@ const PHOTO_OVERLAY_CONTENT = {
       '• Каша, пюре, творог и супы визуально похожи — если не угадаю, уточню детали'
     ],
     footer: '',
-    buttonLabel: 'Сфоткать еду'
+    buttonLabel: 'Рассчитать калории'
   },
   barcode: {
     icon: 'ic-scanner',
@@ -1698,12 +1775,12 @@ const PHOTO_OVERLAY_CONTENT = {
   fridge: {
     icon: 'ic-fridge',
     ovTitle: 'Холодильник',
-    title: '🧊 Сфотографируй холодильник',
-    description: 'Я распознаю продукты, дам тебе их подправить и подберу рецепты из базы.',
-    hintTitle: '',
-    hintLines: [],
+    title: 'Сфотографируй холодильник',
+    description: 'Я распознаю продукты, дам тебе их проверить и подберу рецепты.',
+    hintTitle: 'Для точного результата:',
+    hintLines: ['Открой дверцу полностью.', 'Сфотографируй полки так, чтобы продукты были видны.'],
     footer: '',
-    buttonLabel: 'Сфоткать холодильник'
+    buttonLabel: 'Подобрать рецепты из холодильника'
   }
 };
 
@@ -1780,10 +1857,13 @@ async function handlePhotoFile(e) {
   photoFile = compressed;
   photoResult = null;
   const url = URL.createObjectURL(compressed);
+  const actionLabel = photoMode === 'fridge'
+    ? 'Подобрать рецепты из холодильника'
+    : 'Рассчитать калории';
   document.getElementById('photo-state').innerHTML =
     '<div class="photo-preview-wrap"><img src="' + url + '" alt=""></div>' +
-    '<button class="btn" onclick="analyzePhoto()">🔥 Рассчитать калории</button>' +
-    '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">🔄 Выбрать другое фото</button>';
+    '<button class="btn" onclick="analyzePhoto()">' + actionLabel + '</button>' +
+    '<button class="btn btn-sec" onclick="document.getElementById(\'photo-file-input\').click()">Выбрать другое фото</button>';
 }
 
 async function analyzePhoto() {
@@ -2016,7 +2096,7 @@ async function addPhotoResultToDiary() {
       body: JSON.stringify({
         user_id: uid, meal_name: photoResult.dishName, calories: photoResult.calories,
         protein: photoResult.protein, fat: photoResult.fat, carbs: photoResult.carbs,
-        meal_type: photoMealType
+        meal_type: photoMealType, portion: photoResult.portion || null
       })
     });
     if (res.ok) {
@@ -2045,6 +2125,12 @@ async function analyzeFridgePhoto() {
       renderVisionUnavailable('fridge', data);
       return;
     }
+    if (!res.ok && (res.status === 422 || /продукт/i.test(data.error || ''))) {
+      fridgeProducts = [];
+      fridgeRecipes = [];
+      renderFridgeResult();
+      return;
+    }
     if (!res.ok) throw new Error(data.error || 'Не получилось распознать продукты');
     fridgeProducts = (data.products || []).map(p => ({ name: p.name, confidence: p.confidence, needsConfirmation: p.needsConfirmation }));
     fridgeRecipes = [];
@@ -2059,23 +2145,29 @@ async function analyzeFridgePhoto() {
 
 function renderFridgeResult() {
   const rows = fridgeProducts.map((p, i) => {
-    const mark = p.needsConfirmation ? '❓' : '✓';
+    const statusClass = p.needsConfirmation ? ' review' : '';
+    const statusLabel = p.needsConfirmation ? '?' : '✓';
     return (
-      '<div class="row"><div class="row-left"><span style="font-size:16px">' + mark + '</span>' +
-        '<div class="row-text"><div class="row-name">' + p.name + '</div></div></div>' +
+      '<div class="row"><div class="row-left"><span class="fridge-product-status' + statusClass + '">' + statusLabel + '</span>' +
+        '<div class="row-text"><div class="row-name">' + escapeHtml(p.name) + '</div></div></div>' +
         '<div class="row-icon" style="cursor:pointer" onclick="removeFridgeProduct(' + i + ')">✕</div></div>'
     );
   }).join('');
+  const hasProducts = fridgeProducts.length > 0;
+  const heading = hasProducts ? 'Я нашёл продукты в холодильнике' : 'Не удалось найти продукты';
+  const description = hasProducts
+    ? 'Проверь список — можно удалить лишнее или добавить продукт вручную.'
+    : 'Добавь продукты вручную, и я подберу рецепты.';
   document.getElementById('photo-state').innerHTML =
-    '<div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px">Я нашёл продукты в холодильнике</div>' +
-    '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">Убери лишнее или добавь недостающее, затем подбери рецепты.</div>' +
+    '<div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px">' + heading + '</div>' +
+    '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">' + description + '</div>' +
     '<div class="ring-card" style="padding:6px 4px">' +
-      (rows || '<div style="padding:14px;text-align:center;color:var(--text2);font-size:13px">Список пуст — добавь продукт</div>') +
+      (rows || '<div class="shopping-empty" style="margin:8px">Введи первый продукт ниже.</div>') +
     '</div>' +
     '<div class="form-group" style="margin-top:10px"><label class="form-lbl">Добавить продукт</label>' +
       '<input class="form-input" id="fridge-add-input" type="text" placeholder="например, лук репчатый"></div>' +
-    '<button class="btn btn-sec" onclick="addFridgeProduct()">+ Добавить продукт</button>' +
-    '<button class="btn" style="margin-top:8px" onclick="matchFridgeRecipes()"' + (fridgeProducts.length ? '' : ' disabled') + '>➡️ Подобрать рецепты</button>';
+    '<button class="btn btn-sec" onclick="addFridgeProduct()">Добавить продукт</button>' +
+    '<button class="btn" style="margin-top:8px" onclick="matchFridgeRecipes()"' + (fridgeProducts.length ? '' : ' disabled') + '>Подобрать рецепты</button>';
 }
 
 function removeFridgeProduct(i) {
@@ -2110,19 +2202,236 @@ async function matchFridgeRecipes() {
   }
 }
 
-function renderFridgeRecipes() {
-  const cards = fridgeRecipes.map(r =>
-    '<div class="ring-card" style="margin-bottom:10px">' +
-      '<div class="photo-result-name">' + r.name + '</div>' +
-      '<div style="font-size:12px;color:var(--text2);margin-top:2px">' +
-        '🔥 ' + (r.calories || '?') + ' ккал · совпало ' + r.matchCount + '/' + r.totalIngredients + ' ингредиентов' +
+function renderFridgeRecipes(recipes) {
+  if (Array.isArray(recipes)) fridgeRecipes = recipes;
+  const cards = fridgeRecipes.map((r, index) =>
+    '<button class="fridge-recipe-card" type="button" onclick="openFridgeRecipeDetail(' + index + ')">' +
+      '<div class="fridge-recipe-card-content">' +
+        '<div class="fridge-recipe-card-title">' + escapeHtml(r.name || 'Рецепт') + '</div>' +
+        '<div class="fridge-recipe-card-meta">' +
+          escapeHtml(r.time || (r.timeMinutes ? r.timeMinutes + ' мин' : '')) +
+          (r.calories != null ? ' · ' + escapeHtml(r.calories) + ' ккал' : '') +
+          ' · совпало ' + escapeHtml(r.matchCount || 0) + '/' + escapeHtml(r.totalIngredients || 0) +
+        '</div>' +
       '</div>' +
-    '</div>'
+    '</button>'
   ).join('');
   document.getElementById('photo-state').innerHTML =
     '<div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px">Топ рецептов для твоего холодильника</div>' +
     (cards || '<div class="empty"><div class="empty-text">Пока не нашлось рецептов под эти продукты — попробуй добавить ещё пару ингредиентов.</div></div>') +
-    '<button class="btn btn-sec" onclick="renderFridgeResult()">⬅️ К продуктам</button>';
+    '<button class="btn btn-sec" onclick="renderFridgeResult()">К продуктам</button>';
+}
+
+function openFridgeRecipeDetail(index) {
+  const recipe = fridgeRecipes[index];
+  if (!recipe) return;
+  renderFridgeRecipeDetail(recipe, index);
+}
+
+function backToFridgeRecipes() {
+  renderFridgeRecipes(fridgeRecipes);
+}
+
+function renderFridgeRecipeDetail(recipe, index) {
+  const ingredients = recipe.ingredients || [];
+  const steps = recipe.steps || recipe.instructions || recipe.cooking_steps || [];
+  const matched = recipe.matchedIngredients || [];
+  const missing = recipe.missingIngredients || [];
+  const description = recipe.description || recipe.tips || '';
+  const meta = [
+    recipe.time || (recipe.timeMinutes ? recipe.timeMinutes + ' мин' : ''),
+    recipe.calories != null ? recipe.calories + ' ккал' : '',
+    recipe.difficulty || '',
+  ].filter(Boolean);
+  const macros = [
+    recipe.protein != null ? 'Б ' + recipe.protein : '',
+    recipe.fat != null ? 'Ж ' + recipe.fat : '',
+    recipe.carbs != null ? 'У ' + recipe.carbs : '',
+  ].filter(Boolean).join(' · ');
+  const matchedHtml = matched.length
+    ? '<div class="fridge-ingredient-chips">' + matched.map(name => '<span class="fridge-ingredient-chip matched">' + escapeHtml(name) + '</span>').join('') + '</div>'
+    : '<div class="shopping-empty">Совпавшие продукты не указаны.</div>';
+  const missingHtml = missing.length
+    ? '<div class="fridge-ingredient-chips">' + missing.map(name => '<span class="fridge-ingredient-chip">' + escapeHtml(name) + '</span>').join('') + '</div>' +
+      '<button class="btn" type="button" onclick="addRecipeMissingToShopping(' + index + ')">Добавить недостающее в список покупок</button>'
+    : '<div class="shopping-empty">Для этого рецепта всё уже есть.</div>';
+  const ingredientsHtml = ingredients.length
+    ? ingredients.map(ingredient => {
+        const name = typeof ingredient === 'string' ? ingredient : (ingredient.name || '');
+        const amount = typeof ingredient === 'string' ? '' : (ingredient.amount || '');
+        return '<div class="fridge-ingredient-row"><span>' + escapeHtml(name) + '</span><span class="fridge-ingredient-amount">' + escapeHtml(amount) + '</span></div>';
+      }).join('')
+    : '<div class="shopping-empty">Ингредиенты не указаны.</div>';
+  const stepsHtml = steps.length
+    ? '<div class="fridge-steps">' + steps.map((step, stepIndex) =>
+        '<div class="fridge-step"><span class="fridge-step-number">' + (stepIndex + 1) + '</span><span>' + escapeHtml(step) + '</span></div>'
+      ).join('') + '</div>'
+    : '<div class="shopping-empty">Пошаговое приготовление пока не указано.</div>';
+
+  document.getElementById('photo-state').innerHTML =
+    '<div class="fridge-recipe-detail">' +
+      '<button class="fridge-recipe-back" type="button" onclick="backToFridgeRecipes()">← К рецептам</button>' +
+      '<div class="fridge-recipe-title">' + escapeHtml(recipe.name || 'Рецепт') + '</div>' +
+      (description ? '<div class="fridge-recipe-description">' + escapeHtml(description) + '</div>' : '') +
+      '<div class="fridge-recipe-meta">' + meta.map((value, metaIndex) => '<span class="fridge-recipe-pill' + (metaIndex === 0 ? ' green' : '') + '">' + escapeHtml(value) + '</span>').join('') +
+        (macros ? '<span class="fridge-recipe-pill">' + escapeHtml(macros) + '</span>' : '') + '</div>' +
+      '<section class="fridge-recipe-section"><div class="fridge-recipe-section-title">Что используем из холодильника</div>' + matchedHtml + '</section>' +
+      '<section class="fridge-recipe-section"><div class="fridge-recipe-section-title">Может понадобиться</div>' + missingHtml + '</section>' +
+      '<section class="fridge-recipe-section"><div class="fridge-recipe-section-title">Ингредиенты</div>' + ingredientsHtml + '</section>' +
+      '<section class="fridge-recipe-section"><div class="fridge-recipe-section-title">Пошаговое приготовление</div>' + stepsHtml + '</section>' +
+      '<button class="btn btn-sec" type="button" onclick="backToFridgeRecipes()">К рецептам</button>' +
+    '</div>';
+}
+
+function getShoppingList() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(SHOPPING_LIST_KEY) || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed.slice(0, 100).map((item, index) => ({
+      id: /^[a-zA-Z0-9._-]+$/.test(String(item && item.id || ''))
+        ? String(item.id)
+        : Date.now() + '-' + index,
+      name: String(item && item.name || '').trim().slice(0, 100),
+      checked: Boolean(item && item.checked),
+      createdAt: String(item && item.createdAt || ''),
+      sourceRecipe: String(item && item.sourceRecipe || '').trim().slice(0, 160),
+    })).filter(item => item.name);
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveShoppingList(items) {
+  try {
+    localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(items || []));
+    return true;
+  } catch (e) {
+    toast('Не удалось сохранить список покупок');
+    return false;
+  }
+}
+
+function addToShoppingList(names, sourceRecipe) {
+  const items = getShoppingList();
+  const unchecked = new Set(items.filter(item => !item.checked).map(item => item.name.toLocaleLowerCase('ru')));
+  let added = 0;
+  (names || []).forEach(rawName => {
+    const name = String(rawName || '').trim().slice(0, 100);
+    const key = name.toLocaleLowerCase('ru');
+    if (!name || unchecked.has(key)) return;
+    items.push({
+      id: Date.now() + '-' + Math.random().toString(36).slice(2, 9),
+      name,
+      checked: false,
+      createdAt: new Date().toISOString(),
+      sourceRecipe: String(sourceRecipe || '').slice(0, 160),
+    });
+    unchecked.add(key);
+    added++;
+  });
+  if (added && saveShoppingList(items)) renderShoppingList();
+  return added;
+}
+
+function toggleShoppingItem(id) {
+  const items = getShoppingList();
+  const item = items.find(entry => entry.id === id);
+  if (!item) return;
+  item.checked = !item.checked;
+  if (saveShoppingList(items)) renderShoppingList();
+}
+
+function removeShoppingItem(id) {
+  const items = getShoppingList().filter(item => item.id !== id);
+  if (saveShoppingList(items)) renderShoppingList();
+}
+
+function clearCheckedShoppingItems() {
+  const items = getShoppingList().filter(item => !item.checked);
+  if (saveShoppingList(items)) renderShoppingList();
+}
+
+function renderShoppingList() {
+  const container = document.getElementById('shopping-list');
+  if (!container) return;
+  const items = getShoppingList();
+  const clearButton = document.getElementById('shopping-clear');
+  if (clearButton) clearButton.hidden = !items.some(item => item.checked);
+  if (!items.length) {
+    container.innerHTML = '<div class="shopping-empty">Здесь появятся продукты, которых не хватило для выбранных рецептов.</div>';
+    return;
+  }
+  container.innerHTML = items.map(item =>
+    '<div class="shopping-item' + (item.checked ? ' checked' : '') + '">' +
+      '<button class="shopping-check" type="button" aria-label="Отметить купленным" onclick="toggleShoppingItem(\'' + item.id + '\')">✓</button>' +
+      '<div><div class="shopping-name">' + escapeHtml(item.name) + '</div>' +
+        (item.sourceRecipe ? '<div class="shopping-source">Из рецепта: ' + escapeHtml(item.sourceRecipe) + '</div>' : '') +
+      '</div>' +
+      '<button class="shopping-remove" type="button" aria-label="Удалить" onclick="removeShoppingItem(\'' + item.id + '\')">×</button>' +
+    '</div>'
+  ).join('');
+}
+
+function addRecipeMissingToShopping(index) {
+  const recipe = fridgeRecipes[index];
+  if (!recipe) return;
+  const added = addToShoppingList(recipe.missingIngredients || [], recipe.name || '');
+  toast(added ? 'Добавлено в список покупок' : 'Эти продукты уже есть в списке');
+}
+
+async function loadFrequentFoods() {
+  const section = document.getElementById('frequent-foods-section');
+  if (!section) return;
+  if (!UID) { section.hidden = true; return; }
+  try {
+    const res = await fetch(API + '/api/frequent-foods/' + UID);
+    const data = await res.json();
+    frequentFoods = res.ok && data.ok ? (data.items || []) : [];
+  } catch (e) {
+    frequentFoods = [];
+  }
+  section.hidden = false;
+  renderFrequentFoods();
+}
+
+function renderFrequentFoods() {
+  const container = document.getElementById('frequent-foods-list');
+  if (!container) return;
+  if (!frequentFoods.length) {
+    container.innerHTML = '<div class="frequent-food-empty">Когда добавишь несколько блюд, я покажу быстрые повторы.</div>';
+    return;
+  }
+  container.innerHTML = frequentFoods.map((item, index) =>
+    '<div class="frequent-food-card">' +
+      '<div><div class="frequent-food-name">' + escapeHtml(item.name) + '</div>' +
+        '<div class="frequent-food-meta">' + escapeHtml(item.calories || 0) + ' ккал · Б ' + escapeHtml(item.protein || 0) + ' · Ж ' + escapeHtml(item.fat || 0) + ' · У ' + escapeHtml(item.carbs || 0) + '</div>' +
+        '<div class="frequent-food-count">' + escapeHtml(item.count || 0) + ' раз</div></div>' +
+      '<button class="frequent-food-add" type="button" onclick="addFrequentFoodAgain(' + index + ', this)">Добавить снова</button>' +
+    '</div>'
+  ).join('');
+}
+
+async function addFrequentFoodAgain(index, button) {
+  const item = frequentFoods[index];
+  if (!item) return;
+  if (!UID) { toast('Открой в Telegram'); return; }
+  if (button) button.disabled = true;
+  try {
+    const res = await fetch(API + '/api/frequent-foods/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: UID, item }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Ошибка добавления');
+    toast('Добавлено в дневник');
+    await loadDiary();
+    await loadFrequentFoods();
+    pulseTodayCard();
+  } catch (e) {
+    toast('Не удалось добавить блюдо');
+    if (button) button.disabled = false;
+  }
 }
 
 function updateRing(eaten, norm) {
@@ -2457,6 +2766,11 @@ async function saveFood() {
   const p = parseFloat(document.getElementById('f-p').value)||0;
   const f = parseFloat(document.getElementById('f-f').value)||0;
   const c = parseFloat(document.getElementById('f-c').value)||0;
+  const gramsGroup = document.getElementById('grams-group');
+  const gramsValue = document.getElementById('f-grams').value;
+  const portion = gramsGroup && gramsGroup.style.display !== 'none' && gramsValue
+    ? gramsValue + ' г'
+    : null;
   if (!name) { toast('Введи название'); return; }
   if (!kcal) { toast('Введи калории'); return; }
   const uid = tg.initDataUnsafe?.user?.id;
@@ -2464,7 +2778,7 @@ async function saveFood() {
   try {
     const res = await fetch(API+'/api/diary/add', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({user_id:uid, meal_name:name, calories:kcal, protein:p, fat:f, carbs:c, meal_type:selMealType})
+      body: JSON.stringify({user_id:uid, meal_name:name, calories:kcal, protein:p, fat:f, carbs:c, portion:portion, meal_type:selMealType})
     });
     if (res.ok) {
       toast('✓ Записано!');
@@ -2493,10 +2807,17 @@ async function saveWeight() {
 function fridgeText() {
   const text = document.getElementById('fridge-text').value.trim();
   if (!text) { toast('Введи продукты'); return; }
-  try {
-    tg.sendData(JSON.stringify({action:'fridge_text', text:'🧊 У меня есть: '+text+'. Подбери рецепт'}));
-    tg.close();
-  } catch(e) { toast('Открой в Telegram'); }
+  fridgeProducts = text.split(',')
+    .map(name => name.trim())
+    .filter(Boolean)
+    .slice(0, 30)
+    .map(name => ({ name, confidence: 1, needsConfirmation: false }));
+  if (!fridgeProducts.length) { toast('Введи продукты'); return; }
+  fridgeRecipes = [];
+  photoMode = 'fridge';
+  hideOverlay('fridge');
+  showOverlay('photo');
+  renderFridgeResult();
 }
 
 async function addFavToDiary(favId) {
@@ -2902,12 +3223,14 @@ async function calcFoodByAI() {
 async function init() {
   const uid = tg.initDataUnsafe?.user?.id;
   renderRecipes();
+  renderShoppingList();
   if (!uid) { renderDiary(); return; }
   try {
     const res = await fetch(API+'/api/user/'+uid);
     if (res.ok) { USER = await res.json(); renderProfile(); }
   } catch(e) {}
   await loadDiary();
+  await loadFrequentFoods();
   try {
     const [wRes, fRes] = await Promise.all([
       fetch(API+'/api/week/'+uid),
