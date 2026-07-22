@@ -48,20 +48,20 @@ body{background:
   animation:progressOrbRotate 9s linear infinite;
   background:
     radial-gradient(circle at 32% 26%, rgba(255,255,255,.30), transparent 30%),
-    conic-gradient(from 210deg, #8FD66B 0deg, #C8FF9A var(--progress-deg,0deg), rgba(255,255,255,.07) var(--progress-deg,0deg), rgba(255,255,255,.07) 360deg);
+    conic-gradient(from 210deg, var(--ring-color-a,#8FD66B) 0deg, var(--ring-color-b,#C8FF9A) var(--progress-deg,0deg), rgba(255,255,255,.07) var(--progress-deg,0deg), rgba(255,255,255,.07) 360deg);
   box-shadow:
     inset 0 2px 8px rgba(255,255,255,.2),
     inset 0 -12px 20px rgba(0,0,0,.4),
-    0 14px 30px rgba(126,217,87,.16),
-    0 0 0 1px rgba(143,214,107,.16)}
+    0 14px 30px var(--ring-glow, rgba(126,217,87,.16)),
+    0 0 0 1px var(--ring-outline, rgba(143,214,107,.16))}
 .progressOrb::before{content:'';position:absolute;inset:11px;border-radius:inherit;
   background:radial-gradient(circle at 35% 25%, rgba(255,255,255,.1), transparent 34%), linear-gradient(180deg,#1c1f19,#12140f);
   box-shadow:inset 0 2px 8px rgba(255,255,255,.06), inset 0 -10px 16px rgba(0,0,0,.5)}
 .progressOrb.over-goal{box-shadow:
     inset 0 2px 8px rgba(255,255,255,.2),
     inset 0 -12px 20px rgba(0,0,0,.4),
-    0 14px 30px rgba(224,168,93,.24),
-    0 0 0 1px rgba(224,168,93,.26)}
+    0 14px 30px var(--ring-glow, rgba(224,168,93,.24)),
+    0 0 0 1px var(--ring-outline, rgba(224,168,93,.26))}
 @keyframes progressOrbRotate{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
 @media (prefers-reduced-motion: reduce){.progressOrb{animation:none}}
 .ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2}
@@ -81,6 +81,33 @@ body{background:
 .remainingBadge.mid{color:#F0CF7A;background:rgba(240,207,122,.12);border-color:rgba(240,207,122,.24)}
 .remainingBadge.done{color:#E8FFC8;background:rgba(143,214,107,.18);border-color:rgba(200,255,154,.32);box-shadow:0 0 20px rgba(143,214,107,.14)}
 .remainingBadge.over{color:#F0CF7A;background:rgba(201,120,53,.14);border-color:rgba(240,207,122,.28)}
+/* CALORIE STATE — normal/near-goal/over-goal/danger на карточке "Съедено сегодня" */
+.calorieStatePill{display:inline-flex;align-items:center;height:19px;margin-top:8px;padding:0 9px;
+  border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.03em;white-space:nowrap;
+  color:#C8FF9A;background:rgba(143,214,107,.10);border:1px solid rgba(143,214,107,.22);
+  transition:color .25s,background .25s,border-color .25s}
+.calorieStatePill.state-near-goal{color:#F0CF7A;background:rgba(216,179,94,.12);border-color:rgba(216,179,94,.26)}
+.calorieStatePill.state-over-goal{color:#FFD08A;background:rgba(255,154,74,.13);border-color:rgba(255,154,74,.28)}
+.calorieStatePill.state-danger{color:#FFB3B3;background:rgba(255,82,82,.14);border-color:rgba(255,82,82,.32)}
+.ring-card.state-near-goal{border-color:rgba(240,207,122,.34);
+  box-shadow:0 20px 48px rgba(0,0,0,.32), 0 0 28px rgba(240,207,122,.12), inset 0 1px 0 rgba(255,255,255,.06)}
+.ring-card.state-over-goal{border-color:rgba(255,154,74,.38);
+  box-shadow:0 20px 52px rgba(0,0,0,.34), 0 0 34px rgba(255,154,74,.15), inset 0 1px 0 rgba(255,255,255,.06);
+  animation:calorieOverPulse 2.6s ease-in-out infinite}
+.ring-card.state-danger{border-color:rgba(255,82,82,.48);
+  box-shadow:0 20px 56px rgba(0,0,0,.36), 0 0 38px rgba(255,82,82,.22), inset 0 1px 0 rgba(255,255,255,.07);
+  animation:calorieDangerPulse 2.3s ease-in-out infinite}
+@keyframes calorieOverPulse{
+  0%,100%{transform:translateZ(0);box-shadow:0 20px 52px rgba(0,0,0,.34), 0 0 26px rgba(255,154,74,.12)}
+  50%{transform:translateY(-1px);box-shadow:0 24px 58px rgba(0,0,0,.38), 0 0 38px rgba(255,154,74,.22)}
+}
+@keyframes calorieDangerPulse{
+  0%,100%{transform:translateZ(0);box-shadow:0 20px 56px rgba(0,0,0,.36), 0 0 28px rgba(255,82,82,.18)}
+  50%{transform:translateY(-1px);box-shadow:0 26px 64px rgba(0,0,0,.42), 0 0 48px rgba(255,82,82,.32)}
+}
+@media (prefers-reduced-motion: reduce){
+  .ring-card.state-over-goal, .ring-card.state-danger{animation:none !important}
+}
 .macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .macro{position:relative;background:rgba(255,255,255,0.045);border-radius:var(--rs);padding:11px 6px 9px;text-align:center;border:1px solid rgba(255,255,255,0.06);overflow:hidden}
 .macro-val{font-size:17px;font-weight:800;color:#C8FF9A;text-shadow:0 0 14px rgba(143,214,107,.28)}
@@ -95,6 +122,7 @@ body{background:
 .ai-summary-card.tone-protein::before{background:#AFC6FF}
 .ai-summary-card.tone-low::before{background:var(--red)}
 .ai-summary-card.tone-amber::before{background:#E0A05D}
+.ai-summary-card.tone-danger::before{background:#FF5252}
 .ai-summary-icon{flex-shrink:0;width:28px;height:28px;border-radius:9px;background:rgba(143,214,107,.10);
   border:1px solid rgba(143,214,107,.22);display:flex;align-items:center;justify-content:center;color:#8FD66B}
 .ai-summary-icon svg{width:15px;height:15px}
@@ -1033,6 +1061,7 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
         <div class="ring-num" id="kcal-eaten">0</div>
         <div class="ring-sub">из <span id="kcal-norm">2000</span> ккал</div>
         <div class="ring-badge remainingBadge low" id="kcal-badge">осталось 2000</div>
+        <div class="calorieStatePill state-normal" id="calorie-state-pill">в процессе</div>
       </div>
     </div>
     <div class="macros">
@@ -2455,18 +2484,63 @@ async function addFrequentFoodAgain(index, button) {
   }
 }
 
+// 4 состояния блока "Съедено сегодня" по % от нормы. Ровно 100% — ещё не danger,
+// достижение нормы не ошибка (см. задачу).
+function getCalorieState(eaten, norm) {
+  if (!norm || norm <= 0) return 'normal';
+  const pct = eaten / norm;
+  if (pct >= 1.11) return 'danger';
+  if (pct > 1.00) return 'over-goal';
+  if (pct >= 0.85) return 'near-goal';
+  return 'normal';
+}
+
+const CALORIE_STATE_META = {
+  'normal':    { label: 'в процессе',        colorA: '#8FD66B', colorB: '#C8FF9A', glow: 'rgba(126,217,87,.16)', outline: 'rgba(143,214,107,.16)' },
+  'near-goal': { label: 'почти норма',        colorA: '#D8B35E', colorB: '#F0CF7A', glow: 'rgba(216,179,94,.20)', outline: 'rgba(216,179,94,.26)' },
+  'over-goal': { label: 'норма превышена',    colorA: '#FF9A4A', colorB: '#FFD08A', glow: 'rgba(255,154,74,.22)', outline: 'rgba(255,154,74,.28)' },
+  'danger':    { label: 'сильное превышение', colorA: '#FF5252', colorB: '#FF9A9A', glow: 'rgba(255,82,82,.28)', outline: 'rgba(255,82,82,.34)' },
+};
+
+// Ставит state-класс + CSS-переменные цвета кольца на карточку (переменные наследуются
+// вниз на #progress-orb — его conic-gradient их и использует) + обновляет маленькую пилюлю статуса.
+function updateCalorieState(eaten, norm) {
+  const state = getCalorieState(eaten, norm);
+  const meta = CALORIE_STATE_META[state];
+  const card = document.getElementById('today-card');
+  if (card) {
+    card.classList.remove('state-normal', 'state-near-goal', 'state-over-goal', 'state-danger');
+    card.classList.add('state-' + state);
+    card.style.setProperty('--ring-color-a', meta.colorA);
+    card.style.setProperty('--ring-color-b', meta.colorB);
+    card.style.setProperty('--ring-glow', meta.glow);
+    card.style.setProperty('--ring-outline', meta.outline);
+  }
+  const pill = document.getElementById('calorie-state-pill');
+  if (pill) {
+    pill.textContent = meta.label;
+    pill.classList.remove('state-normal', 'state-near-goal', 'state-over-goal', 'state-danger');
+    pill.classList.add('state-' + state);
+  }
+  return state;
+}
+
 function updateRing(eaten, norm) {
-  const pct = Math.min(100, Math.max(0, Math.round(eaten / norm * 100)));
+  // Кольцо визуально не крутим дальше 100% — цвет меняет состояние, не переполнение дуги.
+  const ringPct = Math.min(100, Math.max(0, Math.round(eaten / norm * 100)));
+  // Текст показывает реальный процент — 112%, 130% и т.д., без обрезки.
+  const displayPct = Math.max(0, Math.round(eaten / norm * 100));
   const orb = document.getElementById('progress-orb');
   if (orb) {
-    orb.style.setProperty('--progress', pct);
-    orb.style.setProperty('--progress-deg', (pct * 3.6) + 'deg');
+    orb.style.setProperty('--progress', ringPct);
+    orb.style.setProperty('--progress-deg', (ringPct * 3.6) + 'deg');
     orb.classList.toggle('over-goal', eaten > norm);
   }
-  document.getElementById('ring-pct').textContent = pct + '%';
+  document.getElementById('ring-pct').textContent = displayPct + '%';
   document.getElementById('kcal-eaten').textContent = eaten.toLocaleString('ru');
   document.getElementById('kcal-norm').textContent = norm.toLocaleString('ru');
   updateRemainingBadge(eaten, norm);
+  updateCalorieState(eaten, norm);
 }
 
 // Живая пилюля "Осталось ..." — мягко меняет тон по ходу дня, без агрессивного красного.
@@ -2531,8 +2605,13 @@ function getAiDaySummary(eaten, norm, protein, fat, carbs) {
   const pct = norm > 0 ? eaten / norm : 0;
   const proteinGoal = Math.max(1, Math.round((norm * 0.30) / 4));
 
-  if (pct > 1.05) {
-    return { text: 'Норма уже закрыта. Можно остановиться на лёгком белковом перекусе или просто завершить день.', tone: 'amber' };
+  // 111%+ — заметное превышение. Мягко, без слова "опасность" в тексте (только в коде/CSS).
+  if (pct > 1.10) {
+    return { text: 'Сегодня калорий заметно больше нормы. Лучше остановиться на лёгких напитках без калорий и завтра вернуться к плану.', tone: 'danger' };
+  }
+  // 101-110% — небольшое превышение, ничего страшного.
+  if (pct > 1.0) {
+    return { text: 'Норма немного превышена. Ничего страшного — завтра можно выровнять день более лёгким завтраком и прогулкой.', tone: 'amber' };
   }
   if (protein < proteinGoal * 0.5 && eaten > 300) {
     return { text: 'Белка пока мало. На следующий приём лучше выбрать творог, яйца, рыбу или курицу.', tone: 'protein' };
@@ -2552,7 +2631,7 @@ function updateAiSummary(eaten, norm, protein, fat, carbs) {
   if (!card || !textEl) return;
   const s = getAiDaySummary(eaten, norm, protein, fat, carbs);
   textEl.textContent = s.text;
-  card.classList.remove('tone-neutral', 'tone-good', 'tone-protein', 'tone-low', 'tone-amber');
+  card.classList.remove('tone-neutral', 'tone-good', 'tone-protein', 'tone-low', 'tone-amber', 'tone-danger');
   card.classList.add('tone-' + s.tone);
 }
 
