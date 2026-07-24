@@ -114,20 +114,32 @@ body{background:
 .macro-name{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
 .macro-bar{height:3px;border-radius:999px;background:rgba(255,255,255,0.06);margin-top:6px;overflow:hidden}
 .macro-fill{height:100%;border-radius:999px;transition:width 0.45s ease;background:linear-gradient(90deg,#3E8F45,#8FD66B,#C8FF9A);box-shadow:0 0 12px rgba(143,214,107,.22)}
-/* AI-ИТОГ ДНЯ */
-.ai-summary-card{display:flex;align-items:flex-start;gap:11px;background:var(--bg2);border-radius:var(--r-xl);
-  border:1px solid rgba(216,179,94,0.22);padding:13px 15px;margin-bottom:10px;position:relative;overflow:hidden}
-.ai-summary-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);opacity:.6}
-.ai-summary-card.tone-good::before{background:#8FD66B}
-.ai-summary-card.tone-protein::before{background:#AFC6FF}
-.ai-summary-card.tone-low::before{background:var(--red)}
-.ai-summary-card.tone-amber::before{background:#E0A05D}
-.ai-summary-card.tone-danger::before{background:#FF5252}
+/* AI-ИТОГ ДНЯ — цельная glass-card, состояние передаём мягко (иконка/пилюля/glow), без alert-полосы */
+.ai-summary-card{display:flex;align-items:flex-start;gap:11px;border-radius:var(--r-xl);
+  border:1px solid rgba(216,179,94,.18);padding:13px 15px;margin-bottom:10px;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(143,214,107,.08), transparent 34%),
+    radial-gradient(circle at 92% 20%, rgba(216,179,94,.06), transparent 36%),
+    linear-gradient(180deg, rgba(26,28,24,.92), rgba(14,15,13,.92));
+  box-shadow:0 18px 42px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.06)}
 .ai-summary-icon{flex-shrink:0;width:28px;height:28px;border-radius:9px;background:rgba(143,214,107,.10);
-  border:1px solid rgba(143,214,107,.22);display:flex;align-items:center;justify-content:center;color:#8FD66B}
+  border:1px solid rgba(143,214,107,.22);display:flex;align-items:center;justify-content:center;color:#8FD66B;
+  transition:color .25s,background .25s,border-color .25s}
 .ai-summary-icon svg{width:15px;height:15px}
+.ai-summary-card.tone-low .ai-summary-icon{background:rgba(240,207,122,.10);border-color:rgba(240,207,122,.22);color:#F0CF7A}
+.ai-summary-card.tone-protein .ai-summary-icon{background:rgba(175,198,255,.10);border-color:rgba(175,198,255,.22);color:#AFC6FF}
+.ai-summary-card.tone-amber .ai-summary-icon,
+.ai-summary-card.tone-danger .ai-summary-icon{background:rgba(255,154,74,.12);border-color:rgba(255,154,74,.26);color:#FFD08A}
 .ai-summary-body{flex:1;min-width:0}
-.ai-summary-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:3px;font-weight:600}
+.ai-summary-label-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.ai-summary-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:600}
+.ai-summary-pill{display:inline-flex;align-items:center;height:16px;padding:0 7px;border-radius:999px;
+  font-size:9px;font-weight:700;letter-spacing:.02em;white-space:nowrap;
+  color:#C8FF9A;background:rgba(143,214,107,.10);border:1px solid rgba(143,214,107,.2);
+  transition:color .25s,background .25s,border-color .25s}
+.ai-summary-pill[hidden]{display:none}
+.ai-summary-pill.state-low{color:#F0CF7A;background:rgba(240,207,122,.10);border-color:rgba(240,207,122,.22)}
+.ai-summary-pill.state-over{color:#FFD08A;background:rgba(255,154,74,.12);border-color:rgba(255,154,74,.24)}
 .ai-summary-text{font-size:12.5px;line-height:1.45;color:var(--text2)}
 .meal-added-pulse{animation:mealAddedPulse .9s ease-out}
 .meal-added-pulse::after{content:'';position:absolute;inset:0;border-radius:inherit;
@@ -1073,7 +1085,10 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
   <div class="ai-summary-card tone-neutral" id="ai-summary-card">
     <div class="ai-summary-icon"><svg><use href="#ic-brain"/></svg></div>
     <div class="ai-summary-body">
-      <div class="ai-summary-label">AI-итог дня</div>
+      <div class="ai-summary-label-row">
+        <div class="ai-summary-label">AI-итог дня</div>
+        <div class="ai-summary-pill" id="ai-summary-pill" hidden></div>
+      </div>
       <div class="ai-summary-text" id="ai-summary-text">Начни с первого приёма — я соберу итог дня автоматически.</div>
     </div>
   </div>
@@ -2628,11 +2643,25 @@ function getAiDaySummary(eaten, norm, protein, fat, carbs) {
 function updateAiSummary(eaten, norm, protein, fat, carbs) {
   const card = document.getElementById('ai-summary-card');
   const textEl = document.getElementById('ai-summary-text');
+  const pillEl = document.getElementById('ai-summary-pill');
   if (!card || !textEl) return;
   const s = getAiDaySummary(eaten, norm, protein, fat, carbs);
   textEl.textContent = s.text;
   card.classList.remove('tone-neutral', 'tone-good', 'tone-protein', 'tone-low', 'tone-amber', 'tone-danger');
   card.classList.add('tone-' + s.tone);
+
+  if (pillEl) {
+    if (!DIARY.length) {
+      pillEl.hidden = true;
+    } else {
+      const pillState = s.tone === 'low' ? 'low' : (s.tone === 'amber' || s.tone === 'danger') ? 'over' : 'normal';
+      const pillText = { low: 'низко', over: 'выше нормы', normal: 'ровно' }[pillState];
+      pillEl.hidden = false;
+      pillEl.textContent = pillText;
+      pillEl.classList.remove('state-low', 'state-over');
+      if (pillState !== 'normal') pillEl.classList.add('state-' + pillState);
+    }
+  }
 }
 
 // Короткий зелёный success-эффект на карточке "Съедено сегодня" после добавления еды.
