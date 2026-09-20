@@ -1803,9 +1803,11 @@ function showOverlay(name) {
   document.getElementById('ov-' + name).classList.add('active');
   if (name === 'specialists') loadSpecialists();
   if (name === 'conditions') initConditions();
-  if (name === 'cycle') renderCycleOverlay();
-  if (name === 'anna-tone') renderAnnaToneOverlay();
-  if (name === 'water') renderWaterOverlay();
+  // Рендерим сразу из кэша (мгновенно, без пустого экрана), затем подтягиваем
+  // свежие данные — на случай, если что-то изменили в боте, пока мини-апп был открыт.
+  if (name === 'cycle') { renderCycleOverlay(); reloadUser().then(renderCycleOverlay); }
+  if (name === 'anna-tone') { renderAnnaToneOverlay(); reloadUser().then(renderAnnaToneOverlay); }
+  if (name === 'water') { renderWaterOverlay(); reloadUser().then(function(){ renderWaterOverlay(); updateWaterRing(); }); }
 }
 
 function hideOverlay(name) {
