@@ -1292,6 +1292,11 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
         <div><div class="profile-menu-title">Стиль Анны</div><div class="profile-menu-subtitle">Как AI-нутрициолог с тобой говорит</div></div>
         <span class="profile-menu-chevron">›</span>
       </div>
+      <div class="profile-menu-item" onclick="showOverlay('water')">
+        <span class="profile-menu-icon tone-muted">💧</span>
+        <div><div class="profile-menu-title">Вода</div><div class="profile-menu-subtitle">Прогресс за сегодня, быстрое добавление</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
       <div class="profile-menu-item" onclick="botAction('toggle_reminders')">
         <span class="profile-menu-icon tone-muted"><svg><use href="#ic-bell"/></svg></span>
         <div><div class="profile-menu-title">Напоминания</div></div>
@@ -1526,6 +1531,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 <div class="overlay" id="ov-anna-tone">
   <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('anna-tone')">&larr;</div><div class="ov-title">🎭 Стиль Анны</div></div>
   <div id="anna-tone-content"></div>
+</div>
+
+<!-- WATER OVERLAY -->
+<div class="overlay" id="ov-water">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('water')">&larr;</div><div class="ov-title">💧 Вода</div></div>
+  <div id="water-content"></div>
 </div>
 
 <!-- MOOD DIARY OVERLAY -->
@@ -1774,6 +1785,7 @@ function showOverlay(name) {
   if (name === 'conditions') initConditions();
   if (name === 'cycle') renderCycleOverlay();
   if (name === 'anna-tone') renderAnnaToneOverlay();
+  if (name === 'water') renderWaterOverlay();
 }
 
 function hideOverlay(name) {
@@ -3347,6 +3359,7 @@ function renderCycleOverlay() {
         '🎯 ' + ph.tips.goal + '<br><br>' +
         '🥗 <b>Нутриенты:</b> ' + ph.tips.nutrients + '<br><br>' +
         '🏋️ <b>Тренировки:</b> ' + ph.tips.training +
+        (ph.tips.hydration ? ('<br><br>💧 ' + ph.tips.hydration) : '') +
         '</div>' +
         '<button class="btn btn-sec" onclick="cycleToday()">🩸 Начались сегодня</button>' +
         '<div class="form-group" style="margin-top:12px"><label class="form-lbl">Длина цикла (дней)</label>' +
@@ -3393,6 +3406,65 @@ async function annaToneSave(tone) {
     USER.anna_tone = tone;
     toast('Сохранено: ' + (ANNA_TONES.find(function(t){return t.id===tone;})||{}).label);
     renderAnnaToneOverlay();
+  } catch(e) { toast('Ошибка'); }
+}
+
+function renderWaterOverlay() {
+  var el = document.getElementById('water-content');
+  if (!el) return;
+  var goal = USER.water_goal_ml || 2450;
+  var drunk = USER.water_today_ml || 0;
+  var pct = goal ? Math.min(100, Math.round(100 * drunk / goal)) : 0;
+  el.innerHTML =
+    '<div class="card" style="margin-bottom:14px">' +
+    '<div style="height:10px;border-radius:6px;background:var(--bg2);overflow:hidden;margin-bottom:8px">' +
+    '<div style="height:100%;width:' + pct + '%;background:var(--gold);border-radius:6px"></div></div>' +
+    '<div style="font-size:20px;font-weight:700">' + drunk + ' / ' + goal + ' мл</div>' +
+    '<div style="font-size:12px;color:var(--text2)">' + pct + '%</div>' +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">' +
+    '<button class="btn btn-sec" onclick="waterAdd(150)">+150 мл ☕️</button>' +
+    '<button class="btn btn-sec" onclick="waterAdd(250)">+250 мл 🥤</button>' +
+    '<button class="btn btn-sec" onclick="waterAdd(500)">+500 мл 🍾</button>' +
+    '</div>' +
+    '<div class="form-group"><label class="form-lbl">Своё количество (мл)</label>' +
+    '<input class="form-input" id="water-custom-input" type="number" placeholder="300"></div>' +
+    '<button class="btn btn-sec" onclick="waterAddCustom()">Добавить</button>' +
+    '<button class="btn btn-sec" style="margin-top:8px" onclick="waterToggleReminders()">' +
+    (USER.water_reminders_enabled ? '🔔 Напоминания пить: Вкл' : '🔕 Напоминания пить: Выкл') + '</button>';
+}
+
+async function waterAdd(ml) {
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  try {
+    var res = await fetch(API+'/api/water/add', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user_id: uid, ml: ml})});
+    if (!res.ok) throw new Error();
+    var data = await res.json();
+    USER.water_today_ml = data.water_today_ml;
+    toast('+' + ml + ' мл 💧');
+    renderWaterOverlay();
+  } catch(e) { toast('Ошибка'); }
+}
+
+function waterAddCustom() {
+  var val = parseInt(document.getElementById('water-custom-input').value, 10);
+  if (!val || val < 1 || val > 3000) { toast('Введи мл от 1 до 3000'); return; }
+  waterAdd(val);
+}
+
+async function waterToggleReminders() {
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  var newVal = USER.water_reminders_enabled ? 0 : 1;
+  try {
+    var res = await fetch(API+'/api/user/update', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user_id: uid, water_reminders_enabled: newVal})});
+    if (!res.ok) throw new Error();
+    USER.water_reminders_enabled = newVal;
+    toast(newVal ? 'Напоминания включены' : 'Напоминания выключены');
+    renderWaterOverlay();
   } catch(e) { toast('Ошибка'); }
 }
 
