@@ -3389,7 +3389,7 @@ function renderCycleOverlay() {
       var delta = (USER.effective_daily_calories || base) - base;
       var deltaText = delta ? ' (' + (delta > 0 ? '+' : '') + delta + ' ккал к базе)' : '';
       el.innerHTML =
-        '<div class="card" style="margin-bottom:12px">' +
+        '<div class="card" style="margin-bottom:12px;padding:16px">' +
         '<div style="font-size:15px;font-weight:600;margin-bottom:4px">' + ph.phase_ru + ' — день ' + ph.day + ' из ' + ph.cycle_length + '</div>' +
         '<div style="font-size:20px;font-weight:700;color:var(--gold)">' + USER.effective_daily_calories + ' ккал' + '</div>' +
         '<div style="font-size:12px;color:var(--text2)">' + deltaText + '</div>' +
@@ -3455,7 +3455,7 @@ function renderWaterOverlay() {
   var drunk = USER.water_today_ml || 0;
   var pct = goal ? Math.min(100, Math.round(100 * drunk / goal)) : 0;
   el.innerHTML =
-    '<div class="card" style="margin-bottom:14px">' +
+    '<div class="card" style="margin-bottom:14px;padding:16px">' +
     '<div style="height:10px;border-radius:6px;background:var(--bg2);overflow:hidden;margin-bottom:8px">' +
     '<div style="height:100%;width:' + pct + '%;background:var(--gold);border-radius:6px"></div></div>' +
     '<div style="font-size:20px;font-weight:700">' + drunk + ' / ' + goal + ' мл</div>' +
