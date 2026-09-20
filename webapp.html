@@ -1282,6 +1282,11 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
         <div><div class="profile-menu-title">Особые состояния здоровья</div></div>
         <span class="profile-menu-chevron">›</span>
       </div>
+      <div class="profile-menu-item" onclick="showOverlay('cycle')">
+        <span class="profile-menu-icon tone-muted">🌙</span>
+        <div><div class="profile-menu-title">Мой цикл</div><div class="profile-menu-subtitle">Норма и советы под фазу цикла</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
       <div class="profile-menu-item" onclick="botAction('toggle_reminders')">
         <span class="profile-menu-icon tone-muted"><svg><use href="#ic-bell"/></svg></span>
         <div><div class="profile-menu-title">Напоминания</div></div>
@@ -1504,6 +1509,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
   <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Отметь — ИИ будет учитывать при составлении меню</div>
   <div class="card" id="conditions-list"></div>
   <button class="btn" style="margin-top:8px" onclick="saveConditions()">&#10003; Сохранить</button>
+</div>
+
+<!-- CYCLE OVERLAY -->
+<div class="overlay" id="ov-cycle">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('cycle')">&larr;</div><div class="ov-title">🌙 Мой цикл</div></div>
+  <div id="cycle-content"></div>
 </div>
 
 <!-- MOOD DIARY OVERLAY -->
@@ -1750,6 +1761,7 @@ function showOverlay(name) {
   document.getElementById('ov-' + name).classList.add('active');
   if (name === 'specialists') loadSpecialists();
   if (name === 'conditions') initConditions();
+  if (name === 'cycle') renderCycleOverlay();
 }
 
 function hideOverlay(name) {
@@ -2923,7 +2935,11 @@ function renderProfile() {
   document.getElementById('streak-val').textContent = USER.streak||0;
   const insightEl = document.getElementById('profile-insight-text');
   if (insightEl) {
-    insightEl.textContent = 'AI ведёт цель: ' + (GOAL_LABELS[USER.goal]||USER.goal||'—') + ' · норма ' + (USER.daily_calories||2000) + ' ккал';
+    let insight = 'AI ведёт цель: ' + (GOAL_LABELS[USER.goal]||USER.goal||'—') + ' · норма ' + (USER.daily_calories||2000) + ' ккал';
+    if (USER.cycle_phase) {
+      insight += ' · 🌙 ' + USER.cycle_phase.phase_ru + ' (день ' + USER.cycle_phase.day + ') → ' + USER.effective_daily_calories + ' ккал';
+    }
+    insightEl.textContent = insight;
   }
 }
 
@@ -3229,6 +3245,104 @@ async function saveConditions() {
     if (res.ok) { USER.health_conditions = val; toast('Сохранено!'); hideOverlay('conditions'); }
     else throw new Error();
   } catch(e) { toast('Ошибка'); }
+}
+
+async function reloadUser() {
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) return;
+  try {
+    var res = await fetch(API+'/api/user/'+uid);
+    if (res.ok) { USER = await res.json(); renderProfile(); }
+  } catch(e) {}
+}
+
+async function cycleUpdate(fields) {
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) { toast('Открой в Telegram'); return false; }
+  try {
+    var res = await fetch(API+'/api/user/update', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(Object.assign({user_id: uid}, fields))});
+    if (!res.ok) throw new Error();
+    await reloadUser();
+    return true;
+  } catch(e) { toast('Ошибка'); return false; }
+}
+
+async function cycleEnable() {
+  if (await cycleUpdate({cycle_tracking_enabled: 1})) renderCycleOverlay();
+}
+
+async function cycleDisable() {
+  if (await cycleUpdate({cycle_tracking_enabled: 0})) renderCycleOverlay();
+}
+
+async function cycleToday() {
+  var today = new Date().toISOString().slice(0, 10);
+  if (await cycleUpdate({last_period_date: today})) { toast('Отмечено'); renderCycleOverlay(); }
+}
+
+async function cycleSaveDate() {
+  var val = document.getElementById('cycle-date-input').value;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(val || '')) { toast('Формат ГГГГ-ММ-ДД'); return; }
+  if (val > new Date().toISOString().slice(0, 10)) { toast('Дата не может быть в будущем'); return; }
+  if (await cycleUpdate({last_period_date: val})) renderCycleOverlay();
+}
+
+async function cycleSaveLength() {
+  var n = parseInt(document.getElementById('cycle-length-input').value, 10);
+  if (!n || n < 15 || n > 45) { toast('Введи число дней от 15 до 45'); return; }
+  if (await cycleUpdate({cycle_length: n})) { toast('Сохранено'); renderCycleOverlay(); }
+}
+
+function renderCycleOverlay() {
+  var el = document.getElementById('cycle-content');
+  if (!el) return;
+  if (!USER.cycle_tracking_enabled) {
+    el.innerHTML =
+      '<div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:14px">' +
+      'Самая недооценённая функция: норма калорий и рекомендации по питанию/тренировкам ' +
+      'сами подстраиваются под фазу цикла.<br><br>' +
+      '🩸 Менструальная — восстановление, акцент на железо<br>' +
+      '🌱 Фолликулярная — энергия, больше белка<br>' +
+      '🌟 Овуляция — антиоксиданты, пик работоспособности<br>' +
+      '🌙 Лютеиновая — норма +100-300 ккал вместо запрета тяги, фокус на сложных углеводах и магнии' +
+      '</div>' +
+      '<button class="btn" onclick="cycleEnable()">✓ Включить</button>';
+  } else if (!USER.last_period_date) {
+    el.innerHTML =
+      '<div style="font-size:13px;color:var(--text2);margin-bottom:12px">Укажи дату начала последних месячных.</div>' +
+      '<button class="btn" onclick="cycleToday()">🩸 Начались сегодня</button>' +
+      '<div class="form-group" style="margin-top:12px"><label class="form-lbl">Или другая дата (ГГГГ-ММ-ДД)</label>' +
+      '<input class="form-input" id="cycle-date-input" type="date"></div>' +
+      '<button class="btn btn-sec" onclick="cycleSaveDate()">Сохранить дату</button>' +
+      '<button class="btn btn-sec" style="margin-top:8px" onclick="cycleDisable()">Выключить</button>';
+  } else {
+    var ph = USER.cycle_phase;
+    if (!ph) {
+      el.innerHTML = '<div style="font-size:13px;color:var(--text2)">Не получилось определить фазу — укажи дату заново.</div>' +
+        '<button class="btn" style="margin-top:12px" onclick="cycleToday()">🩸 Начались сегодня</button>';
+    } else {
+      var base = USER.daily_calories || 2000;
+      var delta = (USER.effective_daily_calories || base) - base;
+      var deltaText = delta ? ' (' + (delta > 0 ? '+' : '') + delta + ' ккал к базе)' : '';
+      el.innerHTML =
+        '<div class="card" style="margin-bottom:12px">' +
+        '<div style="font-size:15px;font-weight:600;margin-bottom:4px">' + ph.phase_ru + ' — день ' + ph.day + ' из ' + ph.cycle_length + '</div>' +
+        '<div style="font-size:20px;font-weight:700;color:var(--gold)">' + USER.effective_daily_calories + ' ккал' + '</div>' +
+        '<div style="font-size:12px;color:var(--text2)">' + deltaText + '</div>' +
+        '</div>' +
+        '<div style="font-size:13px;line-height:1.6;margin-bottom:14px">' +
+        '🎯 ' + ph.tips.goal + '<br><br>' +
+        '🥗 <b>Нутриенты:</b> ' + ph.tips.nutrients + '<br><br>' +
+        '🏋️ <b>Тренировки:</b> ' + ph.tips.training +
+        '</div>' +
+        '<button class="btn btn-sec" onclick="cycleToday()">🩸 Начались сегодня</button>' +
+        '<div class="form-group" style="margin-top:12px"><label class="form-lbl">Длина цикла (дней)</label>' +
+        '<input class="form-input" id="cycle-length-input" type="number" value="' + (USER.cycle_length || 28) + '"></div>' +
+        '<button class="btn btn-sec" onclick="cycleSaveLength()">Сохранить длину цикла</button>' +
+        '<button class="btn btn-sec" style="margin-top:8px" onclick="cycleDisable()">Выключить</button>';
+    }
+  }
 }
 
 let selMoodStateVal = '';
