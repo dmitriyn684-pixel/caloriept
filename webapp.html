@@ -81,6 +81,12 @@ body{background:
 .remainingBadge.mid{color:#F0CF7A;background:rgba(240,207,122,.12);border-color:rgba(240,207,122,.24)}
 .remainingBadge.done{color:#E8FFC8;background:rgba(143,214,107,.18);border-color:rgba(200,255,154,.32);box-shadow:0 0 20px rgba(143,214,107,.14)}
 .remainingBadge.over{color:#F0CF7A;background:rgba(201,120,53,.14);border-color:rgba(240,207,122,.28)}
+/* WATER RING — тот же .progressOrb/.ring-card механизм, просто синяя палитра вместо золотой */
+.progressOrb.water-orb{--ring-color-a:#4C9CFF;--ring-color-b:#B8E0FF;--ring-glow:rgba(76,156,255,.18);--ring-outline:rgba(76,156,255,.18)}
+.ring-pct.water-pct{color:#B8E0FF;text-shadow:0 0 14px rgba(76,156,255,.45)}
+.ring-badge.water-badge{color:#B8E0FF;background:rgba(76,156,255,.12);border-color:rgba(76,156,255,.26)}
+#water-ring-card{border-color:rgba(76,156,255,.28);cursor:pointer}
+#water-ring-card .ring-num{color:#DCEEFF}
 /* CALORIE STATE — normal/near-goal/over-goal/danger на карточке "Съедено сегодня" */
 .calorieStatePill{display:inline-flex;align-items:center;height:19px;margin-top:8px;padding:0 9px;
   border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.03em;white-space:nowrap;
@@ -1080,6 +1086,20 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
       <div class="macro"><div class="macro-val" id="m-p">0г</div><div class="macro-name">Белки</div><div class="macro-bar"><div class="macro-fill" id="bar-p" style="width:0%"></div></div></div>
       <div class="macro"><div class="macro-val" id="m-f">0г</div><div class="macro-name">Жиры</div><div class="macro-bar"><div class="macro-fill" id="bar-f" style="width:0%"></div></div></div>
       <div class="macro"><div class="macro-val" id="m-c">0г</div><div class="macro-name">Углеводы</div><div class="macro-bar"><div class="macro-fill" id="bar-c" style="width:0%"></div></div></div>
+    </div>
+  </div>
+  <div class="ring-card" id="water-ring-card" onclick="showOverlay('water')" style="margin-bottom:10px">
+    <div class="ring-top">
+      <div class="ring-wrap">
+        <div class="progressOrb water-orb" id="water-progress-orb" style="--progress:0;--progress-deg:0deg"></div>
+        <div class="ring-center"><div class="ring-pct water-pct" id="water-ring-pct">0%</div></div>
+      </div>
+      <div class="ring-info">
+        <div class="ring-lbl-row"><div class="ring-lbl">Вода сегодня</div></div>
+        <div class="ring-num" id="water-ml-drunk">0</div>
+        <div class="ring-sub">из <span id="water-ml-goal">2450</span> мл</div>
+        <div class="ring-badge water-badge" id="water-ring-badge">осталось 2450</div>
+      </div>
     </div>
   </div>
   <div class="ai-summary-card tone-neutral" id="ai-summary-card">
@@ -2613,6 +2633,22 @@ function updateRemainingBadge(eaten, norm) {
   }
 }
 
+function updateWaterRing() {
+  const orb = document.getElementById('water-progress-orb');
+  if (!orb) return;
+  const goal = USER.water_goal_ml || 2450;
+  const drunk = USER.water_today_ml || 0;
+  const ringPct = Math.min(100, Math.max(0, Math.round(drunk / goal * 100)));
+  orb.style.setProperty('--progress', ringPct);
+  orb.style.setProperty('--progress-deg', (ringPct * 3.6) + 'deg');
+  document.getElementById('water-ring-pct').textContent = ringPct + '%';
+  document.getElementById('water-ml-drunk').textContent = drunk.toLocaleString('ru');
+  document.getElementById('water-ml-goal').textContent = goal.toLocaleString('ru');
+  const badge = document.getElementById('water-ring-badge');
+  const remaining = Math.max(0, goal - drunk);
+  badge.textContent = remaining > 0 ? ('осталось ' + remaining + ' мл') : 'норма выполнена';
+}
+
 function updateMacros(p, f, c, norm) {
   document.getElementById('m-p').textContent = Math.round(p) + 'г';
   document.getElementById('m-f').textContent = Math.round(f) + 'г';
@@ -2710,6 +2746,7 @@ function pulseTodayCard() {
 
 function renderDiary() {
   const list = document.getElementById('diary-list');
+  updateWaterRing();
   if (!DIARY.length) {
     list.innerHTML = '';
     updateRing(0, USER.daily_calories || 2000);
@@ -3445,6 +3482,7 @@ async function waterAdd(ml) {
     USER.water_today_ml = data.water_today_ml;
     toast('+' + ml + ' мл 💧');
     renderWaterOverlay();
+    updateWaterRing();
   } catch(e) { toast('Ошибка'); }
 }
 
