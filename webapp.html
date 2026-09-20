@@ -1287,6 +1287,11 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
         <div><div class="profile-menu-title">Мой цикл</div><div class="profile-menu-subtitle">Норма и советы под фазу цикла</div></div>
         <span class="profile-menu-chevron">›</span>
       </div>
+      <div class="profile-menu-item" onclick="showOverlay('anna-tone')">
+        <span class="profile-menu-icon tone-muted">🎭</span>
+        <div><div class="profile-menu-title">Стиль Анны</div><div class="profile-menu-subtitle">Как AI-нутрициолог с тобой говорит</div></div>
+        <span class="profile-menu-chevron">›</span>
+      </div>
       <div class="profile-menu-item" onclick="botAction('toggle_reminders')">
         <span class="profile-menu-icon tone-muted"><svg><use href="#ic-bell"/></svg></span>
         <div><div class="profile-menu-title">Напоминания</div></div>
@@ -1515,6 +1520,12 @@ body.onb-lock .hdr,body.onb-lock .tabs{display:none !important}
 <div class="overlay" id="ov-cycle">
   <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('cycle')">&larr;</div><div class="ov-title">🌙 Мой цикл</div></div>
   <div id="cycle-content"></div>
+</div>
+
+<!-- ANNA TONE OVERLAY -->
+<div class="overlay" id="ov-anna-tone">
+  <div class="ov-hdr"><div class="back-btn" onclick="hideOverlay('anna-tone')">&larr;</div><div class="ov-title">🎭 Стиль Анны</div></div>
+  <div id="anna-tone-content"></div>
 </div>
 
 <!-- MOOD DIARY OVERLAY -->
@@ -1762,6 +1773,7 @@ function showOverlay(name) {
   if (name === 'specialists') loadSpecialists();
   if (name === 'conditions') initConditions();
   if (name === 'cycle') renderCycleOverlay();
+  if (name === 'anna-tone') renderAnnaToneOverlay();
 }
 
 function hideOverlay(name) {
@@ -3343,6 +3355,45 @@ function renderCycleOverlay() {
         '<button class="btn btn-sec" style="margin-top:8px" onclick="cycleDisable()">Выключить</button>';
     }
   }
+}
+
+const ANNA_TONES = [
+  {id: 'supportive', label: '🟢 Мягкая', desc: 'Поддерживает, хвалит за любой прогресс, никогда не давит. Не стыдит за срывы, ищет решение вместе с тобой. Для тех, кому критика демотивирует, а нужна опора.'},
+  {id: 'strict', label: '🔴 Строгая', desc: 'Говорит прямо, без реверансов, требует дисциплины. Указывает на ошибки без прикрас, хвалит только за реальный результат. Для тех, кто хочет результат, а не утешение.'},
+  {id: 'witty', label: '🟡 Ироничная', desc: 'С юмором и лёгкой подколкой, но советы точные. Не читает нотации. Для тех, кто не любит формальности и любит, когда с ним на одной волне.'},
+];
+
+function renderAnnaToneOverlay() {
+  var el = document.getElementById('anna-tone-content');
+  if (!el) return;
+  var active = USER.anna_tone || 'supportive';
+  var html =
+    '<div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:14px">' +
+    'Анна — твой AI-нутрициолог, и то, как она с тобой говорит, реально влияет на то, ' +
+    'останешься ли ты с планом надолго. Выбери стиль, который тебе откликается — ' +
+    'переключить можно в любой момент.</div>';
+  ANNA_TONES.forEach(function(t) {
+    var on = t.id === active;
+    html += '<div class="row" data-tone="' + t.id + '" onclick="annaToneSave(\'' + t.id + '\')" style="margin-bottom:10px">' +
+      '<div class="row-left"><div class="row-text"><div class="row-name">' + t.label + '</div>' +
+      '<div style="font-size:12px;color:var(--text2);margin-top:2px;line-height:1.4">' + t.desc + '</div></div></div>' +
+      '<div style="width:22px;height:22px;flex:0 0 22px;border-radius:50%;border:2px solid ' + (on ? 'var(--gold)' : 'var(--text3)') + ';background:' + (on ? 'var(--gold)' : 'transparent') + '"></div>' +
+      '</div>';
+  });
+  el.innerHTML = html;
+}
+
+async function annaToneSave(tone) {
+  var uid = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+  if (!uid) { toast('Открой в Telegram'); return; }
+  try {
+    var res = await fetch(API+'/api/user/update', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user_id: uid, anna_tone: tone})});
+    if (!res.ok) throw new Error();
+    USER.anna_tone = tone;
+    toast('Сохранено: ' + (ANNA_TONES.find(function(t){return t.id===tone;})||{}).label);
+    renderAnnaToneOverlay();
+  } catch(e) { toast('Ошибка'); }
 }
 
 let selMoodStateVal = '';
