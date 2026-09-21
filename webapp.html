@@ -2082,7 +2082,7 @@ function renderPhotoConfirmation() {
     return (
       '<div class="ring-card" style="margin-bottom:10px;cursor:pointer" onclick="pickPhotoCandidate(' + i + ')">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' +
-          '<div class="photo-result-name" style="margin-bottom:0">' + c.name + '</div>' +
+          '<div class="photo-result-name" style="margin-bottom:0">' + escapeHtml(c.name) + '</div>' +
           '<div style="font-size:11px;color:var(--text2);white-space:nowrap">' + pct + '%</div>' +
         '</div>' +
         '<div style="font-size:11px;color:var(--text2);margin-top:4px">' +
@@ -2759,7 +2759,7 @@ function renderDiary() {
   let html = '<div class="card">';
   DIARY.forEach(r => {
     const col = MEAL_COLORS[r.meal_type] || MEAL_COLORS.other;
-    html += '<div class="row"><div class="row-left"><div class="dot" style="background:'+col+'"></div><div class="row-text"><div class="row-name">'+r.meal_name+'</div><div class="row-meta">'+( r.meal_type||'другое')+'</div></div></div><div class="row-right"><div class="row-val">'+r.calories+'</div><div class="row-unit">ккал</div></div></div>';
+    html += '<div class="row"><div class="row-left"><div class="dot" style="background:'+col+'"></div><div class="row-text"><div class="row-name">'+escapeHtml(r.meal_name)+'</div><div class="row-meta">'+escapeHtml(r.meal_type||'другое')+'</div></div></div><div class="row-right"><div class="row-val">'+escapeHtml(r.calories)+'</div><div class="row-unit">ккал</div></div></div>';
   });
   html += '</div>';
   list.innerHTML = html;
