@@ -447,6 +447,7 @@
 </style>
 <!-- Яндекс Метрика загружается только после согласия на cookie -->
 <script src="/consent.js" defer></script>
+<link rel="stylesheet" href="/wow.css">
 </head>
 <body>
 
@@ -511,6 +512,7 @@
   </div>
 </div>
 
+<div class="marquee" aria-hidden="true"><div class="marquee-skew"><div class="marquee-track"><span>Калории по фото</span><i>✦</i><span>КБЖУ за 10 секунд</span><i>✦</i><span>Норма калорий</span><i>✦</i><span>Дневник питания</span><i>✦</i><span>Меню на неделю</span><i>✦</i><span>Рецепты из холодильника</span><i>✦</i><span>Калории по фото</span><i>✦</i><span>КБЖУ за 10 секунд</span><i>✦</i><span>Норма калорий</span><i>✦</i><span>Дневник питания</span><i>✦</i><span>Меню на неделю</span><i>✦</i><span>Рецепты из холодильника</span><i>✦</i></div></div></div>
 <script>
 function animateCounter(el) {
   const staticVal = el.dataset.static;
@@ -999,6 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </section>
 
+<div class="marquee rev" aria-hidden="true"><div class="marquee-skew"><div class="marquee-track"><span>Ешь осознанно</span><i>✦</i><span>Живи лучше</span><i>✦</i><span>Без приложений</span><i>✦</i><span>Прямо в Telegram</span><i>✦</i><span>24/7 рядом</span><i>✦</i><span>Твой ИИ-диетолог</span><i>✦</i><span>Ешь осознанно</span><i>✦</i><span>Живи лучше</span><i>✦</i><span>Без приложений</span><i>✦</i><span>Прямо в Telegram</span><i>✦</i><span>24/7 рядом</span><i>✦</i><span>Твой ИИ-диетолог</span><i>✦</i></div></div></div>
 <!-- CTA -->
 <section class="cta-section">
   <h2 class="cta-title">Готов начать<br><em>правильно питаться?</em></h2>
@@ -1042,183 +1045,11 @@ document.addEventListener('DOMContentLoaded', () => {
 </footer>
 
 <!-- ── PREMIUM LAYER ── -->
-<style>
-  h1.hero-eyebrow { font-weight: 400; font-family: 'Inter', sans-serif; }
-  .hero-title .line { display: block; overflow: hidden; padding-bottom: .06em; }
-  .hero-title .line > span { display: inline-block; }
-  .hero-bg { will-change: transform; transform-origin: center; }
-
-  /* золотая полоса прогресса */
-  .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 300;
-    background: linear-gradient(90deg, var(--gold), var(--gold-lt)); transform: scaleX(0); transform-origin: left; pointer-events: none; }
-
-  /* плёночное зерно */
-  .grain { position: fixed; inset: -50%; z-index: 250; pointer-events: none; opacity: .045;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grain 1.2s steps(6) infinite; }
-  @keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
-
-  /* навигация сжимается при прокрутке */
-  nav { transition: padding .35s ease, background .35s ease; }
-  nav.scrolled { padding-top: 14px; padding-bottom: 14px; background: rgba(12,16,24,.94); }
-
-  /* блик на кнопках */
-  .btn-primary, .nav-cta { position: relative; overflow: hidden; }
-  .btn-primary::after { content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
-    background: linear-gradient(105deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-20deg);
-    animation: shine 5s ease-in-out infinite; }
-  @keyframes shine { 0%,70% { left: -120%; } 100% { left: 160%; } }
-  .magnetic { transition: transform .25s cubic-bezier(.2,.8,.2,1), background .25s, border-color .25s, color .25s; }
-
-  /* свет под курсором на карточках */
-  .spot { --mx: 50%; --my: 50%; }
-  .spot:hover { background-image: radial-gradient(420px circle at var(--mx) var(--my), rgba(201,169,110,.12), transparent 60%); }
-
-  /* статьи */
-  .art-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .art-card { display: block; position: relative; overflow: hidden; background: var(--bg2); padding: 48px 40px; text-decoration: none; transition: background .3s; }
-  .art-card:hover { background: var(--bg3); }
-  .art-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
-  .art-card:hover::after { transform: scaleX(1); }
-  .art-num { display: block; font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 20px; }
-  .art-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--white); margin-bottom: 14px; line-height: 1.2; }
-  .art-text { font-size: 13px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
-
-  /* FAQ */
-  .faq-list { max-width: 820px; margin: 0 auto; border-top: 1px solid var(--border); }
-  .faq-item { border-bottom: 1px solid var(--border); }
-  .faq-item summary { list-style: none; cursor: pointer; padding: 26px 48px 26px 0; position: relative;
-    font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--white); transition: color .2s; }
-  .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary::after { content: '+'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
-    font-family: 'Inter', sans-serif; font-weight: 300; font-size: 26px; color: var(--gold); transition: transform .3s; }
-  .faq-item[open] summary::after { transform: translateY(-50%) rotate(45deg); }
-  .faq-item summary:hover { color: var(--gold-lt); }
-  .faq-item p { font-size: 15px; color: var(--muted); line-height: 1.8; padding: 0 48px 28px 0; }
-  .faq-item a { color: var(--gold); }
-
-  /* мобильная вёрстка для блоков со встроенной сеткой */
-  @media (max-width: 900px) {
-    #tech-section > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-    #tech-section > div[style*="grid-template-columns"] > div:first-child { display: none; }
-    #tech-section > div[style*="grid-template-columns"] > div:last-child { padding: 64px 24px !important; }
-    #tech-section h2 { font-size: 34px !important; }
-    #partners > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-    section[style*="padding-top:100px"] > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-    .partner-card { padding: 40px 24px; }
-    .art-grid { grid-template-columns: 1fr; }
-    .art-card { padding: 40px 24px; }
-    .stat { padding: 36px 20px; }
-    .stat-num { font-size: 40px; }
-    .cta-section { padding: 100px 24px; }
-    .btn-primary, .btn-ghost { padding: 15px 28px; }
-    .faq-item summary { font-size: 21px; }
-  }
-  @media (max-width: 480px) {
-    .steps { grid-template-columns: 1fr; }
-    .step { border-right: none; border-bottom: 1px solid var(--border); }
-    nav { grid-template-columns: 1fr auto; }
-    .nav-logo { text-align: left; font-size: 22px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .grain, .btn-primary::after { animation: none; }
-  }
-</style>
 <div class="scroll-progress"></div>
 <div class="grain" aria-hidden="true"></div>
-
 <script src="/vendor/gsap.min.js"></script>
 <script src="/vendor/ScrollTrigger.min.js"></script>
 <script src="/vendor/lenis.min.js"></script>
-<script>
-(function () {
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var fine = window.matchMedia('(pointer: fine)').matches;
-  var nav = document.querySelector('nav');
-  var bar = document.querySelector('.scroll-progress');
-
-  function onScroll(y) {
-    nav.classList.toggle('scrolled', y > 40);
-    var h = document.documentElement.scrollHeight - innerHeight;
-    bar.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
-  }
-  addEventListener('scroll', function () { onScroll(scrollY); }, { passive: true });
-  onScroll(scrollY);
-
-  // свет под курсором на карточках
-  document.querySelectorAll('.feature, .mono-card, .eco-card, .partner-card, .step, .stat').forEach(function (el) { el.classList.add('spot'); });
-  if (fine) {
-    document.addEventListener('pointermove', function (e) {
-      var el = e.target.closest && e.target.closest('.spot');
-      if (!el) return;
-      var r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    }, { passive: true });
-  }
-
-  if (reduce || !window.gsap || !window.ScrollTrigger) return;
-  gsap.registerPlugin(ScrollTrigger);
-
-  // плавная прокрутка
-  if (window.Lenis && fine) {
-    var lenis = new Lenis({ duration: 1.15, smoothWheel: true });
-    lenis.on('scroll', function (e) { ScrollTrigger.update(); onScroll(e.scroll); });
-    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-    gsap.ticker.lagSmoothing(0);
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-      a.addEventListener('click', function (ev) {
-        var id = a.getAttribute('href');
-        if (id.length < 2) return;
-        var t = document.querySelector(id);
-        if (t) { ev.preventDefault(); lenis.scrollTo(t, { offset: -70 }); }
-      });
-    });
-  }
-
-  // первый экран
-  gsap.from('.hero-title .line > span', { yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: .12, delay: .15 });
-  gsap.from('.hero-eyebrow, .hero-sub, .hero-actions', { y: 24, opacity: 0, duration: 1, ease: 'power3.out', stagger: .1, delay: .35 });
-  gsap.fromTo('.hero-bg', { scale: 1.12 }, { scale: 1, duration: 2.4, ease: 'power2.out' });
-  gsap.to('.hero-bg', { yPercent: 14, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-
-  // заголовки секций
-  gsap.utils.toArray('.section-eyebrow, .section-title').forEach(function (el) {
-    gsap.from(el, { y: 36, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
-  });
-
-  // карточки — по очереди
-  ['.features-grid', '.steps', '#partners > div', '.monetize-grid', '.art-grid', '.faq-list', '.stats',
-   'section[style*="padding-top:100px"] > div[style*="grid"]'].forEach(function (sel) {
-    var box = document.querySelector(sel);
-    if (!box) return;
-    var items = gsap.utils.toArray(box.children);
-    gsap.set(items, { y: 44, opacity: 0 });
-    ScrollTrigger.batch(items, { start: 'top 92%', once: true,
-      onEnter: function (batch) { gsap.to(batch, { y: 0, opacity: 1, duration: .9, ease: 'power3.out', stagger: .09, overwrite: true }); } });
-  });
-
-  // текст в блоке с фото
-  var tech = document.querySelector('#tech-section > div[style*="grid"] > div:last-child > div');
-  if (tech) gsap.from(tech.children, { x: 40, opacity: 0, duration: 1, ease: 'power3.out', stagger: .12,
-    scrollTrigger: { trigger: '#tech-section', start: 'top 70%' } });
-
-  gsap.from('.cta-title, .cta-sub, .cta-buttons', { y: 40, opacity: 0, duration: 1, ease: 'power3.out', stagger: .12,
-    scrollTrigger: { trigger: '.cta-section', start: 'top 80%' } });
-
-  // магнитные кнопки
-  if (fine) {
-    document.querySelectorAll('.btn-primary, .btn-ghost, .nav-cta').forEach(function (b) {
-      b.classList.add('magnetic');
-      b.addEventListener('pointermove', function (e) {
-        var r = b.getBoundingClientRect();
-        b.style.transform = 'translate(' + (e.clientX - r.left - r.width / 2) * .18 + 'px,' + (e.clientY - r.top - r.height / 2) * .3 + 'px)';
-      });
-      b.addEventListener('pointerleave', function () { b.style.transform = ''; });
-    });
-  }
-})();
-</script>
+<script src="/wow.js"></script>
 </body>
 </html>
