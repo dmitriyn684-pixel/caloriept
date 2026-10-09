@@ -1070,10 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* свет под курсором на карточках */
   .spot { --mx: 50%; --my: 50%; }
-  .spot::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s;
-    background: radial-gradient(420px circle at var(--mx) var(--my), rgba(201,169,110,.13), transparent 60%); z-index: 0; }
-  .spot:hover::before { opacity: 1; }
-  .spot > * { position: relative; z-index: 1; }
+  .spot:hover { background-image: radial-gradient(420px circle at var(--mx) var(--my), rgba(201,169,110,.12), transparent 60%); }
 
   /* статьи */
   .art-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
