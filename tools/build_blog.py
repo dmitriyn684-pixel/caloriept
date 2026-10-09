@@ -241,6 +241,21 @@ var bar=document.querySelector('.progress');if(bar){addEventListener('scroll',fu
 </script>"""
 
 
+FOOTER_SCRIPT = """<script>
+(function(){var n=document.querySelector('.sfoot-name');if(!n)return;
+var s=document.createElement('span');s.className='ch';s.textContent=n.textContent.trim();n.textContent='';n.appendChild(s);
+var fit=function(){n.style.fontSize='100px';var w=s.getBoundingClientRect().width;if(w>0)n.style.fontSize=(100*n.clientWidth/w*.98).toFixed(2)+'px'};
+fit();addEventListener('resize',fit);if(document.fonts)document.fonts.ready.then(fit);})();
+</script>"""
+
+
+def studio_footer() -> str:
+    # подвал студии берём с главной страницы — один источник правды
+    src = (ROOT / "index.html").read_text(encoding="utf-8")
+    m = re.search(r'<footer class="sfoot">.*?</footer>', src, re.S)
+    return m.group(0).replace('class="btn-primary"', 'class="btn"') if m else ""
+
+
 def page(title, description, canonical, body, ld="", og_type="website"):
     t, desc = html.escape(title), html.escape(description)
     ld_tag = f'<script type="application/ld+json">{ld}</script>' if ld else ""
@@ -264,6 +279,7 @@ def page(title, description, canonical, body, ld="", og_type="website"):
 <meta name="theme-color" content="#0C1018">
 <link rel="icon" href="/icon.png" type="image/png">
 <link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/nf.css?v=4">
 <style>{CSS}</style>
 {ld_tag}
 {METRIKA}
@@ -279,11 +295,9 @@ def page(title, description, canonical, body, ld="", og_type="website"):
   </div>
 </nav>
 {body}
-<footer>
-  <span>© 2026 CaloriePT AI · Студия DimkoFF</span>
-  <span><a href="/">Главная</a> &nbsp;·&nbsp; <a href="/blog/">Статьи</a> &nbsp;·&nbsp; <a href="{BOT}" target="_blank" rel="noopener">Telegram-бот</a> &nbsp;·&nbsp; <a href="/cookies/">Cookie</a></span>
-</footer>
+{studio_footer()}
 {SCRIPT}
+{FOOTER_SCRIPT}
 </body>
 </html>
 """

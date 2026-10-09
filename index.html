@@ -447,7 +447,8 @@
 </style>
 <!-- Яндекс Метрика загружается только после согласия на cookie -->
 <script src="/consent.js" defer></script>
-<link rel="stylesheet" href="/wow.css?v=3">
+<link rel="stylesheet" href="/wow.css?v=4">
+<link rel="stylesheet" href="/nf.css?v=4">
 </head>
 <body>
 
@@ -455,6 +456,7 @@
 <nav>
   <ul class="nav-links">
     <li><a href="#features">Возможности</a></li>
+    <li><a href="#new">Новое</a></li>
     <li><a href="#how">Как работает</a></li>
     <li><a href="#partners">Партнёрам</a></li>
     <li><a href="/blog/">Статьи</a></li>
@@ -693,6 +695,107 @@ document.addEventListener('DOMContentLoaded', () => {
   if (el) techObserver.observe(el);
 });
 </script>
+
+<!-- НОВОЕ В БОТЕ -->
+<section class="section nf" id="new">
+  <p class="section-eyebrow">Новое в боте</p>
+  <h2 class="section-title">Больше, чем <em>счётчик калорий</em></h2>
+  <div class="nf-grid">
+
+    <article class="nf-card nf-fridge">
+      <span class="nf-tag">Холодильник по фото</span>
+      <h3 class="nf-title">Меню из того, что уже есть дома</h3>
+      <p class="nf-text">Сфотографируйте полки холодильника — бот распознает продукты и покажет список. Его можно поправить: убрать лишнее или добавить то, что не попало в кадр. Затем бот подберёт рецепты и меню на день под вашу норму калорий.</p>
+      <ol class="nf-flow">
+        <li><b>01</b>Фото холодильника</li>
+        <li><b>02</b>Список продуктов</li>
+        <li><b>03</b>Рецепты под норму</li>
+      </ol>
+      <div class="nf-pills" aria-hidden="true"><span>яйца</span><span>курица</span><span>гречка</span><span>огурцы</span><span>творог</span><span>сыр</span><span>помидоры</span><span class="add">+ добавить</span></div>
+    </article>
+
+    <article class="nf-card nf-water">
+      <span class="nf-tag">Вода</span>
+      <h3 class="nf-title">Своя норма воды</h3>
+      <p class="nf-text">Бот считает цель по весу — 30 мл на килограмм — и даёт быстрые кнопки +150, +250 и +500 мл. Кольцо воды на главном экране и напоминания помогают не забывать пить.</p>
+      <div class="water-glass" aria-hidden="true"><div class="wg-fill"><i></i></div><div class="wg-txt"><b>1 750</b><span>из 2 100 мл</span></div></div>
+      <div class="water-btns" aria-hidden="true"><span>+150</span><span>+250</span><span>+500</span></div>
+    </article>
+
+    <article class="nf-card nf-anna">
+      <span class="nf-tag">Онлайн-нутрициолог</span>
+      <h3 class="nf-title">Анна — ИИ-нутрициолог в трёх режимах</h3>
+      <p class="nf-text">Анна видит ваш дневник питания, воду и качество рациона, отвечает на вопросы и даёт конкретные рекомендации. Выберите, как с вами говорить, — а вечером Анна пришлёт итог дня в том же тоне.</p>
+      <div class="anna-modes" role="tablist" aria-label="Режимы нутрициолога">
+        <button type="button" role="tab" aria-selected="true" data-mode="soft">🟢 Мягкая</button>
+        <button type="button" role="tab" aria-selected="false" data-mode="strict">🔴 Строгая</button>
+        <button type="button" role="tab" aria-selected="false" data-mode="fun">🟡 С юмором</button>
+      </div>
+      <div class="anna-chat" aria-live="polite">
+        <div class="anna-q">Съела вечером кусок торта, всё пропало?</div>
+        <div class="anna-a" data-mode="soft">Ничего не пропало 🙂 Один десерт не отменяет неделю стараний. Завтра просто вернёмся к обычному меню и добавим белка в завтрак, чтобы не тянуло на сладкое.</div>
+        <div class="anna-a" data-mode="strict" hidden>Записываем торт в дневник как есть. Завтра — обычный план, без голодовок и компенсаций. Следим, чтобы десерт вечером не стал привычкой.</div>
+        <div class="anna-a" data-mode="fun" hidden>Торт хотя бы был вкусный? 😏 Записали, живём дальше. Завтра завтрак с белком — и пусть торт останется приятным воспоминанием, а не новой традицией.</div>
+      </div>
+      <p class="nf-note">Пример ответов. Консультация Анны не заменяет приём врача.</p>
+    </article>
+
+    <article class="nf-card nf-cycle">
+      <span class="nf-tag">Для девушек</span>
+      <h3 class="nf-title">Питание по фазам цикла</h3>
+      <p class="nf-text">Отметьте начало месячных — бот определит фазу цикла и подстроит советы по питанию и тренировкам. В лютеиновую фазу, когда аппетит выше, норма калорий автоматически вырастает на 200 ккал.</p>
+      <div class="cycle-ring" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="80" class="cr-track"/>
+          <circle cx="100" cy="100" r="80" class="cr-seg s1" pathLength="28" stroke-dasharray="4.8 23.2" stroke-dashoffset="0"/>
+          <circle cx="100" cy="100" r="80" class="cr-seg s2" pathLength="28" stroke-dasharray="8.8 19.2" stroke-dashoffset="-5"/>
+          <circle cx="100" cy="100" r="80" class="cr-seg s3" pathLength="28" stroke-dasharray="2.8 25.2" stroke-dashoffset="-14"/>
+          <circle cx="100" cy="100" r="80" class="cr-seg s4" pathLength="28" stroke-dasharray="10.8 17.2" stroke-dashoffset="-17"/>
+          <circle cx="100" cy="100" r="80" class="cr-dot" pathLength="28" stroke-dasharray="0.01 27.99" stroke-dashoffset="-20.5"/>
+        </svg>
+        <div class="cr-center"><b>День 21</b><span>лютеиновая<br>+200 ккал</span></div>
+      </div>
+      <ul class="cycle-legend">
+        <li><i class="c1"></i>Менструальная — железо и восстановление</li>
+        <li><i class="c2"></i>Фолликулярная — энергия и силовые</li>
+        <li><i class="c3"></i>Овуляция — антиоксиданты</li>
+        <li><i class="c4"></i>Лютеиновая — контроль тяги, +200 ккал</li>
+      </ul>
+    </article>
+
+    
+
+    <article class="nf-card nf-quality">
+      <span class="nf-tag">Правильность питания</span>
+      <h3 class="nf-title">Оценка рациона от 0 до 100</h3>
+      <p class="nf-text">Калории — не всё. Бот оценивает, насколько сбалансирован ваш день, по шести составляющим и показывает цвет: 🟢 отлично, 🟡 хорошо, 🟠 есть что улучшить, 🔴 стоит пересмотреть.</p>
+      <div class="q-score" aria-hidden="true"><b data-count="84">84</b><span>/100</span></div>
+      <ul class="q-bars">
+        <li><span>Овощи и клетчатка</span><i style="--w:88%"></i></li>
+        <li><span>Белок</span><i style="--w:95%"></i></li>
+        <li><span>Полезные жиры</span><i style="--w:70%"></i></li>
+        <li><span>Мало сахара</span><i style="--w:80%"></i></li>
+        <li><span>Мало соли</span><i style="--w:75%"></i></li>
+        <li><span>Меньше ультраобработки</span><i style="--w:82%"></i></li>
+      </ul>
+    </article>
+
+    <article class="nf-card nf-more">
+      <span class="nf-tag">И ещё</span>
+      <h3 class="nf-title">Всё для учёта питания</h3>
+      <ul class="nf-list">
+        <li><b>📷 Штрихкод</b> — продукты из магазина по данным с упаковки</li>
+        <li><b>🧾 Чек из ресторана</b> — КБЖУ всего заказа по фото чека</li>
+        <li><b>🧠 Анализ привычек</b> — закономерности питания за 30 дней</li>
+        <li><b>🎯 План на неделю</b> и меню на день под вашу норму</li>
+        <li><b>🎉 Режим праздника</b> — когда впереди застолье</li>
+        <li><b>📱 Мини-приложение</b> — дневник и статистика в Telegram</li>
+      </ul>
+    </article>
+
+  </div>
+  <div style="text-align:center;margin-top:48px;"><a class="btn-primary" href="https://t.me/Calorie_counter_rf_bot" target="_blank">Попробовать в Telegram</a></div>
+</section>
 
 <!-- HOW IT WORKS -->
 <section class="section how" id="how">
@@ -1031,17 +1134,51 @@ document.addEventListener('DOMContentLoaded', () => {
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Студия DimkoFF</div>
-  <ul class="footer-links">
-    <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank">CaloriePT AI 2.0</a></li>
-    <li><a href="https://t.me/psy_mind_rf_bot" target="_blank">PsyMind AI</a></li>
-    <li><a href="https://t.me/stylist_dimkoff_bot" target="_blank">Stylist AI</a></li>
-    <li><a href="https://t.me/PulseAICoach_bot" target="_blank">PulseAI Coach</a></li>
-    <li><a href="/blog/">Статьи</a></li>
-    <li><a href="/cookies/">Cookie</a></li>
-  </ul>
-  <div class="footer-copy">© 2025–2026 Студия DimkoFF. Все права защищены.</div>
+<footer class="sfoot">
+  <div class="sfoot-top">
+    <div class="sfoot-brand">
+      <p class="sfoot-lead">Создаём ИИ-ботов и сайты, которые работают на бизнес и людей.</p>
+      <a class="btn-primary" href="https://t.me/VasyVenskiy" target="_blank" rel="noopener">Обсудить проект</a>
+    </div>
+    <div class="sfoot-col">
+      <h4>Продукты</h4>
+      <ul>
+        <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">CaloriePT AI 2.0</a></li>
+        <li><a href="https://t.me/psy_mind_rf_bot" target="_blank" rel="noopener">PsyMind AI</a></li>
+        <li><a href="https://t.me/stylist_dimkoff_bot" target="_blank" rel="noopener">Stylist AI</a></li>
+        <li><a href="https://t.me/PulseAICoach_bot" target="_blank" rel="noopener">PulseAI Coach</a></li>
+        <li><a href="https://t.me/businessmen_ai_bot" target="_blank" rel="noopener">Бизнес-наставник</a></li>
+      </ul>
+    </div>
+    <div class="sfoot-col">
+      <h4>Сайт</h4>
+      <ul>
+        <li><a href="/#new">Новое в боте</a></li>
+        <li><a href="/#how">Как работает</a></li>
+        <li><a href="/blog/">Статьи</a></li>
+        <li><a href="/#faq">Вопросы и ответы</a></li>
+        <li><a href="/cookies/">Cookie</a></li>
+      </ul>
+    </div>
+    <div class="sfoot-col">
+      <h4>Контакты</h4>
+      <ul class="sfoot-social">
+        <li><a href="https://t.me/VasyVenskiy" target="_blank" rel="noopener"><span class="si">TG</span>Telegram</a></li>
+        <li><a href="https://max.ru/se14536875_bot" target="_blank" rel="noopener"><span class="si">MX</span>MAX</a></li>
+        <li><a href="https://www.instagram.com/aistudiodimkoff/" target="_blank" rel="noopener"><span class="si">IG</span>Instagram*</a></li>
+        <li><a href="https://t.me/DimkoFFSecretarybot" target="_blank" rel="noopener"><span class="si">AI</span>Бот студии</a></li>
+        <li><a href="https://aistudiodimkoff.ru" target="_blank" rel="noopener"><span class="si">WEB</span>aistudiodimkoff.ru</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sfoot-final">
+    <p class="sfoot-tag">ИИ-студия<br>ботов и сайтов</p>
+    <p class="sfoot-name" aria-label="AIStudioDimkoFF">AIStudioDimkoFF</p>
+  </div>
+  <div class="sfoot-bottom">
+    <span>© 2025–2026 AIStudioDimkoFF. Все права защищены.</span>
+    <span>* Instagram принадлежит компании Meta, деятельность которой признана экстремистской и запрещена в России.</span>
+  </div>
 </footer>
 
 <!-- ── PREMIUM LAYER ── -->
@@ -1049,6 +1186,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="grain" aria-hidden="true"></div>
 <script src="/vendor/gsap.min.js"></script>
 <script src="/vendor/ScrollTrigger.min.js"></script>
-<script src="/wow.js?v=3"></script>
+<script src="/wow.js?v=4"></script>
 </body>
 </html>

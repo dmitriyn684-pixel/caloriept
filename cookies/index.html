@@ -18,6 +18,7 @@
 <meta name="theme-color" content="#0C1018">
 <link rel="icon" href="/icon.png" type="image/png">
 <link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/nf.css?v=4">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0C1018;--bg2:#111620;--bg3:#161C28;--gold:#C9A96E;--gold-lt:#E2C99A;--white:#F0EDE8;--muted:#7A8399;--text:#B9C1CF;--border:rgba(201,169,110,.18)}
@@ -117,9 +118,51 @@ html.anim .rv.in{opacity:1;transform:none}
 <p>Вопросы о cookie и обработке данных на сайте можно задать в Telegram: <a href="https://t.me/VasyVenskiy" target="_blank" rel="noopener">Студия DimkoFF</a>.</p>
   </article>
 </main>
-<footer>
-  <span>© 2026 CaloriePT AI · Студия DimkoFF</span>
-  <span><a href="/">Главная</a> &nbsp;·&nbsp; <a href="/blog/">Статьи</a> &nbsp;·&nbsp; <a href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Telegram-бот</a> &nbsp;·&nbsp; <a href="/cookies/">Cookie</a></span>
+<footer class="sfoot">
+  <div class="sfoot-top">
+    <div class="sfoot-brand">
+      <p class="sfoot-lead">Создаём ИИ-ботов и сайты, которые работают на бизнес и людей.</p>
+      <a class="btn" href="https://t.me/VasyVenskiy" target="_blank" rel="noopener">Обсудить проект</a>
+    </div>
+    <div class="sfoot-col">
+      <h4>Продукты</h4>
+      <ul>
+        <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">CaloriePT AI 2.0</a></li>
+        <li><a href="https://t.me/psy_mind_rf_bot" target="_blank" rel="noopener">PsyMind AI</a></li>
+        <li><a href="https://t.me/stylist_dimkoff_bot" target="_blank" rel="noopener">Stylist AI</a></li>
+        <li><a href="https://t.me/PulseAICoach_bot" target="_blank" rel="noopener">PulseAI Coach</a></li>
+        <li><a href="https://t.me/businessmen_ai_bot" target="_blank" rel="noopener">Бизнес-наставник</a></li>
+      </ul>
+    </div>
+    <div class="sfoot-col">
+      <h4>Сайт</h4>
+      <ul>
+        <li><a href="/#new">Новое в боте</a></li>
+        <li><a href="/#how">Как работает</a></li>
+        <li><a href="/blog/">Статьи</a></li>
+        <li><a href="/#faq">Вопросы и ответы</a></li>
+        <li><a href="/cookies/">Cookie</a></li>
+      </ul>
+    </div>
+    <div class="sfoot-col">
+      <h4>Контакты</h4>
+      <ul class="sfoot-social">
+        <li><a href="https://t.me/VasyVenskiy" target="_blank" rel="noopener"><span class="si">TG</span>Telegram</a></li>
+        <li><a href="https://max.ru/se14536875_bot" target="_blank" rel="noopener"><span class="si">MX</span>MAX</a></li>
+        <li><a href="https://www.instagram.com/aistudiodimkoff/" target="_blank" rel="noopener"><span class="si">IG</span>Instagram*</a></li>
+        <li><a href="https://t.me/DimkoFFSecretarybot" target="_blank" rel="noopener"><span class="si">AI</span>Бот студии</a></li>
+        <li><a href="https://aistudiodimkoff.ru" target="_blank" rel="noopener"><span class="si">WEB</span>aistudiodimkoff.ru</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sfoot-final">
+    <p class="sfoot-tag">ИИ-студия<br>ботов и сайтов</p>
+    <p class="sfoot-name" aria-label="AIStudioDimkoFF">AIStudioDimkoFF</p>
+  </div>
+  <div class="sfoot-bottom">
+    <span>© 2025–2026 AIStudioDimkoFF. Все права защищены.</span>
+    <span>* Instagram принадлежит компании Meta, деятельность которой признана экстремистской и запрещена в России.</span>
+  </div>
 </footer>
 <script>
 (function(){var d=document.documentElement;if(!('IntersectionObserver' in window))return;d.classList.add('anim');
@@ -127,6 +170,12 @@ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isInter
 document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
 var bar=document.querySelector('.progress');if(bar){addEventListener('scroll',function(){var h=d.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%'},{passive:true});}
 })();
+</script>
+<script>
+(function(){var n=document.querySelector('.sfoot-name');if(!n)return;
+var s=document.createElement('span');s.className='ch';s.textContent=n.textContent.trim();n.textContent='';n.appendChild(s);
+var fit=function(){n.style.fontSize='100px';var w=s.getBoundingClientRect().width;if(w>0)n.style.fontSize=(100*n.clientWidth/w*.98).toFixed(2)+'px'};
+fit();addEventListener('resize',fit);if(document.fonts)document.fonts.ready.then(fit);})();
 </script>
 </body>
 </html>

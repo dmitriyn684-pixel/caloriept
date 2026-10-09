@@ -16,7 +16,34 @@
   onScroll(scrollY);
 
   // стеклянные карточки с золотой рамкой
-  $$('.feature, .stat, .step, .eco-card, .partner-card, .art-card, .faq-item').forEach(function (el) { el.classList.add('glow-border'); });
+  $$('.feature, .stat, .step, .eco-card, .partner-card, .art-card, .faq-item, .nf-card').forEach(function (el) { el.classList.add('glow-border'); });
+
+  // переключатель режимов нутрициолога Анны
+  $$('.anna-modes button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var mode = b.dataset.mode;
+      $$('.anna-modes button').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+      $$('.anna-a').forEach(function (a) {
+        var on = a.dataset.mode === mode;
+        a.hidden = !on;
+        if (on && window.gsap) gsap.fromTo(a, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: .5, ease: 'power3.out' });
+      });
+    });
+  });
+
+  // огромное название студии в подвале: подгоняем под ширину
+  var sname = $('.sfoot-name');
+  if (sname) {
+    var txt = sname.textContent.trim();
+    sname.innerHTML = txt.split('').map(function (c) { return '<span class="ch">' + c + '</span>'; }).join('');
+    var fit = function () {
+      sname.style.fontSize = '100px';
+      var cs = sname.querySelectorAll('.ch'), w = cs[cs.length - 1].getBoundingClientRect().right - cs[0].getBoundingClientRect().left;
+      if (w > 0) sname.style.fontSize = (100 * sname.clientWidth / w * .98).toFixed(2) + 'px';
+    };
+    fit(); addEventListener('resize', fit);
+    if (document.fonts) document.fonts.ready.then(fit);
+  }
 
   if (reduce || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
@@ -201,6 +228,47 @@
       });
       b.addEventListener('pointerleave', function () { b.style.transform = ''; });
     });
+  }
+
+  // ── «Новое в боте» ──
+  var nfItems = $$('.nf-card');
+  if (nfItems.length) {
+    gsap.set(nfItems, { y: 40, opacity: 0 });
+    ScrollTrigger.batch(nfItems, { start: 'top bottom', once: true,
+      onEnter: function (b) { gsap.to(b, { y: 0, opacity: 1, duration: .8, ease: 'power3.out', stagger: .08, overwrite: true }); } });
+  }
+  var ring = $('.cycle-ring');
+  if (ring) {
+    gsap.from('.cr-seg', { strokeDasharray: '0 28', duration: 1.4, ease: 'power3.out', stagger: .2, scrollTrigger: { trigger: ring, start: 'top 90%' } });
+    gsap.from('.cr-dot', { opacity: 0, duration: .6, delay: 1.2, scrollTrigger: { trigger: ring, start: 'top 90%' } });
+  }
+  if ($('.wg-fill')) gsap.from('.wg-fill', { height: '0%', duration: 2, ease: 'power2.out', scrollTrigger: { trigger: '.water-glass', start: 'top 90%' } });
+  var qs = $('.q-score b');
+  if (qs) {
+    $$('.q-bars i').forEach(function (i) { i.style.setProperty('--s', 0); });
+    ScrollTrigger.create({ trigger: '.nf-quality', start: 'top 85%', once: true, onEnter: function () {
+      var o = { v: 0 }; gsap.to(o, { v: +qs.dataset.count, duration: 1.6, ease: 'power2.out', onUpdate: function () { qs.textContent = Math.round(o.v); } });
+      $$('.q-bars i').forEach(function (i, k) { setTimeout(function () { i.style.setProperty('--s', 1); }, 120 * k); });
+    } });
+  }
+  if (fine) $$('.nf-card').forEach(function (card) {
+    var rx = gsap.quickTo(card, 'rotationX', { duration: .6, ease: 'power3' }), ry = gsap.quickTo(card, 'rotationY', { duration: .6, ease: 'power3' });
+    gsap.set(card, { transformPerspective: 1400 });
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      rx((.5 - (e.clientY - r.top) / r.height) * 5); ry(((e.clientX - r.left) / r.width - .5) * 6);
+    });
+    card.addEventListener('pointerleave', function () { rx(0); ry(0); });
+  });
+
+  // ── подвал: буквы названия падают сверху ──
+  if (sname) {
+    var chs = sname.querySelectorAll('.ch');
+    gsap.set(chs, { yPercent: -110 });
+    ScrollTrigger.create({ trigger: sname, start: 'top bottom', once: true,
+      onEnter: function () { gsap.to(chs, { yPercent: 0, duration: 1.1, ease: 'power3.out', stagger: { amount: .45, ease: 'power2.inOut' } }); } });
+    gsap.from('.sfoot-col, .sfoot-brand', { y: 30, opacity: 0, duration: .8, ease: 'power3.out', stagger: .08,
+      scrollTrigger: { trigger: '.sfoot', start: 'top 90%' } });
   }
 
   addEventListener('load', function () { ScrollTrigger.refresh(); });
