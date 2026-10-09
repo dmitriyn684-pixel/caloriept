@@ -1197,8 +1197,10 @@ document.addEventListener('DOMContentLoaded', () => {
    'section[style*="padding-top:100px"] > div[style*="grid"]'].forEach(function (sel) {
     var box = document.querySelector(sel);
     if (!box) return;
-    gsap.from(box.children, { y: 44, opacity: 0, duration: .9, ease: 'power3.out', stagger: .09,
-      scrollTrigger: { trigger: box, start: 'top 85%' } });
+    var items = gsap.utils.toArray(box.children);
+    gsap.set(items, { y: 44, opacity: 0 });
+    ScrollTrigger.batch(items, { start: 'top 92%', once: true,
+      onEnter: function (batch) { gsap.to(batch, { y: 0, opacity: 1, duration: .9, ease: 'power3.out', stagger: .09, overwrite: true }); } });
   });
 
   // текст в блоке с фото
