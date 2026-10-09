@@ -132,7 +132,7 @@ nav.scrolled { padding-top: 14px; padding-bottom: 14px; background: rgba(12,16,2
 .steps { border: 0 !important; gap: 18px; }
 .step { border-radius: 22px; --card-bg: #111620; border-right: 0 !important; }
 .step-num { font-size: 96px; color: transparent; -webkit-text-stroke: 1px rgba(201,169,110,.55); }
-.how-bar { height: 1px; background: rgba(201,169,110,.15); margin-top: 48px; position: relative; overflow: hidden; display: none; }
+.how-bar { height: 1px; background: rgba(201,169,110,.15); margin-top: 48px; position: relative; overflow: hidden; }
 .how-bar i { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gold), #FFF1D2); transform: scaleX(0); transform-origin: left; }
 @media (min-width: 1025px) {
   .how.horizontal { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }

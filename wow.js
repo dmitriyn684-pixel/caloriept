@@ -43,24 +43,8 @@
   }
   splitChars($('.hero-title'));
 
-  // ── плавная прокрутка ──
+  // прокрутка — нативная браузерная: ничего не перехватываем
   var lenis = null;
-  if (window.Lenis && fine) {
-    document.documentElement.style.scrollBehavior = 'auto';
-    lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1, smoothWheel: true });
-    // браузер восстанавливает прокрутку после загрузки — синхронизируем Lenis, чтобы не было «отскока»
-    var sync = function () { lenis.scrollTo(scrollY, { immediate: true, force: true }); };
-    addEventListener('load', sync); addEventListener('pageshow', sync);
-    lenis.on('scroll', function (e) { ScrollTrigger.update(); onScroll(e.scroll); });
-    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-    gsap.ticker.lagSmoothing(0);
-    $$('a[href^="#"]').forEach(function (a) {
-      a.addEventListener('click', function (ev) {
-        var id = a.getAttribute('href'); if (id.length < 2) return;
-        var t = $(id); if (t) { ev.preventDefault(); lenis.scrollTo(t, { offset: -70, duration: 1.6 }); }
-      });
-    });
-  }
 
   // ── заставка (один раз за сессию) ──
   var seen = false;
@@ -71,17 +55,16 @@
     pl.className = 'preloader';
     pl.innerHTML = '<div class="pl-logo"><span>Calorie<em>PT</em></span></div><div class="pl-line"><i></i></div><div class="pl-count">0%</div>';
     document.body.appendChild(pl);
-    if (lenis) lenis.stop();
     var c = { v: 0 }, done = false;
-    var finish = function () { if (done) return; done = true; pl.remove(); if (lenis) { lenis.start(); lenis.scrollTo(scrollY, { immediate: true, force: true }); } intro.play(); };
-    setTimeout(finish, 4000);             // страховка: прокрутка не останется заблокированной
+    var finish = function () { if (done) return; done = true; pl.remove(); intro.play(); };
+    setTimeout(finish, 2500);             // страховка: прокрутка не останется заблокированной
     gsap.timeline({ onComplete: finish })
-      .from('.pl-logo span', { yPercent: 110, duration: .9, ease: 'expo.out' })
-      .to('.pl-line i', { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, '<.1')
-      .to(c, { v: 100, duration: 1.1, ease: 'power2.inOut', onUpdate: function () { $('.pl-count').textContent = Math.round(c.v) + '%'; } }, '<')
-      .to('.pl-logo span', { yPercent: -110, duration: .6, ease: 'power3.in' }, '+=.1')
-      .to(pl, { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'expo.inOut' }, '-=.15')
-      .add(function () { if (lenis) { lenis.start(); lenis.scrollTo(scrollY, { immediate: true, force: true }); } intro.play(); }, '-=.55');
+      .from('.pl-logo span', { yPercent: 110, duration: .6, ease: 'expo.out' })
+      .to('.pl-line i', { scaleX: 1, duration: .7, ease: 'power2.inOut' }, '<.05')
+      .to(c, { v: 100, duration: .7, ease: 'power2.inOut', onUpdate: function () { $('.pl-count').textContent = Math.round(c.v) + '%'; } }, '<')
+      .to('.pl-logo span', { yPercent: -110, duration: .4, ease: 'power3.in' })
+      .to(pl, { clipPath: 'inset(0 0 100% 0)', duration: .7, ease: 'expo.inOut' }, '-=.1')
+      .add(function () { intro.play(); }, '-=.45');
   } else {
     gsap.delayedCall(.1, function () { intro.play(); });
   }
@@ -128,7 +111,7 @@
     }).join('');
     t.innerHTML = html;
     gsap.from(t.querySelectorAll('.w'), { yPercent: 110, rotate: 4, duration: 1.1, ease: 'expo.out', stagger: .06,
-      scrollTrigger: { trigger: t, start: 'top 88%' } });
+      scrollTrigger: { trigger: t, start: 'top 95%' } });
   });
   $$('.section-eyebrow').forEach(function (e) {
     gsap.from(e, { opacity: 0, letterSpacing: '.6em', duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: e, start: 'top 90%' } });
@@ -138,9 +121,9 @@
   ['.stats', '.features-grid', '#partners > div', 'section[style*="padding-top:100px"] > div[style*="grid"]', '.art-grid', '.faq-list'].forEach(function (sel) {
     var box = $(sel); if (!box) return;
     var items = gsap.utils.toArray(box.children);
-    gsap.set(items, { y: 80, opacity: 0, rotateX: 18, transformPerspective: 900, transformOrigin: '50% 100%' });
-    ScrollTrigger.batch(items, { start: 'top 92%', once: true,
-      onEnter: function (b) { gsap.to(b, { y: 0, opacity: 1, rotateX: 0, duration: 1.2, ease: 'expo.out', stagger: .1, overwrite: true }); } });
+    gsap.set(items, { y: 40, opacity: 0, rotateX: 10, transformPerspective: 900, transformOrigin: '50% 100%' });
+    ScrollTrigger.batch(items, { start: 'top bottom', once: true,
+      onEnter: function (b) { gsap.to(b, { y: 0, opacity: 1, rotateX: 0, duration: .8, ease: 'power3.out', stagger: .06, overwrite: true }); } });
   });
 
   // ── 3D-наклон с бликом ──
@@ -169,29 +152,17 @@
         scrollTrigger: { trigger: tech, start: 'top 85%', end: 'center 45%', scrub: 1 } });
     var txt = $('#tech-section > div[style*="grid"] > div:last-child > div');
     if (txt) gsap.from(txt.children, { x: 80, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: .12,
-      scrollTrigger: { trigger: tech, start: 'top 55%' } });
+      scrollTrigger: { trigger: tech, start: 'top 75%' } });
   }
 
-  // ── «Как это работает»: горизонтальная лента ──
+  // ── «Как это работает»: карточки и линия прогресса ──
   var how = $('#how'), steps = $('#how .steps');
   if (how && steps) {
     var hb = document.createElement('div'); hb.className = 'how-bar'; hb.innerHTML = '<i></i>'; how.appendChild(hb);
-    if (wide) {
-      how.classList.add('horizontal');
-      var dist = function () { return steps.scrollWidth - how.clientWidth + 120; };
-      var tl = gsap.timeline({ scrollTrigger: { trigger: how, start: 'top top', end: function () { return '+=' + dist(); },
-        pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 } });
-      tl.to(steps, { x: function () { return -dist(); }, ease: 'none' }, 0)
-        .to(hb.querySelector('i'), { scaleX: 1, ease: 'none' }, 0);
-      gsap.utils.toArray('.step', steps).forEach(function (s, i) {
-        gsap.from(s.querySelector('.step-num'), { scale: .6, opacity: 0, duration: 1, ease: 'expo.out', delay: i * .08,
-          scrollTrigger: { trigger: how, start: 'top 60%' } });
-      });
-    } else {
-      gsap.set(steps.children, { y: 60, opacity: 0 });
-      ScrollTrigger.batch(steps.children, { start: 'top 92%', once: true,
-        onEnter: function (b) { gsap.to(b, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: .1 }); } });
-    }
+    gsap.set(steps.children, { y: 40, opacity: 0 });
+    ScrollTrigger.batch(steps.children, { start: 'top bottom', once: true,
+      onEnter: function (b) { gsap.to(b, { y: 0, opacity: 1, duration: .8, ease: 'power3.out', stagger: .06 }); } });
+    gsap.to(hb.querySelector('i'), { scaleX: 1, ease: 'none', scrollTrigger: { trigger: steps, start: 'top 80%', end: 'bottom 50%', scrub: true } });
   }
 
   // ── финальный призыв ──
