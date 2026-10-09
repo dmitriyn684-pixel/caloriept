@@ -17,13 +17,12 @@ SRC = ROOT / "content" / "blog"
 OUT = ROOT / "blog"
 BASE = "https://caloriept.ru"
 BOT = "https://t.me/Calorie_counter_rf_bot"
-OG_IMAGE = "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&q=80&auto=format&fit=crop"
+OG_IMAGE = f"{BASE}/img/og-cover.jpg"
 SLUG_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 FAQ_TITLE = "частые вопросы"
 MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября",
           "ноября", "декабря"]
-METRIKA = """<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=110221375','ym');ym(110221375,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/110221375" style="position:absolute;left:-9999px" alt=""></div></noscript>"""
+METRIKA = '<script src="/consent.js" defer></script>'
 
 
 @dataclass
@@ -264,9 +263,7 @@ def page(title, description, canonical, body, ld="", og_type="website"):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0C1018">
 <link rel="icon" href="/icon.png" type="image/png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>{CSS}</style>
 {ld_tag}
 {METRIKA}
@@ -284,7 +281,7 @@ def page(title, description, canonical, body, ld="", og_type="website"):
 {body}
 <footer>
   <span>© 2026 CaloriePT AI · Студия DimkoFF</span>
-  <span><a href="/">Главная</a> &nbsp;·&nbsp; <a href="/blog/">Статьи</a> &nbsp;·&nbsp; <a href="{BOT}" target="_blank" rel="noopener">Telegram-бот</a></span>
+  <span><a href="/">Главная</a> &nbsp;·&nbsp; <a href="/blog/">Статьи</a> &nbsp;·&nbsp; <a href="{BOT}" target="_blank" rel="noopener">Telegram-бот</a> &nbsp;·&nbsp; <a href="/cookies/">Cookie</a></span>
 </footer>
 {SCRIPT}
 </body>
@@ -343,6 +340,36 @@ def render_index(arts) -> str:
                 f"{BASE}/blog/", body, ld)
 
 
+def render_cookies() -> str:
+    body = """<main class="wrap">
+  <div class="crumbs"><a href="/">Главная</a> / Cookie</div>
+  <header class="art-head">
+    <p class="eyebrow">Документы</p>
+    <h1>Политика использования cookie</h1>
+    <p class="lead">Какие cookie использует сайт caloriept.ru, зачем и как от них отказаться.</p>
+  </header>
+  <article>
+<h2>Что такое cookie</h2>
+<p>Cookie — небольшие файлы, которые сайт сохраняет в вашем браузере. Они помогают понять, как посетители пользуются сайтом, и сделать его удобнее.</p>
+<h2>Какие cookie мы используем</h2>
+<ul>
+<li><b>Технические.</b> Сайт запоминает ваш выбор в окне согласия, чтобы не показывать его повторно. Этот выбор хранится только в вашем браузере.</li>
+<li><b>Аналитические — Яндекс Метрика.</b> Сервис ООО «Яндекс» собирает обезличенные данные о посещениях: страницы, время на сайте, тип устройства и браузера, примерное местоположение, действия на страницах (включая запись сессий — Вебвизор). Эти данные хранятся на серверах Яндекса в России.</li>
+</ul>
+<p>Яндекс Метрика включается <b>только после того, как вы нажмёте «Принять»</b> в окне согласия. Если вы нажали «Отклонить», аналитика не загружается.</p>
+<h2>Зачем это нужно</h2>
+<p>Мы смотрим статистику, чтобы понимать, какие разделы и статьи полезны, и улучшать сайт. Данные Метрики не используются для того, чтобы установить вашу личность.</p>
+<h2>Как изменить выбор или отказаться</h2>
+<p>Вы можете в любой момент изменить решение: <a href="#" onclick="cptResetConsent();return false;">открыть окно согласия заново</a>. Также cookie можно удалить или запретить в настройках браузера.</p>
+<h2>Контакты</h2>
+<p>Вопросы о cookie и обработке данных на сайте можно задать в Telegram: <a href="https://t.me/VasyVenskiy" target="_blank" rel="noopener">Студия DimkoFF</a>.</p>
+  </article>
+</main>"""
+    return page("Политика использования cookie — CaloriePT AI",
+                "Какие cookie использует сайт caloriept.ru, зачем нужна Яндекс Метрика и как отказаться от аналитики.",
+                f"{BASE}/cookies/", body)
+
+
 def sitemap(arts) -> str:
     today = date.today().isoformat()
     urls = [(f"{BASE}/", today), (f"{BASE}/blog/", arts[0].date.isoformat() if arts else today)]
@@ -361,6 +388,8 @@ def main():
         target.write_text(render_article(a, others), encoding="utf-8", newline="\n")
     OUT.mkdir(exist_ok=True)
     (OUT / "index.html").write_text(render_index(arts), encoding="utf-8", newline="\n")
+    (ROOT / "cookies").mkdir(exist_ok=True)
+    (ROOT / "cookies" / "index.html").write_text(render_cookies(), encoding="utf-8", newline="\n")
     (ROOT / "sitemap.xml").write_text(sitemap(arts), encoding="utf-8", newline="\n")
     print(f"Собрано статей: {len(arts)}")
 
