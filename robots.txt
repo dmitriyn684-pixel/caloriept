@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /webapp.html
+Disallow: /tools/
+Disallow: /content/
+
+Sitemap: https://caloriept.ru/sitemap.xml

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Подсчёт калорий по фото: как работает и насколько точен</title>
+<meta name="description" content="Как посчитать калории по фото еды: как ИИ считает КБЖУ по снимку, насколько это точно, как фотографировать тарелку и что выбрать — приложение или бот.">
+<link rel="canonical" href="https://caloriept.ru/blog/kak-poschitat-kalorii-po-foto/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CaloriePT AI">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Подсчёт калорий по фото: как работает и насколько точен">
+<meta property="og:description" content="Как посчитать калории по фото еды: как ИИ считает КБЖУ по снимку, насколько это точно, как фотографировать тарелку и что выбрать — приложение или бот.">
+<meta property="og:url" content="https://caloriept.ru/blog/kak-poschitat-kalorii-po-foto/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&q=80&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0C1018">
+<link rel="icon" href="/icon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0C1018;--bg2:#111620;--bg3:#161C28;--gold:#C9A96E;--gold-lt:#E2C99A;--white:#F0EDE8;--muted:#7A8399;--text:#B9C1CF;--border:rgba(201,169,110,.18)}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--white);font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+a{color:var(--gold)}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-lt));z-index:200}
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 60px;background:rgba(12,16,24,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:.05em;color:var(--white);text-decoration:none}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:10px 22px;border:1px solid var(--gold);color:var(--gold)!important;text-decoration:none;transition:all .25s}
+.nav-cta:hover{background:var(--gold);color:var(--bg)!important}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.crumbs{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:48px 0 0}
+.crumbs a{color:var(--muted);text-decoration:none}.crumbs a:hover{color:var(--gold)}
+.art-head{padding:28px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,5.4vw,58px);line-height:1.08;margin-bottom:22px}
+.lead{font-size:17px;color:var(--text);max-width:640px}
+.meta{margin-top:22px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+article h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(28px,3.4vw,36px);line-height:1.2;margin:56px 0 18px;color:var(--white)}
+article h2::before{content:'';display:block;width:40px;height:1px;background:var(--gold);margin-bottom:18px}
+article h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:24px;margin:30px 0 10px;color:var(--gold-lt)}
+article p{font-size:16px;color:var(--text);margin-bottom:16px}
+article b{color:var(--white);font-weight:500}
+article ul,article ol{margin:0 0 20px 0;padding-left:0;list-style:none;counter-reset:n}
+article li{position:relative;padding-left:30px;margin-bottom:10px;color:var(--text);font-size:16px}
+article ul li::before{content:'→';position:absolute;left:0;color:var(--gold)}
+article ol li{counter-increment:n}
+article ol li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:18px;line-height:1.5}
+article a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35);transition:border-color .2s}
+article a:hover{border-color:var(--gold)}
+.art-table{overflow-x:auto;margin:8px 0 26px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg3);color:var(--gold);font-weight:500;text-align:left;padding:12px 16px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+td{padding:12px 16px;border-top:1px solid var(--border);color:var(--text);vertical-align:top}
+.cta-box{position:relative;margin:64px 0 40px;padding:48px 40px;text-align:center;background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(201,169,110,.12),transparent 70%);pointer-events:none}
+.cta-box h2{margin:0 0 12px!important}.cta-box h2::before{display:none}
+.cta-box p{margin-bottom:28px}
+.btn{display:inline-block;padding:16px 40px;background:var(--gold);color:var(--bg)!important;font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;font-weight:500;border:0!important;transition:background .25s,transform .25s;position:relative}
+.btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
+.note{font-size:13px!important;color:var(--muted)!important;border-left:1px solid var(--gold);padding-left:16px;margin-top:32px}
+.more{border-top:1px solid var(--border);margin-top:56px;padding-top:40px}
+.more-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.card{display:block;background:var(--bg2);padding:32px 28px;text-decoration:none;position:relative;overflow:hidden;transition:background .3s}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+.card:hover{background:var(--bg3)}.card:hover::after{transform:scaleX(1)}
+.card-date{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.2;color:var(--white);margin-bottom:10px}
+.card-text{font-size:13px;color:var(--muted);line-height:1.7}
+footer{border-top:1px solid var(--border);margin-top:80px;padding:40px 60px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:var(--bg2);font-size:11px;color:var(--muted);letter-spacing:.08em}
+footer a{color:var(--muted);text-decoration:none;text-transform:uppercase}footer a:hover{color:var(--gold)}
+.rv{opacity:1}
+html.anim .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+html.anim .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.anim .rv{opacity:1;transform:none;transition:none}}
+@media (max-width:760px){th,td{padding:10px 8px;font-size:13px}th{font-size:10px;letter-spacing:.06em}nav{padding:14px 16px}.nav-links a:not(.nav-cta){display:none}.wrap{padding:0 16px}.cta-box{padding:36px 20px}footer{padding:32px 16px;flex-direction:column}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://caloriept.ru/#org", "name": "CaloriePT AI", "url": "https://caloriept.ru/", "logo": "https://caloriept.ru/icon.png"}, {"@type": "Article", "headline": "Подсчёт калорий по фото еды: как работает, насколько точен и как не ошибиться", "description": "Как посчитать калории по фото еды: как ИИ считает КБЖУ по снимку, насколько это точно, как фотографировать тарелку и что выбрать — приложение или бот.", "datePublished": "2026-10-09", "dateModified": "2026-10-09", "inLanguage": "ru", "mainEntityOfPage": "https://caloriept.ru/blog/kak-poschitat-kalorii-po-foto/", "image": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&q=80&auto=format&fit=crop", "author": {"@id": "https://caloriept.ru/#org"}, "publisher": {"@id": "https://caloriept.ru/#org"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://caloriept.ru/"}, {"@type": "ListItem", "position": 2, "name": "Статьи", "item": "https://caloriept.ru/blog/"}, {"@type": "ListItem", "position": 3, "name": "Подсчёт калорий по фото еды: как работает, насколько точен и как не ошибиться", "item": "https://caloriept.ru/blog/kak-poschitat-kalorii-po-foto/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Можно ли похудеть, считая калории только по фото?", "acceptedAnswer": {"@type": "Answer", "text": "Да, если фотографировать всё, что едите, включая перекусы и напитки, и сверять результат с весом за 2–3 недели. Если вес не меняется, на время добавьте кухонные весы для самых калорийных продуктов."}}, {"@type": "Question", "name": "Почему разные приложения дают разные калории для одного блюда?", "acceptedAnswer": {"@type": "Answer", "text": "У них разные базы продуктов и разные модели оценки порции. К тому же одно и то же блюдо — например, плов или сырники — по разным рецептам отличается по калорийности в полтора-два раза."}}, {"@type": "Question", "name": "Как посчитать калории в супе или плове по фото?", "acceptedAnswer": {"@type": "Answer", "text": "Сфотографируйте тарелку сверху целиком и проверьте, правильно ли бот определил блюдо. Если готовили сами, точнее посчитать калорийность всей кастрюли по ингредиентам и разделить на количество порций."}}, {"@type": "Question", "name": "Можно ли посчитать калории по фото блюда в ресторане?", "acceptedAnswer": {"@type": "Answer", "text": "Да, это один из самых удобных случаев для фото: взвесить еду в ресторане нельзя, а снимок сделать можно. Учтите, что в ресторанах обычно больше масла и соусов, чем дома, поэтому реальная калорийность часто выше оценки."}}, {"@type": "Question", "name": "Нужно ли фотографировать напитки?", "acceptedAnswer": {"@type": "Answer", "text": "Да, особенно сок, сладкий кофе, газировку и алкоголь. Воду и чай без сахара можно отмечать отдельно — в боте для воды есть свой счётчик."}}, {"@type": "Question", "name": "Нужно ли скачивать приложение, чтобы считать калории по фото?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. CaloriePT AI работает внутри Telegram: нажмите «Старт», заполните профиль за пару минут и отправьте фото еды прямо в чат."}}]}]}</script>
+<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=110221375','ym');ym(110221375,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110221375" style="position:absolute;left:-9999px" alt=""></div></noscript>
+</head>
+<body>
+<div class="progress"></div>
+<nav>
+  <a class="nav-logo" href="/">CaloriePT AI 2.0</a>
+  <div class="nav-links">
+    <a href="/#features">Возможности</a>
+    <a href="/blog/">Статьи</a>
+    <a class="nav-cta" href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Попробовать</a>
+  </div>
+</nav>
+<main class="wrap">
+  <div class="crumbs"><a href="/">Главная</a> / <a href="/blog/">Статьи</a></div>
+  <header class="art-head">
+    <p class="eyebrow">CaloriePT · Питание</p>
+    <h1>Подсчёт калорий по фото еды: как работает, насколько точен и как не ошибиться</h1>
+    <p class="lead">Сфотографировать тарелку быстрее, чем взвешивать каждый продукт. Рассказываем, как ИИ считает калории и КБЖУ по снимку, где он ошибается, как правильно фотографировать еду и чем бот в Telegram отличается от приложения.</p>
+    <div class="meta">9 октября 2026 · 8 мин чтения</div>
+  </header>
+  <article>
+<h2 class="rv">Коротко</h2>
+<ul class="rv"><li>ИИ по фото распознаёт блюда, оценивает вес порции и считает калории, белки, жиры и углеводы.</li><li>Главные источники ошибок — масло, соусы, скрытые ингредиенты и вес порции, которого не видно на снимке.</li><li>Правильное фото — вся тарелка целиком, при хорошем свете, сверху или под углом 45°, компоненты не перемешаны.</li><li>Для ежедневного учёта фото хватает. Для точности добавьте сканирование штрихкодов и весы для самых калорийных продуктов.</li></ul>
+<h2 class="rv">Как работает подсчёт калорий по фото?</h2>
+<p class="rv">Подсчёт идёт в три шага:</p>
+<ol class="rv"><li><b>Распознавание.</b> Нейросеть компьютерного зрения смотрит на снимок и определяет, что на тарелке: гречка, куриная грудка, салат из огурцов и помидоров.</li><li><b>Оценка порции.</b> По размеру тарелки, приборов и самой еды модель прикидывает вес каждой части в граммах.</li><li><b>Расчёт КБЖУ.</b> Зная продукт и вес, сервис берёт калорийность из базы продуктов и суммирует калории, белки, жиры и углеводы.</li></ol>
+<p class="rv">В <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">CaloriePT AI</a> это занимает несколько секунд: вы отправляете фото в чат, бот показывает распознанные блюда с КБЖУ и записывает их в дневник питания. Если бот сомневается, он предлагает несколько вариантов блюда — можно выбрать правильный.</p>
+<h2 class="rv">Как посчитать калории по фото в Telegram: пошагово</h2>
+<ol class="rv"><li><b>Откройте бота</b> <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">@Calorie_counter_rf_bot</a> и нажмите «Старт». Регистрация и пароли не нужны.</li><li><b>Заполните профиль:</b> пол, возраст, рост, вес и цель — похудеть, набрать массу или поддерживать вес. Бот рассчитает вашу норму калорий.</li><li><b>Сфотографируйте тарелку</b> и отправьте снимок в чат.</li><li><b>Проверьте результат.</b> Бот покажет блюдо, примерный вес и КБЖУ. Если распознал неточно — выберите другой вариант.</li><li><b>Запишите в дневник</b> и посмотрите, сколько калорий осталось на сегодня.</li></ol>
+<p class="rv">На всё уходит меньше минуты. Для упакованных продуктов вместо фото удобнее отсканировать штрихкод.</p>
+<h2 class="rv">Насколько точно считаются калории по фото?</h2>
+<p class="rv">Честный ответ: это оценка, а не взвешивание. Независимых исследований именно по ботам в мессенджерах пока мало, а производители приложений обычно тестируют себя сами. Точность сильно зависит от блюда:</p>
+<div class="art-table"><table><thead><tr><th>Блюдо</th><th>Как считает ИИ</th><th>Почему</th></tr></thead><tbody><tr><td>Яблоко, банан, яйцо</td><td>точно</td><td>понятный продукт, стандартный размер</td></tr><tr><td>Гарнир и мясо отдельно на тарелке</td><td>хорошо</td><td>всё видно, вес оценивается по площади</td></tr><tr><td>Салат с заправкой</td><td>средне</td><td>масло и майонез почти не видны</td></tr><tr><td>Суп, рагу, плов</td><td>средне</td><td>ингредиенты смешаны, не видна глубина тарелки</td></tr><tr><td>Выпечка, домашние десерты</td><td>слабо</td><td>сахар и масло внутри, рецепты сильно отличаются</td></tr><tr><td>Кофе с молоком, смузи, соки</td><td>слабо</td><td>по цвету не понять сахар, сироп и объём</td></tr></tbody></table></div>
+<p class="rv">Для большинства целей идеальная точность не нужна. Ошибка в 10–15% по одному блюду часто выравнивается за день, а важнее всего — регулярность. Тот, кто каждый день фотографирует еду, обычно знает свой рацион лучше, чем тот, кто раз в неделю пытается всё взвесить и бросает.</p>
+<h2 class="rv">Где ИИ ошибается чаще всего?</h2>
+<ul class="rv"><li><b>Масло и жир.</b> В столовой ложке растительного масла — около 120 ккал, и на фото её не видно. Жареное и тушёное почти всегда «тяжелее», чем кажется.</li><li><b>Соусы и заправки.</b> Майонез, сметана, сырные и сладкие соусы легко добавляют к блюду пару сотен калорий.</li><li><b>Похожие продукты.</b> Фалафель можно принять за котлету, рис — за булгур, творог — за рикотту. Если видите ошибку — выберите другой вариант.</li><li><b>Размер порции.</b> Глубокая тарелка, большая порция или нестандартная посуда сбивают оценку веса.</li><li><b>Скрытые ингредиенты.</b> Сахар в каше, сливки в супе, сыр внутри запеканки на снимке не видны.</li></ul>
+<h2 class="rv">Как фотографировать еду для подсчёта КБЖУ?</h2>
+<ol class="rv"><li><b>Снимайте до еды и всю тарелку целиком</b> — края тарелки помогают ИИ понять масштаб.</li><li><b>Держите телефон сверху или под углом 45°.</b> Сбоку не видно, сколько еды на тарелке.</li><li><b>Включите хороший свет.</b> В темноте гречку легко спутать с рисом, а курицу — с рыбой.</li><li><b>Не смешивайте компоненты,</b> если можно: гарнир, мясо и салат отдельно распознаются точнее.</li><li><b>Положите рядом вилку или ложку</b> — ещё одна подсказка для оценки порции.</li><li><b>Сложное блюдо фотографируйте по частям</b> или добавьте соус и масло отдельной записью.</li><li><b>Проверяйте результат.</b> Если бот предложил несколько вариантов, выберите верный, а не первый попавшийся.</li></ol>
+<h2 class="rv">Приложение, бот в Telegram или ИИ-чат: что выбрать?</h2>
+<p class="rv">Посчитать калории по фото сейчас можно тремя способами:</p>
+<div class="art-table"><table><thead><tr><th>Способ</th><th>Плюсы</th><th>Минусы</th></tr></thead><tbody><tr><td>Приложение-счётчик</td><td>большие базы продуктов, графики</td><td>нужно устанавливать, расширенные функции часто по подписке</td></tr><tr><td>Бот в Telegram</td><td>не нужно ничего устанавливать, фото отправляется в привычный чат</td><td>меньше экранов и настроек, чем в приложении</td></tr><tr><td>Универсальный ИИ-чат</td><td>можно спросить о любом блюде</td><td>не ведёт дневник, не знает вашу норму, каждый раз нужно объяснять заново</td></tr></tbody></table></div>
+<p class="rv">Главное отличие специализированного счётчика от универсального ИИ-чата — память. Бот вроде CaloriePT AI знает вашу норму калорий, складывает съеденное за день, показывает остаток и статистику за неделю. Универсальный чат ответит на вопрос про одну тарелку, но дневник за вас вести не будет.</p>
+<h2 class="rv">Калории по фото бесплатно: в чём подвох?</h2>
+<p class="rv">Распознавание фото стоит денег: каждое обращение к нейросети — это вычисления на серверах. Поэтому сервисы обычно делают так: базовые функции открыты, а анализ фото ограничен по количеству в день или доступен по подписке.</p>
+<p class="rv">В CaloriePT AI расчёт нормы, дневник питания и анализ фото доступны без подписки и без банковской карты, а для анализа фото действует дневной лимит. Упакованные продукты можно добавлять по штрихкоду — данные берутся с упаковки, и это точнее любой оценки по снимку.</p>
+<h2 class="rv">Как проверить, что оценка по фото вам подходит?</h2>
+<p class="rv">Простой тест на одну неделю. Три-четыре раза взвесьте блюдо на кухонных весах, посчитайте калории по упаковке или рецепту, а потом сфотографируйте ту же тарелку для бота. Сравните цифры:</p>
+<ul class="rv"><li><b>разница до 10–15%</b> — отличный результат, можно спокойно пользоваться фото;</li><li><b>бот стабильно занижает</b> — скорее всего, дело в масле и соусах: добавляйте их отдельной записью;</li><li><b>большая разница только на одном типе блюд</b> — например, на домашней выпечке: такие блюда лучше считать по рецепту.</li></ul>
+<p class="rv">После такой проверки вы будете понимать, где снимку можно доверять, а где стоит потратить лишние 30 секунд на весы. Подробно о том, как считать калории в домашних блюдах и крупах, — в статье <a href="/blog/kak-schitat-kalorii-dlya-pohudeniya/">как считать калории для похудения</a>.</p>
+<h2 class="rv">Кому подходит подсчёт калорий по фото?</h2>
+<p class="rv"><b>Подходит, если вы:</b></p>
+<ul class="rv"><li>только начинаете следить за питанием и хотите понять свой реальный рацион;</li><li>хотите похудеть на несколько килограммов без строгой диеты;</li><li>часто едите вне дома — в кафе, столовой, гостях, где взвесить еду нельзя;</li><li>уже пробовали приложения со взвешиванием и бросали через неделю.</li></ul>
+<p class="rv"><b>Лучше добавить весы, если вы:</b></p>
+<ul class="rv"><li>готовитесь к соревнованиям или работаете с тренером по точному плану КБЖУ;</li><li>долго стоите на плато и хотите найти, где ошибка;</li><li>едите много домашней выпечки, соусов и блюд со скрытым маслом.</li></ul>
+<p class="rv">Для врачебной диеты при заболеваниях — например, при диабете — подсчёт по фото не заменяет рекомендаций врача.</p>
+<h2 class="rv">Когда лучше взвешивать, а когда хватит фото?</h2>
+<p class="rv">Фото отлично подходит, если вы хотите понять свой рацион, держать вес или худеть без жёстких рамок. Точности стоит добавить там, где ошибка дороже всего:</p>
+<ul class="rv"><li><b>упакованные продукты</b> — сканируйте штрихкод;</li><li><b>масло, орехи, сыр, сладости</b> — самые калорийные продукты лучше взвесить хотя бы первое время, чтобы «набить глаз»;</li><li><b>если вес стоит 2–3 недели</b> — неделю взвешивайте всё и сравните с оценками по фото.</li></ul>
+<p class="rv">А чтобы понимать, с чем сравнивать результат, сначала <a href="/blog/norma-kaloriy-v-den/">рассчитайте свою норму калорий в день</a>.</p>
+<h2 class="rv">Что ещё умеет бот, кроме подсчёта по фото?</h2>
+<p class="rv">В <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">CaloriePT AI</a> также можно:</p>
+<ul class="rv"><li>вести <a href="/blog/dnevnik-pitaniya-v-telegram/">дневник питания прямо в Telegram</a> и смотреть статистику за день и неделю;</li><li>сфотографировать содержимое холодильника и получить идеи блюд;</li><li>получить меню на день и план на неделю под свою норму;</li><li>отмечать выпитую воду и включать напоминания.</li></ul>
+<h2 class="rv">Частые вопросы</h2>
+<h3 class="rv">Можно ли похудеть, считая калории только по фото?</h3>
+<p class="rv">Да, если фотографировать всё, что едите, включая перекусы и напитки, и сверять результат с весом за 2–3 недели. Если вес не меняется, на время добавьте кухонные весы для самых калорийных продуктов.</p>
+<h3 class="rv">Почему разные приложения дают разные калории для одного блюда?</h3>
+<p class="rv">У них разные базы продуктов и разные модели оценки порции. К тому же одно и то же блюдо — например, плов или сырники — по разным рецептам отличается по калорийности в полтора-два раза.</p>
+<h3 class="rv">Как посчитать калории в супе или плове по фото?</h3>
+<p class="rv">Сфотографируйте тарелку сверху целиком и проверьте, правильно ли бот определил блюдо. Если готовили сами, точнее посчитать калорийность всей кастрюли по ингредиентам и разделить на количество порций.</p>
+<h3 class="rv">Можно ли посчитать калории по фото блюда в ресторане?</h3>
+<p class="rv">Да, это один из самых удобных случаев для фото: взвесить еду в ресторане нельзя, а снимок сделать можно. Учтите, что в ресторанах обычно больше масла и соусов, чем дома, поэтому реальная калорийность часто выше оценки.</p>
+<h3 class="rv">Нужно ли фотографировать напитки?</h3>
+<p class="rv">Да, особенно сок, сладкий кофе, газировку и алкоголь. Воду и чай без сахара можно отмечать отдельно — в боте для воды есть свой счётчик.</p>
+<h3 class="rv">Нужно ли скачивать приложение, чтобы считать калории по фото?</h3>
+<p class="rv">Нет. CaloriePT AI работает внутри Telegram: нажмите «Старт», заполните профиль за пару минут и отправьте фото еды прямо в чат.</p>
+<h2 class="rv">Итог</h2>
+<p class="rv">Подсчёт калорий по фото — самый быстрый способ вести учёт питания каждый день. Он ошибается там, где не видно масла, соусов и веса порции, поэтому снимайте всю тарелку при хорошем свете, проверяйте распознанное блюдо, добавляйте масло отдельно и сканируйте штрихкоды упакованных продуктов. Попробовать можно прямо сейчас: <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">откройте CaloriePT AI в Telegram</a> и отправьте фото своего обеда.</p>
+<h2 class="rv">Источники</h2>
+<ul class="rv"><li><a href="https://www.who.int/ru/news-room/fact-sheets/detail/healthy-diet" rel="noopener" target="_blank">ВОЗ. Здоровое питание — информационный бюллетень</a></li></ul>
+  <p class="note">Материал носит справочный характер и не заменяет консультацию врача или диетолога. При заболеваниях, беременности и в подростковом возрасте нормы питания подбирает специалист.</p>
+  </article>
+  <section class="cta-box rv">
+    <h2>Считайте калории по фото в Telegram</h2>
+    <p>CaloriePT AI рассчитает вашу норму, распознает блюдо по фото и сам заполнит дневник питания.</p>
+    <a class="btn" href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Открыть бота</a>
+  </section>
+  <div class="more"><div class="more-title">Читайте также</div><div class="cards"><a class="card rv" href="/blog/norma-kaloriy-v-den/"><div class="card-date">9 октября 2026 · 9 мин</div><div class="card-title">Норма калорий в день для женщин и мужчин: как рассчитать для похудения и поддержания веса</div><div class="card-text">Норма калорий в день для женщин и мужчин: формула Миффлина — Сан Жеора, таблицы по возрасту, коэффициенты активности и дефицит калорий для похудения.</div></a><a class="card rv" href="/blog/kak-schitat-kalorii-dlya-pohudeniya/"><div class="card-date">9 октября 2026 · 8 мин</div><div class="card-title">Как считать калории для похудения: в готовых блюдах, кашах и без весов</div><div class="card-text">Как считать калории для похудения: в готовых блюдах, кашах и макаронах в сухом или готовом виде, без весов дома. Пошаговая инструкция с примерами.</div></a><a class="card rv" href="/blog/dnevnik-pitaniya-v-telegram/"><div class="card-date">9 октября 2026 · 8 мин</div><div class="card-title">Дневник питания с подсчётом калорий: как вести для похудения и не бросить через неделю</div><div class="card-text">Как вести дневник питания с подсчётом калорий для похудения: что записывать, шаблон, пример дня, разбор недели и подсчёт калорий в Telegram без приложений.</div></a></div></div>
+</main>
+<footer>
+  <span>© 2026 CaloriePT AI · Студия DimkoFF</span>
+  <span><a href="/">Главная</a> &nbsp;·&nbsp; <a href="/blog/">Статьи</a> &nbsp;·&nbsp; <a href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Telegram-бот</a></span>
+</footer>
+<script>
+(function(){var d=document.documentElement;if(!('IntersectionObserver' in window))return;d.classList.add('anim');
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+var bar=document.querySelector('.progress');if(bar){addEventListener('scroll',function(){var h=d.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%'},{passive:true});}
+})();
+</script>
+</body>
+</html>

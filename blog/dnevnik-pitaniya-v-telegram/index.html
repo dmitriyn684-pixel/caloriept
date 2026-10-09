@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дневник питания с подсчётом калорий в Telegram</title>
+<meta name="description" content="Как вести дневник питания с подсчётом калорий для похудения: что записывать, шаблон, пример дня, разбор недели и подсчёт калорий в Telegram без приложений.">
+<link rel="canonical" href="https://caloriept.ru/blog/dnevnik-pitaniya-v-telegram/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CaloriePT AI">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Дневник питания с подсчётом калорий в Telegram">
+<meta property="og:description" content="Как вести дневник питания с подсчётом калорий для похудения: что записывать, шаблон, пример дня, разбор недели и подсчёт калорий в Telegram без приложений.">
+<meta property="og:url" content="https://caloriept.ru/blog/dnevnik-pitaniya-v-telegram/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&q=80&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0C1018">
+<link rel="icon" href="/icon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0C1018;--bg2:#111620;--bg3:#161C28;--gold:#C9A96E;--gold-lt:#E2C99A;--white:#F0EDE8;--muted:#7A8399;--text:#B9C1CF;--border:rgba(201,169,110,.18)}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--white);font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+a{color:var(--gold)}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-lt));z-index:200}
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 60px;background:rgba(12,16,24,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:.05em;color:var(--white);text-decoration:none}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:10px 22px;border:1px solid var(--gold);color:var(--gold)!important;text-decoration:none;transition:all .25s}
+.nav-cta:hover{background:var(--gold);color:var(--bg)!important}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.crumbs{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:48px 0 0}
+.crumbs a{color:var(--muted);text-decoration:none}.crumbs a:hover{color:var(--gold)}
+.art-head{padding:28px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,5.4vw,58px);line-height:1.08;margin-bottom:22px}
+.lead{font-size:17px;color:var(--text);max-width:640px}
+.meta{margin-top:22px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+article h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(28px,3.4vw,36px);line-height:1.2;margin:56px 0 18px;color:var(--white)}
+article h2::before{content:'';display:block;width:40px;height:1px;background:var(--gold);margin-bottom:18px}
+article h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:24px;margin:30px 0 10px;color:var(--gold-lt)}
+article p{font-size:16px;color:var(--text);margin-bottom:16px}
+article b{color:var(--white);font-weight:500}
+article ul,article ol{margin:0 0 20px 0;padding-left:0;list-style:none;counter-reset:n}
+article li{position:relative;padding-left:30px;margin-bottom:10px;color:var(--text);font-size:16px}
+article ul li::before{content:'→';position:absolute;left:0;color:var(--gold)}
+article ol li{counter-increment:n}
+article ol li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:18px;line-height:1.5}
+article a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35);transition:border-color .2s}
+article a:hover{border-color:var(--gold)}
+.art-table{overflow-x:auto;margin:8px 0 26px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg3);color:var(--gold);font-weight:500;text-align:left;padding:12px 16px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+td{padding:12px 16px;border-top:1px solid var(--border);color:var(--text);vertical-align:top}
+.cta-box{position:relative;margin:64px 0 40px;padding:48px 40px;text-align:center;background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(201,169,110,.12),transparent 70%);pointer-events:none}
+.cta-box h2{margin:0 0 12px!important}.cta-box h2::before{display:none}
+.cta-box p{margin-bottom:28px}
+.btn{display:inline-block;padding:16px 40px;background:var(--gold);color:var(--bg)!important;font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;font-weight:500;border:0!important;transition:background .25s,transform .25s;position:relative}
+.btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
+.note{font-size:13px!important;color:var(--muted)!important;border-left:1px solid var(--gold);padding-left:16px;margin-top:32px}
+.more{border-top:1px solid var(--border);margin-top:56px;padding-top:40px}
+.more-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.card{display:block;background:var(--bg2);padding:32px 28px;text-decoration:none;position:relative;overflow:hidden;transition:background .3s}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+.card:hover{background:var(--bg3)}.card:hover::after{transform:scaleX(1)}
+.card-date{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.2;color:var(--white);margin-bottom:10px}
+.card-text{font-size:13px;color:var(--muted);line-height:1.7}
+footer{border-top:1px solid var(--border);margin-top:80px;padding:40px 60px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:var(--bg2);font-size:11px;color:var(--muted);letter-spacing:.08em}
+footer a{color:var(--muted);text-decoration:none;text-transform:uppercase}footer a:hover{color:var(--gold)}
+.rv{opacity:1}
+html.anim .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+html.anim .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.anim .rv{opacity:1;transform:none;transition:none}}
+@media (max-width:760px){th,td{padding:10px 8px;font-size:13px}th{font-size:10px;letter-spacing:.06em}nav{padding:14px 16px}.nav-links a:not(.nav-cta){display:none}.wrap{padding:0 16px}.cta-box{padding:36px 20px}footer{padding:32px 16px;flex-direction:column}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://caloriept.ru/#org", "name": "CaloriePT AI", "url": "https://caloriept.ru/", "logo": "https://caloriept.ru/icon.png"}, {"@type": "Article", "headline": "Дневник питания с подсчётом калорий: как вести для похудения и не бросить через неделю", "description": "Как вести дневник питания с подсчётом калорий для похудения: что записывать, шаблон, пример дня, разбор недели и подсчёт калорий в Telegram без приложений.", "datePublished": "2026-10-09", "dateModified": "2026-10-09", "inLanguage": "ru", "mainEntityOfPage": "https://caloriept.ru/blog/dnevnik-pitaniya-v-telegram/", "image": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&q=80&auto=format&fit=crop", "author": {"@id": "https://caloriept.ru/#org"}, "publisher": {"@id": "https://caloriept.ru/#org"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://caloriept.ru/"}, {"@type": "ListItem", "position": 2, "name": "Статьи", "item": "https://caloriept.ru/blog/"}, {"@type": "ListItem", "position": 3, "name": "Дневник питания с подсчётом калорий: как вести для похудения и не бросить через неделю", "item": "https://caloriept.ru/blog/dnevnik-pitaniya-v-telegram/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Обязательно ли взвешивать еду для дневника питания?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Для большинства целей достаточно фото и оценки порции. Весы полезны, если вес долго стоит на месте или вы готовитесь к соревнованиям."}}, {"@type": "Question", "name": "Что делать, если забыл записать приём пищи?", "acceptedAnswer": {"@type": "Answer", "text": "Запишите по памяти примерно — это лучше, чем пропуск. Чтобы забывать реже, включите напоминания или фотографируйте еду сразу."}}, {"@type": "Question", "name": "Можно ли вести дневник питания бесплатно?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Бот CaloriePT AI в Telegram бесплатный: дневник, расчёт нормы и анализ фото доступны без подписки. Для фото-анализа действует дневной лимит."}}, {"@type": "Question", "name": "Как вести дневник питания для похудения?", "acceptedAnswer": {"@type": "Answer", "text": "Сначала рассчитайте норму калорий и отнимите умеренный дефицит. Затем записывайте всё съеденное сразу после еды, вечером сверяйтесь с нормой, а раз в неделю смотрите средние калории и средний вес. Если вес не снижается 2–3 недели, уменьшите калорийность на 100–200 ккал."}}, {"@type": "Question", "name": "Можно ли удалить свои данные из бота?", "acceptedAnswer": {"@type": "Answer", "text": "Да, в профиле бота есть кнопка удаления данных."}}]}]}</script>
+<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=110221375','ym');ym(110221375,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110221375" style="position:absolute;left:-9999px" alt=""></div></noscript>
+</head>
+<body>
+<div class="progress"></div>
+<nav>
+  <a class="nav-logo" href="/">CaloriePT AI 2.0</a>
+  <div class="nav-links">
+    <a href="/#features">Возможности</a>
+    <a href="/blog/">Статьи</a>
+    <a class="nav-cta" href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Попробовать</a>
+  </div>
+</nav>
+<main class="wrap">
+  <div class="crumbs"><a href="/">Главная</a> / <a href="/blog/">Статьи</a></div>
+  <header class="art-head">
+    <p class="eyebrow">CaloriePT · Питание</p>
+    <h1>Дневник питания с подсчётом калорий: как вести для похудения и не бросить через неделю</h1>
+    <p class="lead">Дневник питания — один из самых простых способов изменить рацион. Рассказываем, что в нём записывать, как разбирать неделю, какой выбрать формат — бумагу, приложение или Telegram — и как не бросить через несколько дней.</p>
+    <div class="meta">9 октября 2026 · 8 мин чтения</div>
+  </header>
+  <article>
+<h2 class="rv">Коротко</h2>
+<ul class="rv"><li>Дневник питания помогает увидеть реальный рацион: исследования связывают регулярный самоконтроль с более успешным снижением веса.</li><li>Записывать нужно всё: основные приёмы пищи, перекусы, напитки, масло и соусы.</li><li>Раз в неделю полезно смотреть итоги: средние калории, белок, перекусы, «тяжёлые» дни.</li><li>В Telegram дневник вести проще: не нужно ставить отдельное приложение, достаточно отправить фото еды боту.</li></ul>
+<h2 class="rv">Зачем вести дневник питания?</h2>
+<p class="rv">Большинство людей заметно недооценивают, сколько едят. Перекус печеньем на работе, ложка масла на сковороде, латте с сиропом — по отдельности мелочи, а за день набираются сотни калорий.</p>
+<p class="rv">Дневник делает рацион видимым. В систематическом обзоре исследований о самоконтроле при снижении веса (Burke и соавторы, 2011) авторы нашли устойчивую связь: чем регулярнее люди записывали еду, тем лучше худели. Записи сами по себе не сжигают калорий, но помогают заметить привычки и принять решение до того, как съедено лишнее.</p>
+<h2 class="rv">Что записывать в дневник питания?</h2>
+<div class="art-table"><table><thead><tr><th>Что</th><th>Зачем</th></tr></thead><tbody><tr><td>Все приёмы пищи и перекусы</td><td>калории набираются из мелочей между едой</td></tr><tr><td>Порцию: фото, граммы или «тарелка/половина»</td><td>без порции калории не посчитать</td></tr><tr><td>Напитки с калориями: сок, кофе с молоком, алкоголь</td><td>их чаще всего забывают</td></tr><tr><td>Масло, соусы, заправки</td><td>самые калорийные «невидимки»</td></tr><tr><td>Воду</td><td>помогает не путать жажду с голодом</td></tr><tr><td>По желанию: время, голод, настроение</td><td>показывает, когда и почему тянет перекусить</td></tr></tbody></table></div>
+<p class="rv">Не обязательно записывать всё идеально. Лучше каждый день по фото, чем раз в неделю с весами до грамма.</p>
+<h2 class="rv">Бумага, приложение или Telegram: где вести дневник питания?</h2>
+<div class="art-table"><table><thead><tr><th>Формат</th><th>Плюсы</th><th>Минусы</th></tr></thead><tbody><tr><td>Бумажный дневник или таблица</td><td>наглядно, ничего не нужно устанавливать</td><td>калории приходится искать и считать вручную</td></tr><tr><td>Приложение-счётчик</td><td>база продуктов, графики, штрихкоды</td><td>нужно устанавливать, расширенные функции часто платные</td></tr><tr><td>Бот в Telegram</td><td>запись за секунды по фото, ничего не нужно устанавливать</td><td>меньше настроек, чем в большом приложении</td></tr></tbody></table></div>
+<p class="rv">Если хотите начать с бумаги, сделайте таблицу из шести колонок: <b>время, что съели, порция, калории, белок, заметка</b> (голод, настроение, где ели). В конце дня подведите итог по калориям и белку, в конце недели — посчитайте среднее. Через пару недель станет понятно, хватает ли вам терпения считать вручную, или пора переходить на автоматический подсчёт.</p>
+<h2 class="rv">Почему в Telegram удобнее, чем в отдельном приложении?</h2>
+<p class="rv">Большинство дневников бросают в первые недели: нужно открыть приложение, найти продукт в базе, ввести граммы. В мессенджере путь короче — вы и так открываете его десятки раз в день.</p>
+<p class="rv">В <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">CaloriePT AI</a> запись выглядит так: сфотографировали тарелку → бот распознал блюдо и посчитал КБЖУ → запись появилась в дневнике. Для упакованных продуктов можно отсканировать штрихкод, а полный дневник открыть в мини-приложении прямо внутри Telegram — со статистикой за день и неделю. Регистрация не нужна: достаточно нажать «Старт».</p>
+<p class="rv">Как именно ИИ считает калории по снимку и где ошибается, мы разобрали в статье про <a href="/blog/kak-poschitat-kalorii-po-foto/">подсчёт калорий по фото еды</a>.</p>
+<h2 class="rv">Как выбрать бота для подсчёта калорий в Telegram?</h2>
+<p class="rv">Ботов для подсчёта калорий в Telegram становится всё больше. Перед тем как выбрать, проверьте пять вещей:</p>
+<ol class="rv"><li><b>Рассчитывает ли бот вашу норму</b> по полу, возрасту, росту, весу и цели — иначе калориям не с чем сравниваться.</li><li><b>Ведёт ли дневник</b> и показывает итог за день и неделю, а не просто отвечает на одно фото.</li><li><b>Можно ли исправить распознанное блюдо,</b> если ИИ ошибся.</li><li><b>Есть ли штрихкоды</b> для упакованных продуктов — это самый точный способ записи.</li><li><b>Можно ли удалить свои данные.</b> Дневник питания — личная информация, и управлять ею должны вы.</li></ol>
+<p class="rv">CaloriePT AI проходит все пять пунктов: считает норму по формуле Миффлина — Сан Жеора, ведёт дневник со статистикой, предлагает варианты при сомнениях в распознавании, сканирует штрихкоды и позволяет удалить данные в профиле.</p>
+<h2 class="rv">Как выглядит день в дневнике питания?</h2>
+<p class="rv">Пример записей обычного рабочего дня у человека с нормой около 1900 ккал. Калорийность — примерная, как её оценил бы счётчик по фото и штрихкоду:</p>
+<div class="art-table"><table><thead><tr><th>Время</th><th>Что съедено</th><th>Ккал</th><th>Белок, г</th></tr></thead><tbody><tr><td>08:30</td><td>Овсянка на молоке с бананом, кофе с молоком</td><td>420</td><td>14</td></tr><tr><td>11:00</td><td>Йогурт из магазина (по штрихкоду)</td><td>120</td><td>5</td></tr><tr><td>13:30</td><td>Гречка, куриная грудка, салат из огурцов и помидоров с маслом</td><td>610</td><td>42</td></tr><tr><td>16:30</td><td>Печенье из офисной кухни, 3 штуки</td><td>210</td><td>3</td></tr><tr><td>19:30</td><td>Омлет из 3 яиц с сыром, хлеб</td><td>520</td><td>30</td></tr><tr><td>Итого</td><td></td><td>1880</td><td>94</td></tr></tbody></table></div>
+<p class="rv">Что видно из такой таблицы: норма соблюдена, белка достаточно, а печенье в 16:30 — привычка, которую легко заменить на фрукт или творог, если цель — похудеть. Без записей этот перекус просто бы не заметили.</p>
+<h2 class="rv">Как анализировать дневник раз в неделю?</h2>
+<p class="rv">Записи дают пользу, только если на них смотреть. Раз в неделю выделите 10 минут и ответьте на пять вопросов:</p>
+<ol class="rv"><li><b>Сколько калорий в среднем за день?</b> Сравните с вашей нормой — если не знаете её, <a href="/blog/norma-kaloriy-v-den/">рассчитайте норму калорий по формуле</a>.</li><li><b>Хватает ли белка?</b> Если белок регулярно низкий, добавьте белковый продукт в завтрак или обед.</li><li><b>Какие дни выбиваются?</b> Часто это выходные или дни с поздним ужином после работы.</li><li><b>Где лишние калории?</b> Посмотрите на перекусы и напитки — там обычно самый простой резерв.</li><li><b>Как меняется вес?</b> Сравнивайте средний вес за неделю, а не утренние скачки.</li></ol>
+<p class="rv">Выберите одну вещь, которую поменяете на следующей неделе. Одно изменение за раз выдержать легче, чем новую жизнь с понедельника.</p>
+<h2 class="rv">Какие ошибки мешают вести дневник?</h2>
+<ul class="rv"><li><b>Записывать «потом».</b> Через несколько часов половина перекусов забывается. Фотографируйте сразу.</li><li><b>Пропускать «плохие» дни.</b> Дневник — не отчёт перед строгим учителем. Именно тяжёлые дни показывают, что менять.</li><li><b>Гнаться за идеальной точностью.</b> Взвешивание каждой травинки быстро утомляет. Для большинства целей хватает фото и оценки порции, а как считать домашние блюда и крупы, мы рассказали в статье <a href="/blog/kak-schitat-kalorii-dlya-pohudeniya/">как считать калории для похудения</a>.</li><li><b>Смотреть только на калории.</b> Белок, овощи и вода влияют на сытость не меньше.</li><li><b>Бросать после срыва.</b> Одна пицца не отменяет месяц записей — просто запишите её и продолжайте.</li></ul>
+<h2 class="rv">Какие показатели смотреть, кроме калорий?</h2>
+<p class="rv">Калории отвечают на вопрос «сколько», а остальные цифры — на вопрос «насколько хорошо». Через пару недель записей обратите внимание на:</p>
+<ul class="rv"><li><b>Белок.</b> Если его стабильно мало, растёт голод и сложнее сохранить мышцы при похудении.</li><li><b>Овощи и фрукты.</b> ВОЗ советует не меньше 400 г в день. Если в дневнике их почти нет — это первое, что стоит добавить.</li><li><b>Сладкое и напитки.</b> Посчитайте, какую долю калорий дают сладости, соки и кофе с сиропом. Часто это самый простой резерв для дефицита.</li><li><b>Время еды.</b> Если основная часть калорий приходится на вечер, возможно, днём вы недоедаете, а потом добираете.</li><li><b>Вода.</b> Отмечайте её отдельно: иногда желание перекусить — это жажда.</li></ul>
+<p class="rv">В CaloriePT AI для этого есть отдельные экраны: качество дня, вода и статистика за неделю.</p>
+<h2 class="rv">Что делать, если по дневнику дефицит, а вес стоит?</h2>
+<p class="rv">Это самая частая ситуация через 2–4 недели записей. Проверьте по порядку:</p>
+<ol class="rv"><li><b>Всё ли записано?</b> Масло на сковороде, соусы, «попробовать» во время готовки, напитки, выходные — то, что чаще всего теряется.</li><li><b>Правильно ли считаются крупы и мясо?</b> Сухой и готовый вес отличаются в разы.</li><li><b>Не завышена ли активность</b> в расчёте нормы? Попробуйте коэффициент на ступень ниже.</li><li><b>Сравниваете ли вы средний вес,</b> а не отдельные утренние цифры? Вода может скрывать снижение жира неделю-две.</li><li><b>Не изменился ли вес с момента расчёта нормы?</b> После 3–5 сброшенных килограммов норму нужно пересчитать.</li></ol>
+<p class="rv">Если всё проверено, а вес не снижается месяц, стоит обсудить ситуацию с врачом: иногда причина не в питании.</p>
+<h2 class="rv">Как не бросить дневник питания: пять привычек</h2>
+<ul class="rv"><li><b>Записывайте сразу.</b> Фото тарелки до еды занимает пять секунд, а вспоминать вечером — гораздо дольше и менее точно.</li><li><b>Привяжите запись к действию,</b> которое и так делаете: сели за стол — сфотографировали.</li><li><b>Не наказывайте себя за «плохие» дни.</b> Запись пиццы — тоже запись. Пропуск — хуже.</li><li><b>Смотрите итоги раз в неделю,</b> а не после каждого приёма пищи — так меньше тревоги и больше пользы.</li><li><b>Включите напоминания,</b> если часто забываете.</li></ul>
+<h2 class="rv">Сколько времени нужно вести дневник?</h2>
+<p class="rv">Первые 2–4 недели — самые полезные: вы узнаете реальный рацион, найдёте лишние калории и привыкнете оценивать порции. Дальше одни ведут дневник постоянно, другие — периодически, например неделю в месяц или после праздников, чтобы вернуться в режим.</p>
+<h2 class="rv">Частые вопросы</h2>
+<h3 class="rv">Обязательно ли взвешивать еду для дневника питания?</h3>
+<p class="rv">Нет. Для большинства целей достаточно фото и оценки порции. Весы полезны, если вес долго стоит на месте или вы готовитесь к соревнованиям.</p>
+<h3 class="rv">Что делать, если забыл записать приём пищи?</h3>
+<p class="rv">Запишите по памяти примерно — это лучше, чем пропуск. Чтобы забывать реже, включите напоминания или фотографируйте еду сразу.</p>
+<h3 class="rv">Можно ли вести дневник питания бесплатно?</h3>
+<p class="rv">Да. Бот CaloriePT AI в Telegram бесплатный: дневник, расчёт нормы и анализ фото доступны без подписки. Для фото-анализа действует дневной лимит.</p>
+<h3 class="rv">Как вести дневник питания для похудения?</h3>
+<p class="rv">Сначала рассчитайте норму калорий и отнимите умеренный дефицит. Затем записывайте всё съеденное сразу после еды, вечером сверяйтесь с нормой, а раз в неделю смотрите средние калории и средний вес. Если вес не снижается 2–3 недели, уменьшите калорийность на 100–200 ккал.</p>
+<h3 class="rv">Можно ли удалить свои данные из бота?</h3>
+<p class="rv">Да, в профиле бота есть кнопка удаления данных.</p>
+<h2 class="rv">Итог</h2>
+<p class="rv">Дневник питания работает, когда его легко вести и регулярно просматривать. Записывайте всё, включая перекусы и напитки, раз в неделю смотрите на средние калории, белок и выбивающиеся дни, меняйте по одной привычке. Проще всего начать в мессенджере: <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">откройте CaloriePT AI в Telegram</a>, заполните профиль за пару минут и отправьте первое фото еды.</p>
+<h2 class="rv">Источники</h2>
+<ul class="rv"><li><a href="https://pubmed.ncbi.nlm.nih.gov/21185970/" rel="noopener" target="_blank">Burke L. E., Wang J., Sevick M. A. Self-monitoring in weight loss: a systematic review of the literature, 2011</a></li><li><a href="https://www.who.int/ru/news-room/fact-sheets/detail/healthy-diet" rel="noopener" target="_blank">ВОЗ. Здоровое питание — информационный бюллетень</a></li></ul>
+  <p class="note">Материал носит справочный характер и не заменяет консультацию врача или диетолога. При заболеваниях, беременности и в подростковом возрасте нормы питания подбирает специалист.</p>
+  </article>
+  <section class="cta-box rv">
+    <h2>Считайте калории по фото в Telegram</h2>
+    <p>CaloriePT AI рассчитает вашу норму, распознает блюдо по фото и сам заполнит дневник питания.</p>
+    <a class="btn" href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Открыть бота</a>
+  </section>
+  <div class="more"><div class="more-title">Читайте также</div><div class="cards"><a class="card rv" href="/blog/norma-kaloriy-v-den/"><div class="card-date">9 октября 2026 · 9 мин</div><div class="card-title">Норма калорий в день для женщин и мужчин: как рассчитать для похудения и поддержания веса</div><div class="card-text">Норма калорий в день для женщин и мужчин: формула Миффлина — Сан Жеора, таблицы по возрасту, коэффициенты активности и дефицит калорий для похудения.</div></a><a class="card rv" href="/blog/kak-schitat-kalorii-dlya-pohudeniya/"><div class="card-date">9 октября 2026 · 8 мин</div><div class="card-title">Как считать калории для похудения: в готовых блюдах, кашах и без весов</div><div class="card-text">Как считать калории для похудения: в готовых блюдах, кашах и макаронах в сухом или готовом виде, без весов дома. Пошаговая инструкция с примерами.</div></a><a class="card rv" href="/blog/kak-poschitat-kalorii-po-foto/"><div class="card-date">9 октября 2026 · 8 мин</div><div class="card-title">Подсчёт калорий по фото еды: как работает, насколько точен и как не ошибиться</div><div class="card-text">Как посчитать калории по фото еды: как ИИ считает КБЖУ по снимку, насколько это точно, как фотографировать тарелку и что выбрать — приложение или бот.</div></a></div></div>
+</main>
+<footer>
+  <span>© 2026 CaloriePT AI · Студия DimkoFF</span>
+  <span><a href="/">Главная</a> &nbsp;·&nbsp; <a href="/blog/">Статьи</a> &nbsp;·&nbsp; <a href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Telegram-бот</a></span>
+</footer>
+<script>
+(function(){var d=document.documentElement;if(!('IntersectionObserver' in window))return;d.classList.add('anim');
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+var bar=document.querySelector('.progress');if(bar){addEventListener('scroll',function(){var h=d.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%'},{passive:true});}
+})();
+</script>
+</body>
+</html>
