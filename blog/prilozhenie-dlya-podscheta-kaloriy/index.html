@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Приложение для подсчёта калорий: как выбрать</title>
+<meta name="description" content="Как выбрать приложение для подсчёта калорий и КБЖУ: база продуктов, подсчёт по фото, штрихкоды, платная подписка. Чем приложение отличается от бота в Telegram.">
+<link rel="canonical" href="https://caloriept.ru/blog/prilozhenie-dlya-podscheta-kaloriy/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CaloriePT AI">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Приложение для подсчёта калорий: как выбрать">
+<meta property="og:description" content="Как выбрать приложение для подсчёта калорий и КБЖУ: база продуктов, подсчёт по фото, штрихкоды, платная подписка. Чем приложение отличается от бота в Telegram.">
+<meta property="og:url" content="https://caloriept.ru/blog/prilozhenie-dlya-podscheta-kaloriy/">
+<meta property="og:image" content="https://caloriept.ru/img/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0C1018">
+<link rel="icon" href="/icon.png" type="image/png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/nf.css?v=4">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0C1018;--bg2:#111620;--bg3:#161C28;--gold:#C9A96E;--gold-lt:#E2C99A;--white:#F0EDE8;--muted:#7A8399;--text:#B9C1CF;--border:rgba(201,169,110,.18)}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--white);font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+a{color:var(--gold)}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-lt));z-index:200}
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 60px;background:rgba(12,16,24,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:.05em;color:var(--white);text-decoration:none}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:10px 22px;border:1px solid var(--gold);color:var(--gold)!important;text-decoration:none;transition:all .25s}
+.nav-cta:hover{background:var(--gold);color:var(--bg)!important}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.crumbs{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:48px 0 0}
+.crumbs a{color:var(--muted);text-decoration:none}.crumbs a:hover{color:var(--gold)}
+.art-head{padding:28px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,5.4vw,58px);line-height:1.08;margin-bottom:22px}
+.lead{font-size:17px;color:var(--text);max-width:640px}
+.meta{margin-top:22px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+article h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(28px,3.4vw,36px);line-height:1.2;margin:56px 0 18px;color:var(--white)}
+article h2::before{content:'';display:block;width:40px;height:1px;background:var(--gold);margin-bottom:18px}
+article h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:24px;margin:30px 0 10px;color:var(--gold-lt)}
+article p{font-size:16px;color:var(--text);margin-bottom:16px}
+article b{color:var(--white);font-weight:500}
+article ul,article ol{margin:0 0 20px 0;padding-left:0;list-style:none;counter-reset:n}
+article li{position:relative;padding-left:30px;margin-bottom:10px;color:var(--text);font-size:16px}
+article ul li::before{content:'→';position:absolute;left:0;color:var(--gold)}
+article ol li{counter-increment:n}
+article ol li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:18px;line-height:1.5}
+article a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.35);transition:border-color .2s}
+article a:hover{border-color:var(--gold)}
+.art-table{overflow-x:auto;margin:8px 0 26px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg3);color:var(--gold);font-weight:500;text-align:left;padding:12px 16px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+td{padding:12px 16px;border-top:1px solid var(--border);color:var(--text);vertical-align:top}
+.cta-box{position:relative;margin:64px 0 40px;padding:48px 40px;text-align:center;background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(201,169,110,.12),transparent 70%);pointer-events:none}
+.cta-box h2{margin:0 0 12px!important}.cta-box h2::before{display:none}
+.cta-box p{margin-bottom:28px}
+.btn{display:inline-block;padding:16px 40px;background:var(--gold);color:var(--bg)!important;font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;font-weight:500;border:0!important;transition:background .25s,transform .25s;position:relative}
+.btn:hover{background:var(--gold-lt);transform:translateY(-1px)}
+.note{font-size:13px!important;color:var(--muted)!important;border-left:1px solid var(--gold);padding-left:16px;margin-top:32px}
+.more{border-top:1px solid var(--border);margin-top:56px;padding-top:40px}
+.more-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.card{display:block;background:var(--bg2);padding:32px 28px;text-decoration:none;position:relative;overflow:hidden;transition:background .3s}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+.card:hover{background:var(--bg3)}.card:hover::after{transform:scaleX(1)}
+.card-date{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.2;color:var(--white);margin-bottom:10px}
+.card-text{font-size:13px;color:var(--muted);line-height:1.7}
+footer{border-top:1px solid var(--border);margin-top:80px;padding:40px 60px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:var(--bg2);font-size:11px;color:var(--muted);letter-spacing:.08em}
+footer a{color:var(--muted);text-decoration:none;text-transform:uppercase}footer a:hover{color:var(--gold)}
+.rv{opacity:1}
+html.anim .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+html.anim .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.anim .rv{opacity:1;transform:none;transition:none}}
+@media (max-width:760px){th,td{padding:10px 8px;font-size:13px}th{font-size:10px;letter-spacing:.06em}nav{padding:14px 16px}.nav-links a:not(.nav-cta){display:none}.wrap{padding:0 16px}.cta-box{padding:36px 20px}footer{padding:32px 16px;flex-direction:column}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://caloriept.ru/#org", "name": "CaloriePT AI", "url": "https://caloriept.ru/", "logo": "https://caloriept.ru/icon.png"}, {"@type": "Article", "headline": "Приложение для подсчёта калорий: как выбрать и не бросить через неделю", "description": "Как выбрать приложение для подсчёта калорий и КБЖУ: база продуктов, подсчёт по фото, штрихкоды, платная подписка. Чем приложение отличается от бота в Telegram.", "datePublished": "2026-10-17", "dateModified": "2026-10-17", "inLanguage": "ru", "mainEntityOfPage": "https://caloriept.ru/blog/prilozhenie-dlya-podscheta-kaloriy/", "image": "https://caloriept.ru/img/og-cover.jpg", "author": {"@id": "https://caloriept.ru/#org"}, "publisher": {"@id": "https://caloriept.ru/#org"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://caloriept.ru/"}, {"@type": "ListItem", "position": 2, "name": "Статьи", "item": "https://caloriept.ru/blog/"}, {"@type": "ListItem", "position": 3, "name": "Приложение для подсчёта калорий: как выбрать и не бросить через неделю", "item": "https://caloriept.ru/blog/prilozhenie-dlya-podscheta-kaloriy/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Какое приложение для подсчёта калорий лучшее?", "acceptedAnswer": {"@type": "Answer", "text": "Универсального ответа нет. Лучшее то, которым вы будете пользоваться каждый день. Попробуйте два-три варианта по неделе и оставьте тот, где запись обеда занимает меньше всего времени."}}, {"@type": "Question", "name": "Есть ли бесплатные приложения для подсчёта калорий?", "acceptedAnswer": {"@type": "Answer", "text": "Да, у большинства есть бесплатная версия. Обычно в ней доступен ручной ввод и базовый дневник, а подсчёт по фото и подробная аналитика бывают платными. Наш бот CaloriePT можно начать использовать без оплаты."}}, {"@type": "Question", "name": "Можно ли считать калории без весов?", "acceptedAnswer": {"@type": "Answer", "text": "Можно, по фото, упаковке и размеру порции. Точность будет ниже, но для старта этого хватает. Если вес встал, на неделю-две стоит вернуться к весам и проверить себя."}}, {"@type": "Question", "name": "Нужно ли считать калории всю жизнь?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Обычно через два-три месяца записей человек начинает на глаз понимать, сколько в его привычных блюдах. Дальше можно включать подсчёт эпизодически, например когда вес начинает расти."}}]}]}</script>
+<script src="/consent.js" defer></script>
+</head>
+<body>
+<div class="progress"></div>
+<nav>
+  <a class="nav-logo" href="/">CaloriePT AI 2.0</a>
+  <div class="nav-links">
+    <a href="/#features">Возможности</a>
+    <a href="/blog/">Статьи</a>
+    <a class="nav-cta" href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Попробовать</a>
+  </div>
+</nav>
+<main class="wrap">
+  <div class="crumbs"><a href="/">Главная</a> / <a href="/blog/">Статьи</a></div>
+  <header class="art-head">
+    <p class="eyebrow">CaloriePT · Питание</p>
+    <h1>Приложение для подсчёта калорий: как выбрать и не бросить через неделю</h1>
+    <p class="lead">Приложений для подсчёта калорий десятки, и почти все обещают одно и то же. На деле разница в мелочах: насколько быстро записать обед, есть ли в базе ваши продукты и что спрятано за подпиской. Разбираем, на что смотреть.</p>
+    <div class="meta">17 октября 2026 · 5 мин чтения</div>
+  </header>
+  <article>
+<h2 class="rv">Коротко</h2>
+<ul class="rv"><li>Главный критерий — не количество функций, а то, сколько секунд уходит на запись одного приёма пищи. Если дольше минуты, через неделю вы перестанете записывать.</li><li>Для России важна база продуктов: сырники, гречка, борщ, местные марки йогуртов. Проверьте пять своих обычных продуктов до того, как привыкнуть к приложению.</li><li>Подсчёт по фото экономит время, но ошибается на соусах, масле и смешанных блюдах. Это нормально, если понимать погрешность.</li><li>У многих приложений базовая версия бесплатная, а самое удобное (фото, подробная статистика, планы) — в подписке. Смотрите, что именно платное.</li></ul>
+<h2 class="rv">Зачем вообще приложение, если можно записывать в блокнот?</h2>
+<p class="rv">Можно и в блокнот. Но тогда калории придётся искать самому, складывать вручную и каждый вечер считать, сколько осталось. Большинство бросает именно на этом шаге.</p>
+<p class="rv">Приложение делает три скучные вещи за вас: находит калорийность продукта, складывает день и показывает остаток до нормы. Плюс хранит историю, по которой видно, почему на прошлой неделе вес встал.</p>
+<h2 class="rv">Что должно быть в хорошем приложении для подсчёта калорий?</h2>
+<p class="rv">Мы бы проверяли по такому списку:</p>
+<div class="art-table"><table><thead><tr><th>Что проверить</th><th>Почему это важно</th></tr></thead><tbody><tr><td>База продуктов на русском</td><td>Без неё вы будете вносить каждый продукт вручную</td></tr><tr><td>Готовые блюда и домашняя еда</td><td>Суп, плов и сырники едят чаще, чем отдельную «куриную грудку 100 г»</td></tr><tr><td>Подсчёт по фото</td><td>Самый быстрый способ записать еду вне дома</td></tr><tr><td>Сканер штрихкода</td><td>Удобно для продуктов из магазина</td></tr><tr><td>Расчёт нормы под цель</td><td>Похудеть, набрать или держать вес</td></tr><tr><td>Белки, жиры, углеводы</td><td>Одних калорий мало: при похудении важен белок</td></tr><tr><td>Вода</td><td>Мелочь, но о ней чаще всего забывают</td></tr><tr><td>Что бесплатно, а что в подписке</td><td>Чтобы не выяснить это через неделю</td></tr></tbody></table></div>
+<p class="rv">Если вы только начинаете, не гонитесь за максимумом функций. Достаточно, чтобы приложение быстро записывало еду, знало ваши продукты и показывало остаток калорий на день.</p>
+<h2 class="rv">Подсчёт калорий по фото: насколько можно доверять?</h2>
+<p class="rv">Это главный тренд последних лет. Вы фотографируете тарелку, нейросеть распознаёт блюдо, оценивает порцию и выдаёт калории и КБЖУ.</p>
+<p class="rv">Работает хорошо там, где всё видно: яичница, гречка с котлетой, салат, фрукты. Хуже там, где калории спрятаны: масло в сковороде, майонез внутри салата, сахар в соусе, жирность фарша. Нейросеть их просто не видит.</p>
+<p class="rv">Мы советуем пользоваться фото как основным способом, но держать в голове простое правило: если блюдо жарили или заправляли, лучше вручную добавить масло или поправить вес порции. Подробно о точности и ошибках мы писали в статье <a href="/blog/kak-poschitat-kalorii-po-foto/">подсчёт калорий по фото</a>.</p>
+<h2 class="rv">Приложение или бот в Telegram: что удобнее?</h2>
+<p class="rv">Обычное приложение нужно скачать, зарегистрироваться, дать разрешения и не забыть его открывать. Бот в Telegram живёт там, где вы и так проводите полдня. Открыли чат, отправили фото, получили ответ.</p>
+<div class="art-table"><table><thead><tr><th></th><th>Отдельное приложение</th><th>Бот в Telegram</th></tr></thead><tbody><tr><td>Установка</td><td>Скачать из магазина, регистрация</td><td>Открыть ссылку, нажать «Старт»</td></tr><tr><td>Место на телефоне</td><td>Занимает</td><td>Не занимает</td></tr><tr><td>Запись еды</td><td>Поиск по базе, фото, штрихкод</td><td>Чаще всего фото или текст сообщением</td></tr><tr><td>Напоминания</td><td>Уведомления приложения</td><td>Сообщения в чате</td></tr><tr><td>Подробная статистика</td><td>Обычно богаче</td><td>Попроще, но основное есть</td></tr></tbody></table></div>
+<p class="rv">Если вам важны графики за полгода и десятки настроек, удобнее приложение. Если важно записывать еду быстро и не бросить через неделю, бот часто выигрывает именно за счёт того, что не требует лишних действий.</p>
+<h2 class="rv">Как устроен наш бот CaloriePT</h2>
+<p class="rv">Раз уж мы делаем такой бот, расскажем честно, что в нём есть.</p>
+<ul class="rv"><li>Подсчёт калорий и КБЖУ по фото тарелки, ответ обычно за секунды.</li><li>Расчёт нормы калорий под цель: похудеть, набрать или держать вес.</li><li>Дневник питания со статистикой по дням и неделям.</li><li>Норма воды по весу и кнопки быстрого добавления.</li><li>Рецепты из того, что есть в холодильнике: фото полок, и бот предлагает меню под вашу норму.</li><li>ИИ-нутрициолог Анна, которая видит ваш дневник и отвечает на вопросы. Её советы не заменяют консультацию врача.</li></ul>
+<p class="rv">Начать можно без оплаты: <a href="https://t.me/Calorie_counter_rf_bot" rel="noopener" target="_blank">открыть CaloriePT в Telegram</a>. Если не подойдёт, ничего удалять не придётся.</p>
+<h2 class="rv">Почему люди бросают считать калории и как этого избежать?</h2>
+<p class="rv">Причины почти всегда одни и те же:</p>
+<ul class="rv"><li>записывать долго, и после третьего обеда в кафе это надоедает;</li><li>цифры пугают, и человек перестаёт записывать «плохие» дни;</li><li>нет результата за первые две недели, и кажется, что всё бесполезно.</li></ul>
+<p class="rv">Против первого помогает фото. Против второго помогает договориться с собой, что дневник ведётся для наблюдения, а не для оценок: торт тоже записываем. Против третьего — смотреть на средний вес за неделю и терпеть хотя бы месяц. О том, как устроен сам расчёт, есть отдельная статья про <a href="/blog/defitsit-kaloriy/">дефицит калорий</a>.</p>
+<h2 class="rv">Частые вопросы</h2>
+<h3 class="rv">Какое приложение для подсчёта калорий лучшее?</h3>
+<p class="rv">Универсального ответа нет. Лучшее то, которым вы будете пользоваться каждый день. Попробуйте два-три варианта по неделе и оставьте тот, где запись обеда занимает меньше всего времени.</p>
+<h3 class="rv">Есть ли бесплатные приложения для подсчёта калорий?</h3>
+<p class="rv">Да, у большинства есть бесплатная версия. Обычно в ней доступен ручной ввод и базовый дневник, а подсчёт по фото и подробная аналитика бывают платными. Наш бот CaloriePT можно начать использовать без оплаты.</p>
+<h3 class="rv">Можно ли считать калории без весов?</h3>
+<p class="rv">Можно, по фото, упаковке и размеру порции. Точность будет ниже, но для старта этого хватает. Если вес встал, на неделю-две стоит вернуться к весам и проверить себя.</p>
+<h3 class="rv">Нужно ли считать калории всю жизнь?</h3>
+<p class="rv">Нет. Обычно через два-три месяца записей человек начинает на глаз понимать, сколько в его привычных блюдах. Дальше можно включать подсчёт эпизодически, например когда вес начинает расти.</p>
+<h2 class="rv">Итог</h2>
+<p class="rv">Выбирайте приложение для подсчёта калорий по одному критерию: насколько быстро вы записываете обычный обед. База продуктов на русском, фото и понятный остаток на день важнее красивых графиков. А если не хочется ставить ещё одно приложение, попробуйте бот в Telegram.</p>
+  <p class="note">Материал носит справочный характер и не заменяет консультацию врача или диетолога. При заболеваниях, беременности и в подростковом возрасте нормы питания подбирает специалист.</p>
+  </article>
+  <section class="cta-box rv">
+    <h2>Считайте калории по фото в Telegram</h2>
+    <p>CaloriePT AI рассчитает вашу норму, распознает блюдо по фото и сам заполнит дневник питания.</p>
+    <a class="btn" href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">Открыть бота</a>
+  </section>
+  <div class="more"><div class="more-title">Читайте также</div><div class="cards"><a class="card rv" href="/blog/skolko-kaloriy-v-yaytse/"><div class="card-date">17 октября 2026 · 4 мин</div><div class="card-title">Сколько калорий в яйце: варёном, жареном, в желтке и белке</div><div class="card-text">Сколько калорий в 1 курином яйце: варёном, жареном, в омлете, в белке и желтке. Таблица по категориям С0, С1, С2 и пример завтрака. Перепелиное яйцо.</div></a><a class="card rv" href="/blog/pochemu-ne-uhodit-ves/"><div class="card-date">17 октября 2026 · 5 мин</div><div class="card-title">Почему не уходит вес, хотя вы на дефиците: 8 причин и что с ними делать</div><div class="card-text">Почему вес стоит на месте при дефиците калорий и правильном питании: неучтённая еда, вода, плато, тренировки, цикл. Что проверить по шагам и когда идти к врачу.</div></a><a class="card rv" href="/blog/intervalnoe-golodanie/"><div class="card-date">17 октября 2026 · 5 мин</div><div class="card-title">Интервальное голодание: схемы для начинающих и что о нём говорят исследования</div><div class="card-text">Что такое интервальное голодание, схемы 16/8, 14/10 и 5:2, что говорят исследования о похудении, кому нельзя и как начать без срывов. Пример дня.</div></a></div></div>
+</main>
+<footer class="sfoot">
+  <div class="sfoot-top">
+    <div class="sfoot-brand">
+      <p class="sfoot-lead">Создаём ИИ-ботов и сайты, которые работают на бизнес и людей.</p>
+      <a class="btn" href="https://t.me/VasyVenskiy" target="_blank" rel="noopener">Обсудить проект</a>
+    </div>
+    <div class="sfoot-col">
+      <h4>Продукты</h4>
+      <ul>
+        <li><a href="https://t.me/Calorie_counter_rf_bot" target="_blank" rel="noopener">CaloriePT AI 2.0</a></li>
+        <li><a href="https://t.me/psy_mind_rf_bot" target="_blank" rel="noopener">PsyMind AI</a></li>
+        <li><a href="https://t.me/stylist_dimkoff_bot" target="_blank" rel="noopener">Stylist AI</a></li>
+        <li><a href="https://t.me/PulseAICoach_bot" target="_blank" rel="noopener">PulseAI Coach</a></li>
+        <li><a href="https://t.me/businessmen_ai_bot" target="_blank" rel="noopener">Бизнес-наставник</a></li>
+      </ul>
+    </div>
+    <div class="sfoot-col">
+      <h4>Сайт</h4>
+      <ul>
+        <li><a href="/#new">Новое в боте</a></li>
+        <li><a href="/#how">Как работает</a></li>
+        <li><a href="/blog/">Статьи</a></li>
+        <li><a href="/#faq">Вопросы и ответы</a></li>
+        <li><a href="/cookies/">Cookie</a></li>
+      </ul>
+    </div>
+    <div class="sfoot-col">
+      <h4>Контакты</h4>
+      <ul class="sfoot-social">
+        <li><a href="https://t.me/VasyVenskiy" target="_blank" rel="noopener"><span class="si">TG</span>Telegram</a></li>
+        <li><a href="https://max.ru/se14536875_bot" target="_blank" rel="noopener"><span class="si">MX</span>MAX</a></li>
+        <li><a href="https://www.instagram.com/aistudiodimkoff/" target="_blank" rel="noopener"><span class="si">IG</span>Instagram*</a></li>
+        <li><a href="https://t.me/DimkoFFSecretarybot" target="_blank" rel="noopener"><span class="si">AI</span>Бот студии</a></li>
+        <li><a href="https://aistudiodimkoff.ru" target="_blank" rel="noopener"><span class="si">WEB</span>aistudiodimkoff.ru</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sfoot-final">
+    <p class="sfoot-tag">ИИ-студия<br>ботов и сайтов</p>
+    <p class="sfoot-name" aria-label="AIStudioDimkoFF">AIStudioDimkoFF</p>
+  </div>
+  <div class="sfoot-bottom">
+    <span>© 2025–2026 AIStudioDimkoFF. Все права защищены.</span>
+    <span>* Instagram принадлежит компании Meta, деятельность которой признана экстремистской и запрещена в России.</span>
+  </div>
+</footer>
+<script>
+(function(){var d=document.documentElement;if(!('IntersectionObserver' in window))return;d.classList.add('anim');
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+var bar=document.querySelector('.progress');if(bar){addEventListener('scroll',function(){var h=d.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%'},{passive:true});}
+})();
+</script>
+<script>
+(function(){var n=document.querySelector('.sfoot-name');if(!n)return;
+var s=document.createElement('span');s.className='ch';s.textContent=n.textContent.trim();n.textContent='';n.appendChild(s);
+var fit=function(){n.style.fontSize='100px';var w=s.getBoundingClientRect().width;if(w>0)n.style.fontSize=(100*n.clientWidth/w*.98).toFixed(2)+'px'};
+fit();addEventListener('resize',fit);if(document.fonts)document.fonts.ready.then(fit);})();
+</script>
+</body>
+</html>
