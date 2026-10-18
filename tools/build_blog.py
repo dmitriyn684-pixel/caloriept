@@ -90,7 +90,17 @@ def to_html(md: str):
         if not line.strip():
             i += 1
             continue
-        if line.startswith("## "):
+        if line.startswith("```"):
+            code = []
+            i += 1
+            while i < len(lines) and not lines[i].startswith("```"):
+                code.append(lines[i]); i += 1
+            i += 1
+            out.append('<div class="prompt-box rv"><button type="button" class="copy-btn" '
+                       'onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText);'
+                       "this.textContent='Скопировано'\">Скопировать промт</button><pre>"
+                       + html.escape("\n".join(code)) + "</pre></div>")
+        elif line.startswith("## "):
             close_q()
             title = line[3:].strip()
             in_faq = title.lower() == FAQ_TITLE
@@ -118,7 +128,7 @@ def to_html(md: str):
                 answer.extend(items)
         else:
             para = []
-            while i < len(lines) and lines[i].strip() and not re.match(r"(#{2,3} |\s*\||\s*(-|\d+\.)\s)", lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r"(#{2,3} |\s*\||\s*(-|\d+\.)\s|```)", lines[i]):
                 para.append(lines[i].strip()); i += 1
             text = " ".join(para)
             out.append(f'<p class="rv">{inline(text)}</p>')
@@ -207,7 +217,7 @@ article a:hover{border-color:var(--gold)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{background:var(--bg3);color:var(--gold);font-weight:500;text-align:left;padding:12px 16px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
 td{padding:12px 16px;border-top:1px solid var(--border);color:var(--text);vertical-align:top}
-.cta-box{position:relative;margin:64px 0 40px;padding:48px 40px;text-align:center;background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.prompt-box{position:relative;margin:24px 0;background:var(--bg2);border:1px solid var(--border);padding:56px 22px 22px}.prompt-box pre{white-space:pre-wrap;word-break:break-word;font:14px/1.55 ui-monospace,Consolas,monospace;margin:0;color:inherit}.copy-btn{position:absolute;top:12px;right:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer}.cta-box{position:relative;margin:64px 0 40px;padding:48px 40px;text-align:center;background:var(--bg2);border:1px solid var(--border);overflow:hidden}
 .cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(201,169,110,.12),transparent 70%);pointer-events:none}
 .cta-box h2{margin:0 0 12px!important}.cta-box h2::before{display:none}
 .cta-box p{margin-bottom:28px}
